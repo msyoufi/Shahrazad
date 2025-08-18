@@ -1,35 +1,50 @@
+@let painting = formService.painting;
+
 <div class="overlay">
   <form [formGroup]="form" class="overlay-content-box" (ngSubmit)="onSubmit()">
+
+    <p class="form-title">
+      {{painting ? 'Edit ' + painting.title : 'New Painting'}}
+    </p>
 
     <input type="hidden" name="id" formControlName="id">
 
     <div class="control-field">
       <input type="text" id="title" formControlName="title" class="shari-input" required>
-      <label for="title" [class.top]="form.get('title')?.value">Title</label>
+      <label for="title" [class.top]="form.get('title')?.value">Title*</label>
+    </div>
+
+    <div class="half-inputs-wrapper">
+      <div class="control-field">
+        <input type="text" id="material" formControlName="material" class="shari-input">
+        <label for="material" [class.top]="form.get('material')?.value">Material</label>
+      </div>
+
+      <div class="control-field">
+        <input type="number" id="year" formControlName="year" class="shari-input" min="2000" [max]="maxYear">
+        <label for="year" [class.top]="form.get('year')?.value">Year</label>
+      </div>
+    </div>
+
+    <div class="half-inputs-wrapper">
+      <div class="control-field">
+        <input type="number" id="width" formControlName="width" class="shari-input" min="1" required>
+        <label for="width" [class.top]="form.get('width')?.value">Width* (cm)</label>
+      </div>
+
+      <div class="control-field">
+        <input type="number" id="height" formControlName="height" class="shari-input" min="1" required>
+        <label for="height" [class.top]="form.get('height')?.value">Height* (cm)</label>
+      </div>
     </div>
 
     <div class="control-field">
-      <input type="text" id="material" formControlName="material" class="shari-input">
-      <label for="material" [class.top]="form.get('material')?.value">Material</label>
-    </div>
-
-    <div class="control-field">
-      <input type="number" id="width" formControlName="width" class="shari-input" min="1" required>
-      <label for="width" [class.top]="form.get('width')?.value">Width</label>
-    </div>
-
-    <div class="control-field">
-      <input type="number" id="height" formControlName="height" class="shari-input" min="1" required>
-      <label for="height" [class.top]="form.get('height')?.value">Height</label>
-    </div>
-
-    <div class="control-field">
-      <input type="number" id="year" formControlName="year" class="shari-input" min="2000">
-      <label for="year" [class.top]="form.get('year')?.value">Year</label>
+      <input type="file" id="main_image" name="main_image" class="shari-input" required>
+      <label for="main_image" class="top">Main Image*</label>
     </div>
 
     <div class="buttons-box">
-      <shari-button text="Cnacel" type="reset" variant="outlined" />
+      <shari-button text="Cnacel" type="reset" variant="outlined" (click)="onCancleClick()" />
       <shari-button text="Save" type="submit" [disabled]="false" />
     </div>
 
