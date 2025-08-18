@@ -1,0 +1,60 @@
+.shari-button {
+  min-height: 2rem;
+  padding: .5rem .8rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  color: var(--background-color);
+  border: 2px solid var(--background-color);
+}
+
+.primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.secondary {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  color: var(--secondary-color);
+}
+
+.red {
+  background-color: var(--red);
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.green {
+  background-color: var(--green);
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.shari-button:hover {
+  filter: brightness(105%);
+}
+
+.shari-button:active {
+  filter: brightness(95%);
+}
+
+.shari-button:disabled {
+  background-color: var(--gray);
+  border-color: var(--gray);
+  color: var(--background-color);
+  pointer-events: none;
+}
+
+.filled {
+  color: var(--background-color);
+}
+
+.outlined {
+  background-color: transparent;
+}
+
+.outlined:disabled {
+  background-color: transparent;
+  color: var(--gray);
+}
