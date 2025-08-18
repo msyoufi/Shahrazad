@@ -1,0 +1,28 @@
+:host {
+  display: block;
+  max-width: 500px;
+  margin: 0 1rem;
+  padding: 1.5rem;
+  background-color: var(--background-color);
+  border: 3px solid var(--tertiary-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.title {
+  font-weight: 650;
+  color: var(--gray);
+  text-align: center;
+}
+
+.message {
+  padding: 1.5rem 0;
+}
+
+.red-button {
+  margin-bottom: .5rem;
+}
+
+.shari-button {
+  width: 100%
+}
