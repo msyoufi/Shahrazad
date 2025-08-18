@@ -6,8 +6,7 @@ import { Footer } from './components/footer/footer';
 @Component({
   selector: 'shari-root',
   imports: [RouterOutlet, Header, Footer],
-  templateUrl: './app.html',
-  styleUrl: './app.scss'
+  templateUrl: './app.html'
 })
 export class App {
   protected readonly title = signal('shahrazad');

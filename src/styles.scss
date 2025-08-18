@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 :root {
   --primary-color: #5d1bd8;
   --secondary-color: #5d1bd860;
@@ -19,10 +21,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Ovo", serif;
-  font-weight: 400;
-  font-style: normal;
-  font-variation-settings: "wdth" 100;
 }
 
 ::-webkit-scrollbar {
@@ -40,13 +38,47 @@
   border-radius: var(--radius);
 }
 
+html {
+  @include mat.theme((color: (primary: mat.$cyan-palette,
+        tertiary: mat.$orange-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    ));
+}
+
 body {
-  background-color: var(--background-color);
-  color: var(--text-color);
+  color-scheme: light;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
 }
 
 shari-root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+header,
+main,
+footer {
+  width: 100%;
+  max-width: var(--app-width);
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+main {
+  flex: 1;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
