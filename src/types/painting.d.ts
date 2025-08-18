@@ -1,8 +1,7 @@
 interface Painting {
   id: string,
-  name: string,
-  color_material: string,
-  surface_material: string,
+  title: string,
+  material: string,
   width: number,
   height: number,
   year: number,
