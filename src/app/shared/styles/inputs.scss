@@ -1,0 +1,53 @@
+.control-field {
+  width: 100%;
+  position: relative;
+
+  label {
+    position: absolute;
+    left: .75rem;
+    top: 0;
+    transform: translateY(50%);
+    padding: 0 .2rem;
+    font-size: 1rem;
+    color: var(--gray);
+    background-color: var(--background-color);
+    transition: var(--transition);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  label.top,
+  .shari-input:focus+label {
+    transform: translateY(-50%);
+    font-size: .8rem;
+    color: var(--primary-color);
+  }
+
+  .shari-input:not(focus)+label {
+    color: var(--gray);
+  }
+}
+
+.shari-input {
+  width: 100%;
+  padding: .75rem .85rem;
+  border: 2px solid var(--tertiary-color);
+  outline: none;
+  border-radius: var(--radius);
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 1rem;
+  transition: var(--transition);
+
+  &:focus {
+    border-color: var(--primary-color);
+  }
+}
+
+.ng-invalid.ng-dirty.ng-touched {
+  border-color: var(--red);
+}
+
+.ng-invalid.ng-dirty.ng-touched+label {
+  color: var(--red);
+}
