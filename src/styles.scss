@@ -1,1 +1,52 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --primary-color: #5d1bd8;
+  --secondary-color: #5d1bd860;
+  --tertiary-color: #e9e3f0;
+  --background-color: #ffffff;
+  --gray: #6a7077;
+  --green: #2cb89a;
+  --red: #d43434;
+  --text-color: #1c1b1d;
+  --border-color: #d3dae2;
+  --shadow: #16151f1e 0px 1px 0px, #16151f1e 0px 8px 24px, #16151f1e 0px 16px 48px;
+
+  --radius: 5px;
+  --transition: .15s;
+  --app-width: 1300px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Ovo", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--gray);
+  border-radius: var(--radius);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: var(--radius);
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+shari-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}

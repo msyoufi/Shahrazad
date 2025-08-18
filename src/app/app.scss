@@ -1,0 +1,12 @@
+header,
+main,
+footer {
+  width: 100%;
+  max-width: var(--app-width);
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+main {
+  flex: 1;
+}
