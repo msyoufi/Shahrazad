@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Storage, uploadBytes, getDownloadURL, type StorageReference, ref } from '@angular/fire/storage';
+import { Storage, uploadBytes, getDownloadURL, type StorageReference, ref, deleteObject } from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -29,15 +29,17 @@ export class ImageStorageService {
     return getDownloadURL(result.ref);
   }
 
-  async uploadCloseups(closeUps: File[], paintingId: string): Promise<ImageUrls[]> {
-    let order = 0;
+  bulkDeleteImages(images: ImageUrls[], paintingId: string): Promise<void[][]> {
+    const deletePromises = images.map(({ id }) =>
+      this.deleteImage(paintingId, id)
+    );
 
-    const uploadPromises = closeUps.map((img, i) => {
-      order = i + 1;
-      return this.compressAndUpload(img, paintingId, order.toString(), order)
-    });
+    return Promise.all(deletePromises);
+  }
 
-    return Promise.all(uploadPromises);
+  async deleteImage(paintingId: string, name: string): Promise<void[]> {
+    const { largRef, thumbnailRef } = this.getImageRef(paintingId, name);
+    return Promise.all([deleteObject(largRef), deleteObject(thumbnailRef)]);
   }
 
   private getImageRef(paintingId: string, name: string) {

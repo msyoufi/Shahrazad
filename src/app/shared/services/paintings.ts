@@ -1,5 +1,5 @@
 import { inject, Injectable, OnDestroy, signal } from '@angular/core';
-import { collection, doc, Firestore, onSnapshot, orderBy, query, Unsubscribe, DocumentReference, setDoc, updateDoc } from '@angular/fire/firestore';
+import { collection, doc, Firestore, onSnapshot, orderBy, query, Unsubscribe, DocumentReference, setDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -34,13 +34,17 @@ export class PaintingsService implements OnDestroy {
     }
   }
 
-  async createPainting(painting: Painting): Promise<void> {
+  createPainting(painting: Painting): Promise<void> {
     const { id, ...paintingData } = painting;
     return setDoc(this.getDocRef(id), paintingData);
   }
 
-  async updatePainting(id: string, newData: Partial<Painting>): Promise<void> {
+  updatePainting(id: string, newData: Partial<Painting>): Promise<void> {
     return updateDoc(this.getDocRef(id), newData);
+  }
+
+  deletePainting(id: string): Promise<void> {
+    return deleteDoc(this.getDocRef(id));
   }
 
   private getDocRef(id: string): DocumentReference {

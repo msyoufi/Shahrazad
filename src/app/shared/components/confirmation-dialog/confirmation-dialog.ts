@@ -1,17 +1,20 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Component, Inject } from '@angular/core';
+import { ShariButton } from '../button/shari-button';
 
 @Component({
   selector: 'shari-confirmation-dialog',
-  imports: [],
+  imports: [ShariButton],
   template: `
     <p class="title">{{title}}</p>
     <p class="message">{{message}}</p>
-    <div>
-      <button type="button" class="shari-button red-button" (click)="dialogRef.close(true)">
+    <div class="buttons-box">
+      <shari-button type="button" variant="outlined" (onClick)="dialogRef.close(false)">
+        Cancel
+      </shari-button>
+      <shari-button type="button" color="red" (onClick)="dialogRef.close(true)">
         {{actionButton}}
-      </button>
-      <button type="button" class="shari-button secondary"(click)="dialogRef.close(false)">Cancel</button>
+      </shari-button>
     </div>
   `,
   styleUrl: './confirmation-dialog.scss'
