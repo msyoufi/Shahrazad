@@ -3,26 +3,27 @@
 <div class="overlay">
   <div class="overlay-content-box">
     <p class="form-title">
-      {{painting ? 'Edit ' + painting.title : 'New Painting'}}
+      {{painting ? 'Edit Close-Ups For ' + painting.title : ''}}
     </p>
 
-    <div class="images-view">
-      <label for="closeup" class="top">Add +</label>
-
-      @for (img of closeups(); track img.thumbnail){
-
-      }
-    </div>
-
+    <label for="closeup" class="add-closeup-label">Add Clos-Ups +</label>
     <input type="file" id="closeup" name="closeup" accept="image/*" (change)="onImageChange($event)" multiple hidden>
 
-
+    <div class="images-view">
+      @for (img of localCloseUps(); track $index){
+      <div class="image-box">
+        <button (click)="onRemoveClick($index)">Remove</button>
+        <img [src]="img" alt="">
+      </div>
+      }
+    </div>
 
     <div class="buttons-box">
       <shari-button type="button" variant="outlined" (onClick)="closeForm()" [disabled]="isLoading()">
         Cancel
       </shari-button>
-      <shari-button type="button" [loading]="isLoading()" [disabled]="isLoading()">
+      <shari-button type="button" [loading]="isLoading()" (onClick)="onSaveClick()"
+        [disabled]="isLoading() || !localCloseUps().length">
         @if(isLoading()){
         <mat-spinner [diameter]="15" [strokeWidth]="2" />
         } @else {

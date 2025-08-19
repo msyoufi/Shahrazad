@@ -6,9 +6,43 @@
 
 .images-view {
   display: flex;
-  gap: .5rem;
   min-height: 8rem;
+  padding: .5rem;
+  gap: .5rem;
   border: 2px dashed black;
+}
+
+.image-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: move;
+
+  img {
+    max-width: 5rem;
+    max-height: 5rem;
+  }
+
+  button {
+    padding: .25rem;
+    color: var(--red);
+    border: 2px solid var(--red);
+    border-radius: var(--radius);
+  }
+}
+
+.add-closeup-label {
+  text-align: center;
+  padding: .5rem .8rem;
+  border-radius: var(--radius);
+  background-color: var(--secondary-color);
+  color: var(--background-color);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.add-closeup-label:hover {
+  background-color: var(--primary-color);
 }
 
 .buttons-box {
