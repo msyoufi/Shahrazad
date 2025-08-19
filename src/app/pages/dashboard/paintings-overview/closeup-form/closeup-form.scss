@@ -4,10 +4,11 @@
   font-weight: 500;
 }
 
-.half-inputs-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+.images-view {
+  display: flex;
+  gap: .5rem;
+  min-height: 8rem;
+  border: 2px dashed black;
 }
 
 .buttons-box {

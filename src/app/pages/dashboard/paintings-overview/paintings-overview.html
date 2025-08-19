@@ -23,8 +23,11 @@
     </div>
 
     <div class="painting-buttons-box">
-      <shari-button variant="outlined" color="primary" (onClick)="openForm(painting)">
+      <shari-button variant="outlined" color="primary" (onClick)="openPaintingForm(painting)">
         Edit
+      </shari-button>
+      <shari-button variant="outlined" color="green" (onClick)="openClosupForm(painting)">
+        Close Ups
       </shari-button>
       <shari-button variant="outlined" color="red" (onClick)="onRemoveClick(painting.id)">
         Remove
@@ -33,11 +36,15 @@
   </div>
   }
 
-  <button class="add-box" (click)="openForm()">+</button>
+  <button class="add-box" (click)="openPaintingForm()">+</button>
 
 </div>
 
 
 @if (paintingFormService.isOpen) {
 <shari-painting-form />
+}
+
+@if (closeupFormService.isOpen) {
+<shari-closeup-form />
 }
