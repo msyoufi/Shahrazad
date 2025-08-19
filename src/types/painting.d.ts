@@ -17,4 +17,9 @@ interface ImageUrls {
   order: number,
 }
 
+interface LocalImageUrl {
+  file: File
+  thumbnail: string
+}
+
 type PaintingFormData = Omit<Painting, 'id' | 'main_image' | 'close_ups' | 'order'>;

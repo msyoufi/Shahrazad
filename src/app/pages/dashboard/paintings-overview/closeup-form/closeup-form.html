@@ -10,10 +10,10 @@
     <input type="file" id="closeup" name="closeup" accept="image/*" (change)="onImageChange($event)" multiple hidden>
 
     <div class="images-view">
-      @for (closeup of localCloseUps(); track $index){
+      @for (closeup of closeUps(); track $index){
       <div class="image-box">
         <button (click)="onRemoveClick($index)">Remove</button>
-        <img [src]="closeup.url" alt="">
+        <img [src]="closeup.thumbnail" alt="">
       </div>
       }
     </div>
@@ -22,8 +22,7 @@
       <shari-button type="button" variant="outlined" (onClick)="closeForm()" [disabled]="isLoading()">
         Cancel
       </shari-button>
-      <shari-button type="button" [loading]="isLoading()" (onClick)="onSaveClick()"
-        [disabled]="isLoading() || !localCloseUps().length">
+      <shari-button type="button" [loading]="isLoading()" (onClick)="onSaveClick()" [disabled]="isLoading()">
         @if(isLoading()){
         <mat-spinner [diameter]="15" [strokeWidth]="2" />
         } @else {

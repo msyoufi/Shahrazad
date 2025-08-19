@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CloseupFormService } from './closeup-form.service';
 import { ShariButton } from '../../../../shared/components/button/shari-button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -20,31 +20,38 @@ export class CloseupForm {
 
   MAX_COUNT = 5;
 
-  localCloseUps = signal<{ img: File, url: string }[]>([]);
-  imgFiles = computed(() => this.localCloseUps().map(({ img }) => img));
-  // closeups = signal<ImageUrls[]>([]);
+  closeUps = signal<(LocalImageUrl | ImageUrls)[]>([]);
   isLoading = signal(false);
 
   constructor() {
-    // this.populteImgesView();
+    this.populteCurrentCloseups();
   }
 
-  populteImgesView(): void {
-    // const closeups = this.formService.painting?.close_ups ?? [];
-    // this.closeups.set(closeups);
+  populteCurrentCloseups(): void {
+    const initialImages = this.formService.painting?.close_ups.slice() ?? [];
+    initialImages.sort((a, b) => a.order - b.order);
+    this.closeUps.set(initialImages);
   }
 
   async onSaveClick(): Promise<void> {
-    const paintingId = this.formService.painting?.id;
-    if (!paintingId) return;
+    const painting = this.formService.painting;
+    if (!painting) return;
+
+    const { id, close_ups } = painting;
 
     this.isLoading.set(true);
 
     try {
-      const downloadUrls = await this.imageStorageService.uploadCloseups(this.imgFiles(), paintingId);
-      await this.paintingsService.updatePainting(paintingId, { close_ups: downloadUrls })
+      // delete removed close ups
+      const newIds = this.closeUps().filter(cu => 'id' in cu).map(cu => cu.id);
+      const removedImages = close_ups.filter(cu => !newIds.includes(cu.id));
+      await this.imageStorageService.bulkDeleteImages(removedImages, id);
 
-      this.snackbar.show('All Images Uploaded');
+      // upload / update new close ups
+      const newImagesUrls = await this.getNewImagesUrls(id);
+      await this.paintingsService.updatePainting(id, { close_ups: newImagesUrls });
+
+      this.snackbar.show('Changes Saved!');
       this.closeForm();
 
     } catch (err: unknown) {
@@ -55,11 +62,27 @@ export class CloseupForm {
     }
   }
 
+  async getNewImagesUrls(paintingId: string): Promise<ImageUrls[]> {
+    const uploadPromises = this.closeUps().map((cu, i) => {
+      const order = i + 1;
+
+      if ('id' in cu) { // already exists, just update order
+        cu.order = order;
+        return cu;
+      }
+
+      // upload new image
+      return this.imageStorageService.compressAndUpload(cu.file, paintingId, order.toString(), order);
+    });
+
+    return Promise.all(uploadPromises);
+  }
+
   onImageChange(e: any): void {
     const files = e.target.files;
     if (!files.length) return;
 
-    const localUrls: { img: File, url: string }[] = [];
+    const localUrls: LocalImageUrl[] = [];
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -69,20 +92,20 @@ export class CloseupForm {
       }
 
       localUrls.push({
-        img: file,
-        url: URL.createObjectURL(file)
+        file: file,
+        thumbnail: URL.createObjectURL(file)
       });
     }
 
-    let nextLocalCloseUps = this.localCloseUps().concat(localUrls);
+    let nextCloseUps = this.closeUps().concat(localUrls);
 
     // ensure only MAX_COUNT elements in the array
-    if (nextLocalCloseUps.length > this.MAX_COUNT) {
-      nextLocalCloseUps = nextLocalCloseUps.slice(0, this.MAX_COUNT);
+    if (nextCloseUps.length > this.MAX_COUNT) {
+      nextCloseUps = nextCloseUps.slice(0, this.MAX_COUNT);
       this.snackbar.show(`Max ${this.MAX_COUNT} Close-Ups`, 'red');
     }
 
-    this.localCloseUps.set(nextLocalCloseUps);
+    this.closeUps.set(nextCloseUps);
   }
 
   checkValidImage(file: File): boolean {
@@ -95,8 +118,8 @@ export class CloseupForm {
   }
 
   onRemoveClick(index: number): void {
-    const nextCloseups = this.localCloseUps().filter((_, i) => i !== index);
-    this.localCloseUps.set(nextCloseups);
+    const nextCloseups = this.closeUps().filter((_, i) => i !== index);
+    this.closeUps.set(nextCloseups);
   }
 
   closeForm(): void {
