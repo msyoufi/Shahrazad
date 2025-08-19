@@ -11,7 +11,7 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/dashboard/dashboard')
       .then(comp => comp.Dashboard),
     children: [
-      { path: '', component: PaintingsOverview },
+      { path: 'overview', component: PaintingsOverview },
     ]
   }
 ];

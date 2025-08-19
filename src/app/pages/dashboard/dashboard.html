@@ -1,4 +1,20 @@
-<p>dashboard works!</p>
+<div class="dashboard-header">
+  <nav class="nav-bar">
+    <a class="nav-link" [class.selected]="currentTab() === 'overview'" routerLink="overview">Overview</a>
+  </nav>
+
+  <div class="lower-header-bar">
+    <p>
+      Total: {{paintingsService.paintings.length}}
+    </p>
+
+    <shari-button (onClick)="paintingFormService.openForm()">
+      New Painting +
+    </shari-button>
+  </div>
+
+</div>
+
 
 <router-outlet />
 
