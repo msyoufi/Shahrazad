@@ -4,7 +4,7 @@ import { collection, doc, Firestore, onSnapshot, orderBy, query, Unsubscribe, Do
 @Injectable({
   providedIn: 'root'
 })
-export class PaintingsService {
+export class PaintingsService implements OnDestroy {
   private db = inject(Firestore);
 
   private paintings$ = signal<Painting[]>([]);
@@ -48,6 +48,6 @@ export class PaintingsService {
   }
 
   ngOnDestroy(): void {
-    if (this.unsubscribe) this.unsubscribe();
+    this.unsubscribe && this.unsubscribe();
   }
 }

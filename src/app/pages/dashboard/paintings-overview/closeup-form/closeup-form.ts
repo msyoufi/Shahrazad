@@ -1,8 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CloseupFormService } from './closeup-form.service';
 import { ShariButton } from '../../../../shared/components/button/shari-button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Snackbar } from '../../../../shared/components/snackbar';
+import { ImageStorageService } from '../../../../shared/services/image-storage';
+import { PaintingsService } from '../../../../shared/services/paintings';
 
 @Component({
   selector: 'shari-closeup-form',
@@ -12,11 +14,14 @@ import { Snackbar } from '../../../../shared/components/snackbar';
 })
 export class CloseupForm {
   formService = inject(CloseupFormService);
+  imageStorageService = inject(ImageStorageService);
+  paintingsService = inject(PaintingsService);
   snackbar = inject(Snackbar);
 
   MAX_COUNT = 5;
 
-  localCloseUps = signal<string[]>([]);
+  localCloseUps = signal<{ img: File, url: string }[]>([]);
+  imgFiles = computed(() => this.localCloseUps().map(({ img }) => img));
   // closeups = signal<ImageUrls[]>([]);
   isLoading = signal(false);
 
@@ -29,15 +34,32 @@ export class CloseupForm {
     // this.closeups.set(closeups);
   }
 
-  async onSaveClick(): Promise<void> { 
-    
+  async onSaveClick(): Promise<void> {
+    const paintingId = this.formService.painting?.id;
+    if (!paintingId) return;
+
+    this.isLoading.set(true);
+
+    try {
+      const downloadUrls = await this.imageStorageService.uploadCloseups(this.imgFiles(), paintingId);
+      await this.paintingsService.updatePainting(paintingId, { close_ups: downloadUrls })
+
+      this.snackbar.show('All Images Uploaded');
+      this.closeForm();
+
+    } catch (err: unknown) {
+      this.snackbar.show('Unable To Upload The Images!', 'red');
+
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 
   onImageChange(e: any): void {
     const files = e.target.files;
     if (!files.length) return;
 
-    const localUrls: string[] = [];
+    const localUrls: { img: File, url: string }[] = [];
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -46,7 +68,10 @@ export class CloseupForm {
         break;
       }
 
-      localUrls.push(URL.createObjectURL(file));
+      localUrls.push({
+        img: file,
+        url: URL.createObjectURL(file)
+      });
     }
 
     let nextLocalCloseUps = this.localCloseUps().concat(localUrls);

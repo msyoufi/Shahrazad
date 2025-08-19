@@ -10,10 +10,10 @@
     <input type="file" id="closeup" name="closeup" accept="image/*" (change)="onImageChange($event)" multiple hidden>
 
     <div class="images-view">
-      @for (img of localCloseUps(); track $index){
+      @for (closeup of localCloseUps(); track $index){
       <div class="image-box">
         <button (click)="onRemoveClick($index)">Remove</button>
-        <img [src]="img" alt="">
+        <img [src]="closeup.url" alt="">
       </div>
       }
     </div>

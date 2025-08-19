@@ -22,6 +22,14 @@ export class ImageStorageService {
     return getDownloadURL(result.ref);
   }
 
+  async uploadCloseups(closeUps: File[], paintingId: string): Promise<ImageUrls[]> {
+    const uploadPromises = closeUps.map((img, i) =>
+      this.compressAndUpload(img, paintingId, i.toString())
+    );
+
+    return Promise.all(uploadPromises);
+  }
+
   private getImageRef(id: string, name: string) {
     return {
       largRef: ref(this.storage, `paintings/${id}/${name}`),

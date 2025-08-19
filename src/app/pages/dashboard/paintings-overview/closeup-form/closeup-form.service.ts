@@ -4,7 +4,7 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root'
 })
 export class CloseupFormService {
-  private open = signal(true);
+  private open = signal(false);
   private paintingData = signal<Painting | null>(null);
 
   get isOpen(): boolean {
