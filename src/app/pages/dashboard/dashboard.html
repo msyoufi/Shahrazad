@@ -1,6 +1,6 @@
 <p>dashboard works!</p>
 
-<shari-button text="New Painting +" (click)="openForm()" />
+<router-outlet />
 
 @if (paintingFormService.isOpen) {
 <shari-painting-form />

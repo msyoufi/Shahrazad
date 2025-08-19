@@ -1,18 +1,15 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { PaintingForm } from './painting-form/painting-form';
-import { ShariButton } from "../../shared/components/button/shari-button";
 import { PaintingFormService } from './painting-form/painting-form.service';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'shari-dashboard',
-  imports: [PaintingForm, ShariButton],
+  imports: [PaintingForm, RouterOutlet],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })
 export class Dashboard {
   paintingFormService = inject(PaintingFormService);
 
-  openForm(): void {
-    this.paintingFormService.openForm();
-  }
 }
