@@ -37,18 +37,23 @@ export class CloseupForm {
     const painting = this.formService.painting;
     if (!painting) return;
 
-    const { id, close_ups } = painting;
-
     this.isLoading.set(true);
+
+    const { id, close_ups } = painting;
 
     try {
       // delete removed close ups
       const newIds = this.closeUps().filter(cu => 'id' in cu).map(cu => cu.id);
       const removedImages = close_ups.filter(cu => !newIds.includes(cu.id));
-      await this.imageStorageService.bulkDeleteImages(removedImages, id);
+
+      if (removedImages.length)
+        await this.imageStorageService.bulkDeleteImages(removedImages, id);
 
       // upload / update new close ups
-      const newImagesUrls = await this.getNewImagesUrls(id);
+      // get the name of the last added image to start naming new images at that point
+      const lastName = parseInt(newIds.sort((a, b) => a.localeCompare(b)).at(-1) ?? '0');
+
+      const newImagesUrls = await this.getNewImagesUrls(id, lastName);
       await this.paintingsService.updatePainting(id, { close_ups: newImagesUrls });
 
       this.snackbar.show('Changes Saved!');
@@ -62,7 +67,7 @@ export class CloseupForm {
     }
   }
 
-  async getNewImagesUrls(paintingId: string): Promise<ImageUrls[]> {
+  async getNewImagesUrls(paintingId: string, lastName: number): Promise<ImageUrls[]> {
     const uploadPromises = this.closeUps().map((cu, i) => {
       const order = i + 1;
 
@@ -72,7 +77,7 @@ export class CloseupForm {
       }
 
       // upload new image
-      return this.imageStorageService.compressAndUpload(cu.file, paintingId, order.toString(), order);
+      return this.imageStorageService.compressAndUpload(cu.file, paintingId, (++lastName).toString(), order);
     });
 
     return Promise.all(uploadPromises);
