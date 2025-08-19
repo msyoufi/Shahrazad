@@ -1,4 +1,7 @@
 .shari-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   min-height: 2rem;
   min-width: 6rem;
   padding: .5rem .8rem;
@@ -58,4 +61,8 @@
 .outlined:disabled {
   background-color: transparent;
   color: var(--gray);
+}
+
+.loading {
+  background-color: transparent !important;
 }
