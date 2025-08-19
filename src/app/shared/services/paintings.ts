@@ -1,28 +1,27 @@
 import { inject, Injectable, OnDestroy, signal } from '@angular/core';
-import { collection, Firestore, onSnapshot, orderBy, query, Unsubscribe } from '@angular/fire/firestore';
+import { collection, doc, Firestore, onSnapshot, orderBy, query, Unsubscribe, DocumentReference, setDoc, updateDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
-export class Paintings implements OnDestroy {
+export class PaintingsService {
   private db = inject(Firestore);
 
-  private paintingsCollection = collection(this.db, 'paintings');
   private paintings$ = signal<Painting[]>([]);
 
   private unsubscribe: Unsubscribe | undefined;
-
-  constructor() {
-    this.subscribeToChanges();
-  }
 
   get paintings(): Painting[] {
     return this.paintings$();
   }
 
-  subscribeToChanges(): void {
+  constructor() {
+    this.subscribeToChanges();
+  }
+
+  private subscribeToChanges(): void {
     try {
-      const q = query(this.paintingsCollection, orderBy('order'));
+      const q = query(collection(this.db, 'paintings'), orderBy('order'));
 
       this.unsubscribe = onSnapshot(q, querySnapshot => {
         const paintings: Painting[] = [];
@@ -35,11 +34,20 @@ export class Paintings implements OnDestroy {
     }
   }
 
-  private unsubscriebeToChanges(): void {
-    this.unsubscribe && this.unsubscribe();
+  async createPainting(painting: Painting): Promise<void> {
+    const { id, ...paintingData } = painting;
+    return setDoc(this.getDocRef(id), paintingData);
+  }
+
+  async updatePainting(id: string, newData: Partial<Painting>): Promise<void> {
+    return updateDoc(this.getDocRef(id), newData);
+  }
+
+  private getDocRef(id: string): DocumentReference {
+    return doc(this.db, 'paintings/' + id);
   }
 
   ngOnDestroy(): void {
-    this.unsubscriebeToChanges();
+    if (this.unsubscribe) this.unsubscribe();
   }
 }

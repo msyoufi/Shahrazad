@@ -7,8 +7,6 @@
       {{painting ? 'Edit ' + painting.title : 'New Painting'}}
     </p>
 
-    <input type="hidden" name="id" formControlName="id">
-
     <div class="control-field">
       <input type="text" id="title" formControlName="title" class="shari-input" required>
       <label for="title" [class.top]="form.get('title')?.value">Title*</label>
@@ -39,13 +37,14 @@
     </div>
 
     <div class="control-field">
-      <input type="file" id="main_image" name="main_image" class="shari-input" required>
+      <input type="file" id="main_image" name="main_image" class="shari-input" accept="image/*"
+        (change)="onImageChange($event)">
       <label for="main_image" class="top">Main Image*</label>
     </div>
 
     <div class="buttons-box">
-      <shari-button text="Cnacel" type="reset" variant="outlined" (click)="onCancleClick()" />
-      <shari-button text="Save" type="submit" [disabled]="false" />
+      <shari-button text="Cnacel" type="reset" variant="outlined" (click)="closeForm()" [disabled]="isLoading()" />
+      <shari-button text="Save" type="submit" [disabled]="false" [disabled]="form.invalid || isLoading()" />
     </div>
 
   </form>

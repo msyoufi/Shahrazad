@@ -1,10 +1,13 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ShariButton } from '../../../shared/components/button/shari-button';
 import { PaintingFormService } from './painting-form.service';
+import { Snackbar } from '../../../shared/components/snackbar';
+import { PaintingsService } from '../../../shared/services/paintings';
+import { ImageStorageService } from '../../../shared/services/image-storage';
 
 @Component({
   selector: 'shari-painting-form',
@@ -14,20 +17,22 @@ import { PaintingFormService } from './painting-form.service';
 })
 export class PaintingForm {
   formService = inject(PaintingFormService);
+  paintingsService = inject(PaintingsService);
+  imageStorageService = inject(ImageStorageService);
+  snackbar = inject(Snackbar);
 
-  main_image: File | null = null;
-  close_ups: File[] = [];
-
+  mainImage: File | undefined;
   maxYear = new Date().getFullYear();
 
   form = new FormGroup({
-    id: new FormControl<string | null>(null),
-    title: new FormControl('', Validators.required),
-    material: new FormControl(''),
-    width: new FormControl('', [Validators.required, Validators.min(1)]),
-    height: new FormControl('', [Validators.required, Validators.min(1)]),
-    year: new FormControl('', [Validators.min(2000), Validators.max(this.maxYear)])
+    title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    material: new FormControl('', { nonNullable: true }),
+    width: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
+    height: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
+    year: new FormControl('', { nonNullable: true, validators: [Validators.min(2000), Validators.max(this.maxYear)] })
   });
+
+  isLoading = signal(false);
 
   constructor() {
     this.populateForm();
@@ -39,7 +44,6 @@ export class PaintingForm {
 
       if (painting)
         this.form.patchValue({
-          id: painting.id,
           title: painting.title,
           material: painting.material,
           width: painting.width.toString(),
@@ -49,14 +53,91 @@ export class PaintingForm {
     });
   }
 
-  onSubmit(): void {
-    // if (this.form.invalid) return;
-    console.log(this.maxYear)
+  async onSubmit(): Promise<void> {
+    if (this.form.invalid) {
+      this.snackbar.show('Invalid Painting Data!', 'red');
+      return;
+    }
 
-    console.log(this.form.value)
+    this.isLoading.set(true);
+
+    const existingPainting = this.formService.painting;
+    let message = 'New Painting Added';
+
+    try {
+      if (existingPainting) {
+        const { id, ...newData } = { ...existingPainting, ...this.prepareFormData() };
+        message = 'Changes Saved';
+
+        if (this.mainImage) {
+          newData.main_image = await this.uploadMainImage(this.mainImage, existingPainting.id)
+        }
+
+        await this.paintingsService.updatePainting(id, newData);
+
+      } else {
+        const newPainting = await this.createNewPainting();
+        if (!newPainting) return;
+        await this.paintingsService.createPainting(newPainting);
+      }
+
+      this.snackbar.show(message);
+      this.closeForm();
+
+    } catch (err: unknown) {
+      console.log(err);
+      this.snackbar.show('Unable To Save Changes!', 'red');
+
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 
-  onCancleClick(): void {
+  prepareFormData(): PaintingFormData {
+    const { title, material, width, height, year } = this.form.getRawValue();
+    return {
+      title,
+      material,
+      width: Number(width),
+      height: Number(height),
+      year: Number(year)
+    };
+  }
+
+  async createNewPainting(): Promise<Painting | null> {
+    if (!this.mainImage) {
+      this.snackbar.show('Please select an image!', 'red');
+      return null;
+    }
+
+    const id = new Date().getTime().toString();
+
+    return {
+      id,
+      order: this.paintingsService.paintings.length,
+      main_image: await this.uploadMainImage(this.mainImage, id),
+      close_ups: [],
+      ...this.prepareFormData()
+    };
+  }
+
+  async uploadMainImage(img: File, id: string): Promise<ImageUrls> {
+    return this.imageStorageService.compressAndUpload(img, id, 'main');
+  }
+
+  onImageChange(e: any): void {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      this.snackbar.show('File must be an image', 'red');
+      return;
+    }
+
+    this.mainImage = file;
+  }
+
+  closeForm(): void {
     this.form.reset();
     this.formService.closeForm();
   }

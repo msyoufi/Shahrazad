@@ -14,3 +14,5 @@ interface ImageUrls {
   larg: string,
   thumbnail: string
 }
+
+type PaintingFormData = Omit<Painting, 'id' | 'main_image' | 'close_ups' | 'order'>;
