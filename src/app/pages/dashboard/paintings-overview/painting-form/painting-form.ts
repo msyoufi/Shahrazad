@@ -3,11 +3,11 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ShariButton } from '../../../shared/components/button/shari-button';
+import { ShariButton } from '../../../../shared/components/button/shari-button';
 import { PaintingFormService } from './painting-form.service';
-import { Snackbar } from '../../../shared/components/snackbar';
-import { PaintingsService } from '../../../shared/services/paintings';
-import { ImageStorageService } from '../../../shared/services/image-storage';
+import { Snackbar } from '../../../../shared/components/snackbar';
+import { PaintingsService } from '../../../../shared/services/paintings';
+import { ImageStorageService } from '../../../../shared/services/image-storage';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({

@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { ShariButton } from "../../../shared/components/button/shari-button";
-import { PaintingFormService } from '../painting-form/painting-form.service';
+import { PaintingFormService } from './painting-form/painting-form.service';
 import { PaintingsService } from '../../../shared/services/paintings';
+import { PaintingForm } from "./painting-form/painting-form";
 
 @Component({
   selector: 'shari-paintings-overview',
-  imports: [ShariButton],
+  imports: [ShariButton, PaintingForm],
   templateUrl: './paintings-overview.html',
   styleUrl: './paintings-overview.scss'
 })

@@ -36,3 +36,8 @@
   <button class="add-box" (click)="openForm()">+</button>
 
 </div>
+
+
+@if (paintingFormService.isOpen) {
+<shari-painting-form />
+}
