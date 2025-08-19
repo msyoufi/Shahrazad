@@ -12,7 +12,7 @@ interface Painting {
 
 interface ImageUrls {
   id: string,
-  larg: string,
+  large: string,
   thumbnail: string
   order: number,
 }
