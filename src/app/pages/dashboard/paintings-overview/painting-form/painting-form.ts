@@ -119,8 +119,8 @@ export class PaintingForm {
     };
   }
 
-  async uploadMainImage(img: File, id: string): Promise<ImageUrls> {
-    return this.imageStorageService.compressAndUpload(img, id, 'main');
+  async uploadMainImage(img: File, paintingId: string): Promise<ImageUrls> {
+    return this.imageStorageService.compressAndUpload(img, paintingId);
   }
 
   onImageChange(e: any): void {

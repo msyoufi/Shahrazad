@@ -11,8 +11,10 @@ interface Painting {
 }
 
 interface ImageUrls {
+  id: string,
   larg: string,
   thumbnail: string
+  order: number,
 }
 
 type PaintingFormData = Omit<Painting, 'id' | 'main_image' | 'close_ups' | 'order'>;
