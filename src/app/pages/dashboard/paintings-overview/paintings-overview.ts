@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ShariButton } from "../../../shared/components/button/shari-button";
 import { PaintingFormService } from '../painting-form/painting-form.service';
-import { Paintings } from '../../../shared/services/paintings';
+import { PaintingsService } from '../../../shared/services/paintings';
 
 @Component({
   selector: 'shari-paintings-overview',
@@ -11,9 +11,13 @@ import { Paintings } from '../../../shared/services/paintings';
 })
 export class PaintingsOverview {
   paintingFormService = inject(PaintingFormService);
-  paintingsService = inject(Paintings);
+  paintingsService = inject(PaintingsService);
 
-  openForm(): void {
-    this.paintingFormService.openForm();
+  openForm(painting?: Painting): void {
+    this.paintingFormService.openForm(painting);
+  }
+
+  async onRemoveClick(paintingId: string): Promise<void> {
+    console.log(paintingId)
   }
 }

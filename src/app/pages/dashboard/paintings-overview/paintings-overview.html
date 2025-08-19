@@ -1,2 +1,38 @@
-<p>paintings-overview works!</p>
-<shari-button text="New Painting +" (click)="openForm()" />
+<div class="overview-header">
+  <p>
+    Total: {{paintingsService.paintings.length}}
+  </p>
+
+  <shari-button (onClick)="paintingFormService.openForm()">
+    New Painting +
+  </shari-button>
+</div>
+
+<div class="paintings-grid">
+  @for(painting of paintingsService.paintings; track painting.id){
+  <div class="painting-item">
+    <div class="img-data-box">
+      <img [src]="painting.main_image.thumbnail" alt="">
+
+      <div class="painting-data">
+        <p>{{painting.title}}</p>
+        <p>{{painting.material}}</p>
+        <p>{{painting.width}} x {{painting.height}} cm</p>
+        <p>Year: {{painting.year}}</p>
+      </div>
+    </div>
+
+    <div class="painting-buttons-box">
+      <shari-button variant="outlined" color="primary" (onClick)="openForm(painting)">
+        Edit
+      </shari-button>
+      <shari-button variant="outlined" color="red" (onClick)="onRemoveClick(painting.id)">
+        Remove
+      </shari-button>
+    </div>
+  </div>
+  }
+
+  <button class="add-box" (click)="openForm()">+</button>
+
+</div>
