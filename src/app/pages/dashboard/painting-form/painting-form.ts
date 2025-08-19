@@ -8,10 +8,11 @@ import { PaintingFormService } from './painting-form.service';
 import { Snackbar } from '../../../shared/components/snackbar';
 import { PaintingsService } from '../../../shared/services/paintings';
 import { ImageStorageService } from '../../../shared/services/image-storage';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'shari-painting-form',
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, ShariButton],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, ShariButton, MatProgressSpinner],
   templateUrl: './painting-form.html',
   styleUrl: './painting-form.scss'
 })

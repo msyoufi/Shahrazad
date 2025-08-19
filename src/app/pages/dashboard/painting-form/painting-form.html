@@ -43,8 +43,16 @@
     </div>
 
     <div class="buttons-box">
-      <shari-button text="Cnacel" type="reset" variant="outlined" (click)="closeForm()" [disabled]="isLoading()" />
-      <shari-button text="Save" type="submit" [disabled]="false" [disabled]="form.invalid || isLoading()" />
+      <shari-button type="reset" variant="outlined" (onClick)="closeForm()" [disabled]="isLoading()">
+        Cancel
+      </shari-button>
+      <shari-button type="submit" [loading]="isLoading()" [disabled]="form.invalid || isLoading()">
+        @if(isLoading()){
+        <mat-spinner [diameter]="15" [strokeWidth]="2" />
+        } @else {
+        Save
+        }
+      </shari-button>
     </div>
 
   </form>
