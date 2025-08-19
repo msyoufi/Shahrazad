@@ -1,8 +1,5 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { ShariButton } from '../../../../shared/components/button/shari-button';
 import { PaintingFormService } from './painting-form.service';
 import { Snackbar } from '../../../../shared/components/snackbar';
@@ -12,7 +9,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'shari-painting-form',
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, ShariButton, MatProgressSpinner],
+  imports: [ReactiveFormsModule, ShariButton, MatProgressSpinner],
   templateUrl: './painting-form.html',
   styleUrl: './painting-form.scss'
 })
