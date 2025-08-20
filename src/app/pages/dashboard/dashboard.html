@@ -1,5 +1,15 @@
 <nav class="nav-bar">
-  <a class="nav-link" [class.selected]="currentTab() === 'overview'" routerLink="overview">Overview</a>
+  <ul class="nav-links-list">
+    <a class="nav-link" [class.selected]="currentTab() === 'overview'" routerLink="overview">Overview</a>
+  </ul>
+
+  <a class="nav-link logout-link" (click)="onLogoutClick()">
+    @if(isLoggingOut()){
+    <mat-spinner [diameter]="15" [strokeWidth]="2" />
+    } @else {
+    Logout
+    }
+  </a>
 </nav>
 
 <router-outlet />

@@ -1,7 +1,14 @@
 .nav-bar {
   display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
   border-bottom: 2px solid var(--primary-color);
   margin-bottom: .5rem;
+}
+
+.nav-links-list {
+  display: flex;
+  gap: .1rem;
 }
 
 .nav-link {
@@ -19,4 +26,19 @@
 .nav-link.selected {
   background-color: var(--primary-color);
   color: var(--background-color);
+}
+
+.logout-link {
+  display: flex;
+  justify-content: center;
+  min-width: 4rem;
+  font-weight: 550;
+  font-size: .9rem;
+  color: var(--red);
+  cursor: pointer;
+}
+
+.logout-link:hover {
+  color: var(--background-color);
+  background-color: var(--red);
 }
