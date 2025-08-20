@@ -9,9 +9,10 @@
     <label for="closeup" class="add-closeup-label">Add Clos-Ups +</label>
     <input type="file" id="closeup" name="closeup" accept="image/*" (change)="onImageChange($event)" multiple hidden>
 
-    <div class="images-view">
+    <div class="images-view" cdkDropList [cdkDropListData]="closeUps()" (cdkDropListDropped)="onDrop($event)"
+      cdkDropListOrientation="horizontal" cdkDropListLockAxis="x">
       @for (closeup of closeUps(); track $index){
-      <div class="image-box">
+      <div class="image-box" cdkDrag>
         <button (click)="onRemoveClick($index)">Remove</button>
         <img [src]="closeup.thumbnail" alt="">
       </div>

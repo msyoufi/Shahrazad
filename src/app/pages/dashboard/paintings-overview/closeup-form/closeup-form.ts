@@ -5,10 +5,11 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Snackbar } from '../../../../shared/components/snackbar';
 import { ImageStorageService } from '../../../../shared/services/image-storage';
 import { PaintingsService } from '../../../../shared/services/paintings';
+import { type CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'shari-closeup-form',
-  imports: [ShariButton, MatProgressSpinner],
+  imports: [ShariButton, MatProgressSpinner, CdkDrag, CdkDropList],
   templateUrl: './closeup-form.html',
   styleUrl: './closeup-form.scss'
 })
@@ -120,6 +121,10 @@ export class CloseupForm {
     }
 
     return true;
+  }
+
+  onDrop(event: CdkDragDrop<(LocalImageUrl | ImageUrls)[]>): void {
+    moveItemInArray(this.closeUps(), event.previousIndex, event.currentIndex);
   }
 
   onRemoveClick(index: number): void {
