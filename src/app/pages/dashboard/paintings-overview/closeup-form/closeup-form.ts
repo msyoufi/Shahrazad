@@ -6,6 +6,7 @@ import { Snackbar } from '../../../../shared/components/snackbar';
 import { ImageStorageService } from '../../../../shared/services/image-storage';
 import { PaintingsService } from '../../../../shared/services/paintings';
 import { type CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
+import { ConfirmDialogService } from '../../../../shared/components/confirmation-dialog/confirm-dialog.service';
 
 @Component({
   selector: 'shari-closeup-form',
@@ -17,6 +18,7 @@ export class CloseupForm {
   formService = inject(CloseupFormService);
   imageStorageService = inject(ImageStorageService);
   paintingsService = inject(PaintingsService);
+  confirmDialog = inject(ConfirmDialogService);
   snackbar = inject(Snackbar);
 
   MAX_COUNT = 5;
@@ -127,7 +129,21 @@ export class CloseupForm {
     moveItemInArray(this.closeUps(), event.previousIndex, event.currentIndex);
   }
 
-  onRemoveClick(index: number): void {
+  async onRemoveClick(index: number): Promise<void> {
+    // @ts-ignore
+    const id = this.closeUps().filter((cu, i) => index === i)[0]?.id;
+
+    // confirm bevor deleting already existing closeups
+    if (id !== undefined) {
+      const confirm = await this.confirmDialog.open({
+        title: 'Remove Close-Up',
+        message: `Remove the image at position ${index + 1}?`,
+        actionButton: 'Remove'
+      });
+
+      if (!confirm) return;
+    }
+
     const nextCloseups = this.closeUps().filter((_, i) => i !== index);
     this.closeUps.set(nextCloseups);
   }
