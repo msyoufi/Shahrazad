@@ -47,11 +47,22 @@
   background-color: var(--primary-color);
 }
 
-.buttons-box {
+.buttons-progress-bar {
   display: flex;
   padding: .5rem 0;
   gap: 1rem;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+
+  .progress {
+    font-size: .8rem;
+    padding-left: .5rem;
+  }
+}
+
+.buttons-box {
+  display: flex;
+  gap: 1rem;
 }
 
 .cdk-drag-preview {

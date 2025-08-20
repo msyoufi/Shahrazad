@@ -19,17 +19,21 @@
       }
     </div>
 
-    <div class="buttons-box">
-      <shari-button type="button" variant="outlined" (onClick)="closeForm()" [disabled]="isLoading()">
-        Cancel
-      </shari-button>
-      <shari-button type="button" [loading]="isLoading()" (onClick)="onSaveClick()" [disabled]="isLoading()">
-        @if(isLoading()){
-        <mat-spinner [diameter]="15" [strokeWidth]="2" />
-        } @else {
-        Save
-        }
-      </shari-button>
+    <div class="buttons-progress-bar">
+      <div class="progress">{{progress()}}</div>
+
+      <div class="buttons-box">
+        <shari-button type="button" variant="outlined" (onClick)="closeForm()" [disabled]="isLoading()">
+          Cancel
+        </shari-button>
+        <shari-button type="button" [loading]="isLoading()" (onClick)="onSaveClick()" [disabled]="isLoading()">
+          @if(isLoading()){
+          <mat-spinner [diameter]="15" [strokeWidth]="2" />
+          } @else {
+          Save
+          }
+        </shari-button>
+      </div>
     </div>
   </div>
 </div>

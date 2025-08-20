@@ -25,6 +25,7 @@ export class CloseupForm {
 
   closeUps = signal<(LocalImageUrl | ImageUrls)[]>([]);
   isLoading = signal(false);
+  progress = signal('Deleting removed images...');
 
   constructor() {
     this.populteCurrentCloseups();
@@ -49,14 +50,18 @@ export class CloseupForm {
       const newIds = this.closeUps().filter(cu => 'id' in cu).map(cu => cu.id);
       const removedImages = close_ups.filter(cu => !newIds.includes(cu.id));
 
-      if (removedImages.length)
+      if (removedImages.length) {
+        this.progress.set('Deleting removed images...');
         await this.imageStorageService.bulkDeleteImages(removedImages, id);
-
+      }
       // upload / update new close ups
       // get the name of the last added image to start naming new images at that point
       const lastName = parseInt(newIds.sort((a, b) => a.localeCompare(b)).at(-1) ?? '0');
 
+      this.progress.set('Uploading new images...');
       const newImagesUrls = await this.getNewImagesUrls(id, lastName);
+
+      this.progress.set('Saving changes...');
       await this.paintingsService.updatePainting(id, { close_ups: newImagesUrls });
 
       this.snackbar.show('Changes Saved!');
@@ -67,6 +72,7 @@ export class CloseupForm {
 
     } finally {
       this.isLoading.set(false);
+      this.progress.set('');
     }
   }
 
@@ -131,7 +137,7 @@ export class CloseupForm {
 
   async onRemoveClick(index: number): Promise<void> {
     // @ts-ignore
-    const id = this.closeUps().filter((cu, i) => index === i)[0]?.id;
+    const id = this.closeUps().filter((_, i) => index === i)[0]?.id;
 
     // confirm bevor deleting already existing closeups
     if (id !== undefined) {
@@ -150,5 +156,6 @@ export class CloseupForm {
 
   closeForm(): void {
     this.formService.closeForm();
+    this.progress.set('');
   }
 }
