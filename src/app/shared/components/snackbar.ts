@@ -9,12 +9,12 @@ export class Snackbar {
 
   public show(
     message: string,
-    color: 'primary' | 'red' | 'green' = 'primary',
+    color: 'primary' | 'red' | 'green' = 'green',
     duration = 3000
   ): MatSnackBarRef<TextOnlySnackBar> {
     return this.snackBar.open(message, undefined, {
       duration,
-      panelClass: ['snack-bar', color]
+      panelClass: ['snackbar', color]
     });
   }
 }

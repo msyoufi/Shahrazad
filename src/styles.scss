@@ -6,7 +6,7 @@
   --tertiary-color: #e9e3f0;
   --background-color: #ffffff;
   --gray: #6a7077;
-  --green: #2cb89a;
+  --green: #1ea77e;
   --red: #d43434;
   --text-color: #1c1b1d;
   --border-color: #d3dae2;
@@ -15,6 +15,16 @@
   --radius: 5px;
   --transition: .15s;
   --app-width: 1300px;
+
+  @include mat.snack-bar-overrides((supporting-text-color: #fff,
+      supporting-text-size: .9rem,
+      supporting-text-weight: 500,
+    ));
+  @include mat.tooltip-overrides((container-color: gray,
+      supporting-text-color: #fff,
+      supporting-text-size: .75rem,
+      supporting-text-weight: 600,
+    ));
 }
 
 * {
@@ -39,6 +49,7 @@
 }
 
 html {
+  height: 100%;
   @include mat.theme((color: (primary: mat.$cyan-palette,
         tertiary: mat.$orange-palette,
       ),
@@ -48,6 +59,9 @@ html {
 }
 
 body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
   color-scheme: light;
   background-color: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
@@ -71,14 +85,4 @@ footer {
 
 main {
   flex: 1;
-}
-
-html,
-body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
 }

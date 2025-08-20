@@ -35,3 +35,26 @@ button {
   box-shadow: var(--shadow);
   overflow: auto;
 }
+
+.snackbar {
+  text-align: center;
+  border-radius: var(--radius);
+
+  .mdc-snackbar__surface {
+    border-radius: var(--radius) !important;
+    box-shadow: var(--shadow) !important;
+    background-color: var(--primary-color) !important;
+  }
+
+  &.green .mdc-snackbar__surface {
+    background-color: var(--green) !important;
+  }
+
+  &.red .mdc-snackbar__surface {
+    background-color: var(--red) !important;
+  }
+}
+
+.mdc-tooltip__surface {
+  border-radius: 5px !important;
+}
