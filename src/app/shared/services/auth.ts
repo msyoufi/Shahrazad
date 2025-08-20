@@ -9,14 +9,13 @@ export class AuthService implements OnDestroy {
 
   private currentUser = signal<User | null>(null);
 
-  private unsubscribe: Unsubscribe | undefined;
-
   get user(): User | null {
     return this.currentUser();
   }
 
+  private unsubscribe: Unsubscribe | undefined;
+
   constructor() {
-    console.log('init users service')
     this.subscribeToUserChanges();
   }
 
@@ -26,9 +25,9 @@ export class AuthService implements OnDestroy {
     });
   }
 
-  // awaitAuthStateReady(): () => Promise<void> {
-  //   return () => this.auth.authStateReady();
-  // }
+  awaitAuthStateReady(): Promise<void> {
+    return this.auth.authStateReady();
+  }
 
   async login(email: string, password: string): Promise<void> {
     await signInWithEmailAndPassword(this.auth, email, password);
@@ -52,7 +51,6 @@ export class AuthService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('destroy user service')
     this.unsubscribe && this.unsubscribe();
   }
 }

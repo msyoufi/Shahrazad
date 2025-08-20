@@ -40,7 +40,7 @@ export class AdminLogin {
 
     try {
       await this.authService.login(email, password);
-      await this.router.navigateByUrl('/admin-1975-dashboard/overview');
+      await this.router.navigateByUrl('/dashboard-1975');
       this.snackbar.show('Logged In');
 
     } catch (err: unknown) {
