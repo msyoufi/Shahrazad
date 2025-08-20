@@ -25,7 +25,7 @@ export class CloseupForm {
 
   closeUps = signal<(LocalImageUrl | ImageUrls)[]>([]);
   isLoading = signal(false);
-  progress = signal('Deleting removed images...');
+  progress = signal('');
 
   constructor() {
     this.populteCurrentCloseups();
