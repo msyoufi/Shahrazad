@@ -47,8 +47,7 @@
       (change)="onMainImageChange($event)" #mainImageInput>
 
     @if (mainImg) {
-    <shari-button type="button" variant="outlined" color="red" (onClick)="onRemoveMainImageClick(mainImageInput)"
-      [disabled]="loading">
+    <shari-button type="button" variant="outlined" color="red" (onClick)="onRemoveMainImageClick(mainImageInput)">
       Remove
     </shari-button>
     <img class="main-image-preview" [src]="mainImg?.thumbnail" alt="">
@@ -83,12 +82,8 @@
     <shari-button type="button" variant="outlined" (onClick)="closeForm()" [disabled]="loading">
       Cancel
     </shari-button>
-    <shari-button type="button" (onClick)="onSaveClick()" [loading]="loading" [disabled]="form.invalid || loading">
-      @if(loading){
-      <mat-spinner [diameter]="15" [strokeWidth]="2" />
-      } @else {
+    <shari-button type="button" (onClick)="onSaveClick()" [disabled]="form.invalid || loading">
       Save
-      }
     </shari-button>
   </div>
 </div>
@@ -97,6 +92,7 @@
 <div class="overlay">
   <div class="overlay-content-box">
     <div class="progress">{{prg}}</div>
+    <mat-spinner [diameter]="15" [strokeWidth]="2" />
   </div>
 </div>
 }
