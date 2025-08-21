@@ -1,4 +1,4 @@
-import { Component, inject, Input, signal } from '@angular/core';
+import { Component, computed, effect, inject, Input, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ShariButton } from '../../../shared/components/button/shari-button';
 import { Snackbar } from '../../../shared/components/snackbar';
@@ -20,18 +20,21 @@ export class PaintingForm {
   router = inject(Router);
   snackbar = inject(Snackbar);
 
-  @Input() set id(id: string | undefined) {
-    const painting = this.formService.getPainting(id);
-    if (!painting) return;
-
-    this.painting.set(painting);
-    this.populateForm(painting);
+  @Input() set id(id: string) {
+    this.paintingId.set(id);
   }
+
+  paintingId = signal('new');
+  painting = computed<Painting | undefined>(() => {
+    const id = this.paintingId();
+    if (id === 'new') return;
+
+    return this.formService.getPainting(id);
+  });
 
   MAX_CLOSEUP_COUNT = 5;
   currentYear = new Date().getFullYear();
 
-  painting = signal<Painting | undefined>(undefined);
   mainImage = signal<LocalImageUrl | undefined>(undefined);
   closeUps = signal<(LocalImageUrl | ImageUrls)[]>([]);
   isLoading = signal(false);
@@ -44,19 +47,28 @@ export class PaintingForm {
     year: new FormControl('', { nonNullable: true, validators: [Validators.min(2000), Validators.max(this.currentYear)] })
   });
 
-  populateForm(painting: Painting): void {
-    const { title, material, width, height, year, close_ups } = painting;
+  constructor() {
+    this.populateForm();
+  }
 
-    this.form.patchValue({
-      title,
-      material,
-      width: width.toString(),
-      height: height.toString(),
-      year: year.toString()
+  populateForm(): void {
+    effect(() => {
+      const painting = this.painting();
+      if (!painting) return;
+
+      const { title, material, width, height, year, order, close_ups } = painting;
+
+      this.form.patchValue({
+        title,
+        material,
+        width: width.toString(),
+        height: height.toString(),
+        year: year.toString()
+      });
+
+      const initialCloseUps = close_ups.slice().sort((a, b) => a.order - b.order);
+      this.closeUps.set(initialCloseUps);
     });
-
-    const initialCloseUps = close_ups.slice().sort((a, b) => a.order - b.order);
-    this.closeUps.set(initialCloseUps);
   }
 
   async onSaveClick(): Promise<void> {
