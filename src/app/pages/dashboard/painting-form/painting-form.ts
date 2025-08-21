@@ -2,12 +2,11 @@ import { Component, inject, Input, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ShariButton } from '../../../shared/components/button/shari-button';
 import { Snackbar } from '../../../shared/components/snackbar';
-import { PaintingsService } from '../../../shared/services/paintings';
-import { ImageStorageService } from '../../../shared/services/image-storage';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { type CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ConfirmDialogService } from '../../../shared/components/confirmation-dialog/confirm-dialog.service';
 import { Router } from '@angular/router';
+import { PaintingFormService } from './painting-form.service';
 
 @Component({
   selector: 'shari-painting-form',
@@ -16,17 +15,17 @@ import { Router } from '@angular/router';
   styleUrl: './painting-form.scss'
 })
 export class PaintingForm {
-  imageStorageService = inject(ImageStorageService);
-  paintingsService = inject(PaintingsService);
+  formService = inject(PaintingFormService);
   confirmDialog = inject(ConfirmDialogService);
   router = inject(Router);
   snackbar = inject(Snackbar);
 
   @Input() set id(id: string | undefined) {
-    if (!id || id === 'new') return;
+    const painting = this.formService.getPainting(id);
+    if (!painting) return;
 
-    this.getPainting(id);
-    this.populateForm();
+    this.painting.set(painting);
+    this.populateForm(painting);
   }
 
   MAX_CLOSEUP_COUNT = 5;
@@ -36,7 +35,6 @@ export class PaintingForm {
   mainImage = signal<LocalImageUrl | undefined>(undefined);
   closeUps = signal<(LocalImageUrl | ImageUrls)[]>([]);
   isLoading = signal(false);
-  progress = signal('');
 
   form = new FormGroup({
     title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -46,25 +44,22 @@ export class PaintingForm {
     year: new FormControl('', { nonNullable: true, validators: [Validators.min(2000), Validators.max(this.currentYear)] })
   });
 
-  getPainting(id: string): void {
-    const painting = this.paintingsService.paintings.find(p => p.id === id);
-    this.painting.set(painting);
+  populateForm(painting: Painting): void {
+    const { title, material, width, height, year, close_ups } = painting;
+
+    this.form.patchValue({
+      title,
+      material,
+      width: width.toString(),
+      height: height.toString(),
+      year: year.toString()
+    });
+
+    const initialCloseUps = close_ups.slice().sort((a, b) => a.order - b.order);
+    this.closeUps.set(initialCloseUps);
   }
 
-  populateForm(): void {
-    const painting = this.painting();
-
-    if (painting)
-      this.form.patchValue({
-        title: painting.title,
-        material: painting.material,
-        width: painting.width.toString(),
-        height: painting.height.toString(),
-        year: painting.year.toString()
-      });
-  }
-
-  async onSubmit(): Promise<void> {
+  async onSaveClick(): Promise<void> {
     if (this.form.invalid) {
       this.snackbar.show('Invalid Painting Data!', 'red');
       return;
@@ -72,33 +67,29 @@ export class PaintingForm {
 
     this.isLoading.set(true);
 
-    const existingPainting = this.painting();
+    const currPainting = this.painting();
+    const mainImage = this.mainImage()?.file;
+    const payload = this.preparePayload();
     let message = 'New Painting Added';
 
     try {
-      if (existingPainting) {
-        const newData = { ...existingPainting, ...this.prepareFormData() };
+      if (currPainting) {
+        await this.formService.updatePainting(currPainting, payload, mainImage, this.closeUps());
         message = 'Changes Saved';
 
-        const mainImage = this.mainImage();
-
-        if (mainImage) {
-          newData.main_image = await this.uploadMainImage(mainImage.file, existingPainting.id);
-        }
-
-        await this.paintingsService.updatePainting(newData);
+      } else if (!mainImage) {
+        // on new painting creation at least the main image MUST be uploaded!
+        this.snackbar.show('Please select a main image!', 'red');
+        return;
 
       } else {
-        const newPainting = await this.createNewPainting();
-        if (!newPainting) return;
-        await this.paintingsService.createPainting(newPainting);
+        await this.formService.createPainting(payload, mainImage, this.closeUps());
       }
 
       this.snackbar.show(message);
       this.closeForm();
 
     } catch (err: unknown) {
-      console.log(err);
       this.snackbar.show('Unable To Save Changes!', 'red');
 
     } finally {
@@ -106,8 +97,9 @@ export class PaintingForm {
     }
   }
 
-  prepareFormData(): PaintingFormData {
+  preparePayload(): PaintingFormData {
     const { title, material, width, height, year } = this.form.getRawValue();
+
     return {
       title,
       material,
@@ -117,120 +109,30 @@ export class PaintingForm {
     };
   }
 
-  async createNewPainting(): Promise<Painting | null> {
-    const mainImage = this.mainImage();
-
-    if (!mainImage) {
-      this.snackbar.show('Please select an image!', 'red');
-      return null;
-    }
-
-    const id = new Date().getTime().toString();
-
-    return {
-      id,
-      order: this.paintingsService.paintings.length,
-      main_image: await this.uploadMainImage(mainImage.file, id),
-      close_ups: [],
-      ...this.prepareFormData()
-    };
-  }
-
-  async uploadMainImage(img: File, paintingId: string): Promise<ImageUrls> {
-    return this.imageStorageService.compressAndUpload(img, paintingId);
-  }
-
   onMainImageChange(e: any): void {
     const file = e.target.files[0];
     if (!file) return;
 
-    if (!this.checkValidImage(file)) {
-      return;
-    }
-
-    this.mainImage.set({
-      file: file,
-      thumbnail: URL.createObjectURL(file)
-    });
+    const { checkValidImage, getLocalUrl } = this.formService;
+    if (!checkValidImage(file)) return;
+    this.mainImage.set(getLocalUrl(file));
   }
 
   onRemoveMainImageClick(input: HTMLInputElement): void {
-    input.value = '';
     this.mainImage.set(undefined);
+    input.value = '';
   }
 
-  async onSaveClick(): Promise<void> {
-    const painting = this.painting();
-    if (!painting) return;
-
-    this.isLoading.set(true);
-
-    const { id, close_ups } = painting;
-
-    try {
-      // delete removed close ups
-      const newIds = this.closeUps().filter(cu => 'id' in cu).map(cu => cu.id);
-      const removedImages = close_ups.filter(cu => !newIds.includes(cu.id));
-
-      if (removedImages.length) {
-        this.progress.set('Deleting removed images...');
-        await this.imageStorageService.bulkDeleteImages(removedImages, id);
-      }
-      // upload / update new close ups
-      // get the name of the last added image to start naming new images at that point
-      const lastName = parseInt(newIds.sort((a, b) => a.localeCompare(b)).at(-1) ?? '0');
-
-      this.progress.set('Uploading new images...');
-      const newImagesUrls = await this.getNewImagesUrls(id, lastName);
-
-      this.progress.set('Saving changes...');
-      await this.paintingsService.updatePainting({ id, close_ups: newImagesUrls });
-
-      this.snackbar.show('Changes Saved!');
-      this.closeForm();
-
-    } catch (err: unknown) {
-      this.snackbar.show('Unable To Upload The Images!', 'red');
-
-    } finally {
-      this.isLoading.set(false);
-      this.progress.set('');
-    }
-  }
-
-  async getNewImagesUrls(paintingId: string, lastName: number): Promise<ImageUrls[]> {
-    const uploadPromises = this.closeUps().map((cu, i) => {
-      const order = i + 1;
-
-      if ('id' in cu) { // already exists, just update order
-        cu.order = order;
-        return cu;
-      }
-
-      // upload new image
-      return this.imageStorageService.compressAndUpload(cu.file, paintingId, (++lastName).toString(), order);
-    });
-
-    return Promise.all(uploadPromises);
-  }
-
-  onCloseupImageChange(e: any): void {
+  onCloseUpImageChange(e: any): void {
     const files = e.target.files;
     if (!files.length) return;
 
     const localUrls: LocalImageUrl[] = [];
+    const { checkValidImage, getLocalUrl } = this.formService;
 
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-
-      if (!this.checkValidImage(file)) {
-        break;
-      }
-
-      localUrls.push({
-        file: file,
-        thumbnail: URL.createObjectURL(file)
-      });
+    for (const file of files) {
+      if (!checkValidImage(file)) return;
+      localUrls.push(getLocalUrl(file));
     }
 
     let nextCloseUps = this.closeUps().concat(localUrls);
@@ -244,25 +146,13 @@ export class PaintingForm {
     this.closeUps.set(nextCloseUps);
   }
 
-  checkValidImage(file: File): boolean {
-    if (!file.type.startsWith('image/')) {
-      this.snackbar.show(`Invalid file type: ${file.name}`, 'red');
-      return false;
-    }
-
-    return true;
-  }
-
-  onDrop(event: CdkDragDrop<(LocalImageUrl | ImageUrls)[]>): void {
+  onCloseUpDrop(event: CdkDragDrop<(LocalImageUrl | ImageUrls)[]>): void {
     moveItemInArray(this.closeUps(), event.previousIndex, event.currentIndex);
   }
 
-  async onRemoveClick(index: number): Promise<void> {
-    // @ts-ignore
-    const id = this.closeUps().filter((_, i) => index === i)[0]?.id;
-
+  async onRemoveCloseUpClick(closeUp: LocalImageUrl | ImageUrls, index: number): Promise<void> {
     // confirm bevor deleting already existing closeups
-    if (id !== undefined) {
+    if ('id' in closeUp) {
       const confirm = await this.confirmDialog.open({
         title: 'Remove Close-Up',
         message: `Remove the image at position ${index + 1}?`,
@@ -276,11 +166,14 @@ export class PaintingForm {
     this.closeUps.set(nextCloseups);
   }
 
-  async onDeleteClick(painting: Painting): Promise<void> {
+  async onDeletePaintingClick(): Promise<void> {
+    const painting = this.painting();
+    if (!painting) return;
+
     const confirm = await this.confirmDialog.open({
-      title: 'Remove Painting',
-      message: `Remove the painting: ${painting.title} and all its images?`,
-      actionButton: 'Remove'
+      title: 'Delete Painting',
+      message: `Delete the painting: ${painting.title} and all its images?`,
+      actionButton: 'Delete'
     });
 
     if (!confirm) return;
@@ -289,19 +182,14 @@ export class PaintingForm {
   }
 
   async deletePainting(painting: Painting): Promise<void> {
-    const { id, main_image, close_ups } = painting;
+    this.isLoading.set(true);
 
     try {
-      // delete all images
-      await this.imageStorageService.bulkDeleteImages([main_image, ...close_ups], id);
-
-      // delete from firestore
-      await this.paintingsService.deletePainting(id);
-
-      this.snackbar.show('Painting Removed!');
+      await this.formService.deletePainting(painting);
+      this.snackbar.show('Painting Deleted!');
+      this.closeForm();
 
     } catch (err: unknown) {
-      console.log(err)
       this.snackbar.show('Unable To Remove The Painting!', 'red');
 
     } finally {

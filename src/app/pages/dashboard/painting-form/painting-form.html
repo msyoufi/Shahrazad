@@ -1,10 +1,13 @@
-@let p = painting();
+@let pt = painting();
+@let mainImg = mainImage();
+@let loading = isLoading();
+@let prg = formService.progress();
 
 <div class="painting-form-component-container">
 
   <form [formGroup]="form" class="painting-form">
     <p class="title">
-      {{p ? 'Edit ' + p.title : 'New Painting'}}
+      {{pt ? 'Edit ' + pt!.title : 'New Painting'}}
     </p>
 
     <div class="control-field">
@@ -43,27 +46,27 @@
     <input type="file" id="main_image" name="main_image" class="shari-input" accept="image/*"
       (change)="onMainImageChange($event)" #mainImageInput>
 
-    @if (mainImage()) {
+    @if (mainImg) {
     <shari-button type="button" variant="outlined" color="red" (onClick)="onRemoveMainImageClick(mainImageInput)"
-      [disabled]="isLoading()">
+      [disabled]="loading">
       Remove
     </shari-button>
-    <img class="main-image-preview" [src]="mainImage()?.thumbnail" alt="">
+    <img class="main-image-preview" [src]="mainImg?.thumbnail" alt="">
     }
   </div>
 
   <div class="close-ups-container">
-    <p class="title">Close-Ups</p>
+    <p class="title">Close-Up Images</p>
 
     <label for="closeup" class="add-close-up-label">Add Clos-Ups +</label>
-    <input type="file" id="closeup" name="closeup" accept="image/*" (change)="onCloseupImageChange($event)" multiple
+    <input type="file" id="closeup" name="closeup" accept="image/*" (change)="onCloseUpImageChange($event)" multiple
       hidden>
 
-    <div class="close-ups-grid" cdkDropList [cdkDropListData]="closeUps()" (cdkDropListDropped)="onDrop($event)"
+    <div class="close-ups-grid" cdkDropList [cdkDropListData]="closeUps()" (cdkDropListDropped)="onCloseUpDrop($event)"
       cdkDropListOrientation="horizontal" cdkDropListLockAxis="x">
       @for (closeup of closeUps(); track $index){
       <div class="clos-up-box" cdkDrag>
-        <button (click)="onRemoveClick($index)">Remove</button>
+        <button (click)="onRemoveCloseUpClick(closeup, $index)">Remove</button>
         <img [src]="closeup.thumbnail" alt="">
       </div>
       }
@@ -71,11 +74,17 @@
   </div>
 
   <div class="buttons-box">
-    <shari-button type="button" variant="outlined" color="red" (onClick)="closeForm()" [disabled]="isLoading()">
+    @if (pt) {
+    <shari-button type="button" variant="outlined" color="red" (onClick)="onDeletePaintingClick()" [disabled]="loading">
+      Delete Painting
+    </shari-button>
+    }
+
+    <shari-button type="button" variant="outlined" (onClick)="closeForm()" [disabled]="loading">
       Cancel
     </shari-button>
-    <shari-button type="button" (onClick)="onSubmit()" [loading]="isLoading()" [disabled]="form.invalid || isLoading()">
-      @if(isLoading()){
+    <shari-button type="button" (onClick)="onSaveClick()" [loading]="loading" [disabled]="form.invalid || loading">
+      @if(loading){
       <mat-spinner [diameter]="15" [strokeWidth]="2" />
       } @else {
       Save
@@ -84,11 +93,10 @@
   </div>
 </div>
 
-
-@if (progress()) {
+@if (prg) {
 <div class="overlay">
   <div class="overlay-content-box">
-    <div class="progress">{{progress()}}</div>
+    <div class="progress">{{prg}}</div>
   </div>
 </div>
 }
