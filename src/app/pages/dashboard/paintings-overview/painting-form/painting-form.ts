@@ -64,14 +64,14 @@ export class PaintingForm {
 
     try {
       if (existingPainting) {
-        const { id, ...newData } = { ...existingPainting, ...this.prepareFormData() };
+        const newData = { ...existingPainting, ...this.prepareFormData() };
         message = 'Changes Saved';
 
         if (this.mainImage) {
-          newData.main_image = await this.uploadMainImage(this.mainImage, existingPainting.id)
+          newData.main_image = await this.uploadMainImage(this.mainImage, existingPainting.id);
         }
 
-        await this.paintingsService.updatePainting(id, newData);
+        await this.paintingsService.updatePainting(newData);
 
       } else {
         const newPainting = await this.createNewPainting();

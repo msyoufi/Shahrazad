@@ -23,3 +23,5 @@ interface LocalImageUrl {
 }
 
 type PaintingFormData = Omit<Painting, 'id' | 'main_image' | 'close_ups' | 'order'>;
+
+type PaintingUpdate = Partial<Painting> & Pick<Painting, 'id'>;

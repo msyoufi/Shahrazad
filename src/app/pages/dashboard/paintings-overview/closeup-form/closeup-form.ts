@@ -62,7 +62,7 @@ export class CloseupForm {
       const newImagesUrls = await this.getNewImagesUrls(id, lastName);
 
       this.progress.set('Saving changes...');
-      await this.paintingsService.updatePainting(id, { close_ups: newImagesUrls });
+      await this.paintingsService.updatePainting({ id, close_ups: newImagesUrls });
 
       this.snackbar.show('Changes Saved!');
       this.closeForm();

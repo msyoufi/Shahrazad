@@ -39,8 +39,9 @@ export class PaintingsService implements OnDestroy {
     return setDoc(this.getDocRef(id), paintingData);
   }
 
-  updatePainting(id: string, newData: Partial<Painting>): Promise<void> {
-    return updateDoc(this.getDocRef(id), newData);
+  updatePainting(newData: PaintingUpdate): Promise<void> {
+    const { id, ...paintingData } = newData;
+    return updateDoc(this.getDocRef(id), paintingData);
   }
 
   deletePainting(id: string): Promise<void> {
