@@ -22,9 +22,6 @@ export class PaintingForm {
   router = inject(Router);
   snackbar = inject(Snackbar);
 
-  MAX_CLOSEUP_COUNT = 5;
-  currentYear = new Date().getFullYear();
-
   @Input() set id(id: string | undefined) {
     if (!id || id === 'new') return;
 
@@ -32,11 +29,12 @@ export class PaintingForm {
     this.populateForm();
   }
 
+  MAX_CLOSEUP_COUNT = 5;
+  currentYear = new Date().getFullYear();
+
   painting = signal<Painting | undefined>(undefined);
-
-  mainImage: File | undefined;
+  mainImage = signal<LocalImageUrl | undefined>(undefined);
   closeUps = signal<(LocalImageUrl | ImageUrls)[]>([]);
-
   isLoading = signal(false);
   progress = signal('');
 
@@ -82,8 +80,10 @@ export class PaintingForm {
         const newData = { ...existingPainting, ...this.prepareFormData() };
         message = 'Changes Saved';
 
-        if (this.mainImage) {
-          newData.main_image = await this.uploadMainImage(this.mainImage, existingPainting.id);
+        const mainImage = this.mainImage();
+
+        if (mainImage) {
+          newData.main_image = await this.uploadMainImage(mainImage.file, existingPainting.id);
         }
 
         await this.paintingsService.updatePainting(newData);
@@ -118,7 +118,9 @@ export class PaintingForm {
   }
 
   async createNewPainting(): Promise<Painting | null> {
-    if (!this.mainImage) {
+    const mainImage = this.mainImage();
+
+    if (!mainImage) {
       this.snackbar.show('Please select an image!', 'red');
       return null;
     }
@@ -128,7 +130,7 @@ export class PaintingForm {
     return {
       id,
       order: this.paintingsService.paintings.length,
-      main_image: await this.uploadMainImage(this.mainImage, id),
+      main_image: await this.uploadMainImage(mainImage.file, id),
       close_ups: [],
       ...this.prepareFormData()
     };
@@ -142,12 +144,19 @@ export class PaintingForm {
     const file = e.target.files[0];
     if (!file) return;
 
-    if (!file.type.startsWith('image/')) {
-      this.snackbar.show('File must be an image', 'red');
+    if (!this.checkValidImage(file)) {
       return;
     }
 
-    this.mainImage = file;
+    this.mainImage.set({
+      file: file,
+      thumbnail: URL.createObjectURL(file)
+    });
+  }
+
+  onRemoveMainImageClick(input: HTMLInputElement): void {
+    input.value = '';
+    this.mainImage.set(undefined);
   }
 
   async onSaveClick(): Promise<void> {

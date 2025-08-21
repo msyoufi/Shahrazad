@@ -25,7 +25,18 @@
   gap: 1rem;
 }
 
-.images-view {
+.main-image-container shari-button {
+  margin: 0 auto;
+  width: 8rem;
+}
+
+.main-image-preview {
+  max-width: 100%;
+  max-height: 10rem;
+  object-fit: contain;
+}
+
+.close-ups-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   min-height: 9rem;
@@ -34,7 +45,7 @@
   border: 2px dashed black;
 }
 
-.image-box {
+.clos-up-box {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -42,7 +53,7 @@
 
   img {
     width: 100%;
-    max-height: 7rem;
+    max-height: 8rem;
     object-fit: contain;
   }
 
@@ -55,7 +66,7 @@
   }
 }
 
-.add-closeup-label {
+.add-close-up-label {
   text-align: center;
   padding: .5rem .8rem;
   border-radius: var(--radius);
