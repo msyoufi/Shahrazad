@@ -4,6 +4,25 @@
   font-weight: 500;
 }
 
+.half-inputs-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.buttons-box {
+  display: flex;
+  padding: .5rem 0;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.form-title {
+  padding: .5rem .25rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
 .images-view {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;

@@ -1,0 +1,76 @@
+@let p = painting();
+
+<form [formGroup]="form" class="" (ngSubmit)="onSubmit()">
+
+  <p class="form-title">
+    {{p ? 'Edit ' + p.title : 'New Painting'}}
+  </p>
+
+  <div class="control-field">
+    <input type="text" id="title" formControlName="title" class="shari-input" required>
+    <label for="title" [class.top]="form.get('title')?.value">Title*</label>
+  </div>
+
+  <div class="half-inputs-wrapper">
+    <div class="control-field">
+      <input type="text" id="material" formControlName="material" class="shari-input">
+      <label for="material" [class.top]="form.get('material')?.value">Material</label>
+    </div>
+
+    <div class="control-field">
+      <input type="number" id="year" formControlName="year" class="shari-input" min="2000" [max]="currentYear">
+      <label for="year" [class.top]="form.get('year')?.value">Year</label>
+    </div>
+  </div>
+
+  <div class="half-inputs-wrapper">
+    <div class="control-field">
+      <input type="number" id="width" formControlName="width" class="shari-input" min="1" required>
+      <label for="width" [class.top]="form.get('width')?.value">Width* (cm)</label>
+    </div>
+
+    <div class="control-field">
+      <input type="number" id="height" formControlName="height" class="shari-input" min="1" required>
+      <label for="height" [class.top]="form.get('height')?.value">Height* (cm)</label>
+    </div>
+  </div>
+
+  <div class="control-field">
+    <input type="file" id="main_image" name="main_image" class="shari-input" accept="image/*"
+      (change)="onMainImageChange($event)">
+    <label for="main_image" class="top">Main Image*</label>
+  </div>
+
+  <div class="buttons-box">
+    <shari-button type="reset" variant="outlined" (onClick)="closeForm()" [disabled]="isLoading()">
+      Cancel
+    </shari-button>
+    <shari-button type="submit" [loading]="isLoading()" [disabled]="form.invalid || isLoading()">
+      @if(isLoading()){
+      <mat-spinner [diameter]="15" [strokeWidth]="2" />
+      } @else {
+      Save
+      }
+    </shari-button>
+  </div>
+
+</form>
+
+<p class="form-title">
+  Edit Close-Ups For
+</p>
+
+<label for="closeup" class="add-closeup-label">Add Clos-Ups +</label>
+<input type="file" id="closeup" name="closeup" accept="image/*" (change)="onCloseupImageChange($event)" multiple hidden>
+
+<div class="images-view" cdkDropList [cdkDropListData]="closeUps()" (cdkDropListDropped)="onDrop($event)"
+  cdkDropListOrientation="horizontal" cdkDropListLockAxis="x">
+  @for (closeup of closeUps(); track $index){
+  <div class="image-box" cdkDrag>
+    <button (click)="onRemoveClick($index)">Remove</button>
+    <img [src]="closeup.thumbnail" alt="">
+  </div>
+  }
+</div>
+
+<div class="progress">{{progress()}}</div>

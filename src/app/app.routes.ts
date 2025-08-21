@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { Home } from './pages/home/home'
 import { authGuard } from './auth.guard';
 import { PaintingsOverview } from './pages/dashboard/paintings-overview/paintings-overview';
+import { PaintingForm } from './pages/dashboard/painting-form/painting-form';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -17,6 +18,7 @@ export const routes: Routes = [
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'overview' },
       { path: 'overview', component: PaintingsOverview },
+      { path: 'painting/:id', component: PaintingForm },
     ]
   }
 ];

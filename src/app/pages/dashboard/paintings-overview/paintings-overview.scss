@@ -16,17 +16,15 @@
 
 .painting-item {
   display: flex;
+  height: 9rem;
   padding: 0.5rem;
   gap: .5rem;
-  justify-content: space-between;
+  align-items: center;
   border-radius: var(--radius);
   border: 2px solid var(--border-color);
-}
-
-.img-data-box {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
+  text-decoration: none;
+  color: var(--text-color);
+  cursor: pointer;
 }
 
 img {
@@ -34,51 +32,29 @@ img {
   object-fit: cover;
 }
 
-.painting-buttons-box {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  gap: .5rem;
-}
-
-.painting-item:hover .painting-buttons-box {
-  display: flex;
-}
-
 .painting-item:hover {
   border-color: var(--primary-color);
 }
 
 .add-box {
-  height: 8.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 9rem;
   font-size: 4rem;
   border-radius: var(--radius);
   border: 2px solid var(--border-color);
   color: var(--border-color);
+  text-decoration: none;
 }
 
 .add-box:hover {
-  border-color: var(--dark-theme);
-  color: var(--dark-theme);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
 }
 
-@media (max-width: 850px) {
+@media (max-width: 900px) {
   .paintings-grid {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 500px) {
-  .painting-item {
-    flex-direction: column;
-  }
-
-  .painting-buttons-box {
-    flex-direction: row;
-    justify-content: space-around;
-
-    shari-button {
-      width: 100%;
-    }
   }
 }

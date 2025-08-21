@@ -3,48 +3,24 @@
     Total: {{paintingsService.paintings.length}}
   </p>
 
-  <shari-button (onClick)="paintingFormService.openForm()">
+  <shari-button (onClick)="onAddClick()">
     New Painting +
   </shari-button>
 </div>
 
 <div class="paintings-grid">
   @for(painting of paintingsService.paintings; track painting.id){
-  <div class="painting-item">
-    <div class="img-data-box">
-      <img [src]="painting.main_image.thumbnail" alt="">
+  <a class="painting-item" [routerLink]="'/dashboard-1975/painting/' + painting.id">
+    <img [src]="painting.main_image.thumbnail" alt="">
 
-      <div class="painting-data">
-        <p>{{painting.title}}</p>
-        <p>{{painting.material}}</p>
-        <p>{{painting.width}} x {{painting.height}} cm</p>
-        <p>Year: {{painting.year}}</p>
-      </div>
+    <div class="painting-data">
+      <p>{{painting.title}}</p>
+      <p>{{painting.material}}</p>
+      <p>{{painting.width}} x {{painting.height}} cm</p>
+      <p>Year: {{painting.year}}</p>
     </div>
-
-    <div class="painting-buttons-box">
-      <shari-button variant="outlined" color="primary" (onClick)="openPaintingForm(painting)">
-        Edit
-      </shari-button>
-      <shari-button variant="outlined" color="green" (onClick)="openClosupForm(painting)">
-        Close Ups
-      </shari-button>
-      <shari-button variant="outlined" color="red" (onClick)="onRemoveClick(painting)">
-        Remove
-      </shari-button>
-    </div>
-  </div>
+  </a>
   }
 
-  <button class="add-box" (click)="openPaintingForm()">+</button>
-
+  <a class="add-box" routerLink="/dashboard-1975/painting/new">+</a>
 </div>
-
-
-@if (paintingFormService.isOpen) {
-<shari-painting-form />
-}
-
-@if (closeupFormService.isOpen) {
-<shari-closeup-form />
-}
