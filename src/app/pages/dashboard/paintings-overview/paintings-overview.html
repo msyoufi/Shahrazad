@@ -1,6 +1,8 @@
+@let total = paintingsService.paintings.length;
+
 <div class="overview-header">
   <p>
-    Total: {{paintingsService.paintings.length}}
+    Total: {{total}}
   </p>
 
   <shari-button (onClick)="onAddClick()">
@@ -9,7 +11,7 @@
 </div>
 
 <div class="paintings-grid">
-  @for(painting of paintingsService.paintings; track painting.id){
+  @for(painting of paintings(); track painting.id){
   <a class="painting-item" [routerLink]="'/dashboard-1975/painting/' + painting.id">
     <img [src]="painting.main_image.thumbnail" alt="">
 
@@ -24,3 +26,7 @@
 
   <a class="add-box" routerLink="/dashboard-1975/painting/new">+</a>
 </div>
+
+<mat-paginator [length]="total" [pageSize]="pageSize()" [pageSizeOptions]="[10, 25, 50]" aria-label="Select page"
+  showFirstLastButtons (page)="onPageChange($event)">
+</mat-paginator>

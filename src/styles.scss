@@ -25,6 +25,9 @@
       supporting-text-size: .75rem,
       supporting-text-weight: 600,
     ));
+
+  @include mat.paginator-overrides((container-background-color: #fff,
+    ));
 }
 
 * {

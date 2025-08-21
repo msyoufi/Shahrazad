@@ -62,3 +62,19 @@ button {
 ul {
   list-style: none;
 }
+
+.mat-mdc-paginator-outer-container {
+  width: fit-content;
+  margin: 4rem auto;
+}
+
+.mat-mdc-paginator-container {
+  justify-content: center !important;
+  row-gap: 1rem;
+}
+
+@media (max-width: 550px) {
+  .mat-mdc-paginator-container {
+    flex-direction: column-reverse !important;
+  }
+}
