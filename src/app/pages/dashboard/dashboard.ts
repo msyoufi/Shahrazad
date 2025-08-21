@@ -1,9 +1,9 @@
-import { Component, inject, OnDestroy, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../shared/services/auth';
 import { Snackbar } from '../../shared/components/snackbar';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { Subscription } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'shari-dashboard',
@@ -11,27 +11,28 @@ import { Subscription } from 'rxjs';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })
-export class Dashboard implements OnDestroy {
+export class Dashboard {
   authService = inject(AuthService);
   router = inject(Router);
   snackbar = inject(Snackbar);
+  destroyRef = inject(DestroyRef);
 
   currentTab = signal('');
   isLoggingOut = signal(false);
-
-  routerSub: Subscription | undefined;
 
   constructor() {
     this.listenToPathChnages();
   }
 
   listenToPathChnages(): void {
-    this.routerSub = this.router.events.subscribe(e => {
-      if (e instanceof NavigationEnd) {
-        const path = e.url.split('/').at(-1) ?? '';
-        this.currentTab.set(path);
-      }
-    });
+    this.router.events
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(e => {
+        if (e instanceof NavigationEnd) {
+          const path = e.url.split('/').at(-1) ?? '';
+          this.currentTab.set(path);
+        }
+      });
   }
 
   async onLogoutClick(): Promise<void> {
@@ -49,9 +50,5 @@ export class Dashboard implements OnDestroy {
     } finally {
       this.isLoggingOut.set(false);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.routerSub && this.routerSub.unsubscribe();
   }
 }
