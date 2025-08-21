@@ -94,6 +94,7 @@ export class PaintingForm {
 
     } finally {
       this.isLoading.set(false);
+      this.formService.progress.set('');
     }
   }
 
@@ -194,6 +195,7 @@ export class PaintingForm {
 
     } finally {
       this.isLoading.set(false);
+      this.formService.progress.set('');
     }
   }
 

@@ -46,8 +46,6 @@ export class PaintingFormService {
 
     this.progress.set('Saving Changes...');
     await this.paintingsService.createPainting(newPainting);
-
-    this.progress.set('');
   }
 
   async updatePainting(
@@ -67,8 +65,6 @@ export class PaintingFormService {
 
     this.progress.set('Saving Changes...');
     await this.paintingsService.updatePainting(newData);
-
-    this.progress.set('');
   }
 
   async deletePainting(painting: Painting): Promise<void> {
@@ -79,8 +75,6 @@ export class PaintingFormService {
 
     this.progress.set("Deleting Painting's Data...");
     await this.paintingsService.deletePainting(id);
-
-    this.progress.set('');
   }
 
   checkValidImage(file: File): boolean {
