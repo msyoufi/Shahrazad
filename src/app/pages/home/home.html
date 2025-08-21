@@ -1,1 +1,22 @@
-<p>home works!</p>
+<div class="gallery-grid">
+
+  @for(column of paintingsColumns(); track $index){
+  <div>
+
+    @for(painting of column; track $index){
+    <div class="painting-item" [routerLink]="'/painting/' + painting.id">
+
+      <img [src]="painting.main_image.thumbnail" [alt]="'Painting:' + painting.title">
+
+      <div class="painting-info-overlay">
+        <h3>{{painting.title}}</h3>
+        <p>{{painting.material}}</p>
+      </div>
+
+    </div>
+    }
+
+  </div>
+  }
+
+</div>

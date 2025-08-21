@@ -1,0 +1,50 @@
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 1000px;
+  margin: 0 auto;
+  column-gap: 1.5rem;
+}
+
+.painting-item {
+  display: flex;
+  position: relative;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+
+  img {
+    width: 100%;
+  }
+}
+
+.painting-info-overlay {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  gap: .5rem;
+  position: absolute;
+  top: 0;
+  align-items: center;
+  justify-content: center;
+  background-color: #00000062;
+  transition: 0.4s;
+  opacity: 0;
+  color: #fff;
+}
+
+.painting-item:hover .painting-info-overlay {
+  opacity: 1;
+}
+
+@media (max-width:850px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width:450px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}
