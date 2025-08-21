@@ -63,7 +63,7 @@
   </div>
 
   <div class="buttons-box">
-    <shari-button type="reset" variant="outlined" color="red" (onClick)="closeForm()" [disabled]="isLoading()">
+    <shari-button type="button" variant="outlined" color="red" (onClick)="closeForm()" [disabled]="isLoading()">
       Cancel
     </shari-button>
     <shari-button type="button" (onClick)="onSubmit()" [loading]="isLoading()" [disabled]="form.invalid || isLoading()">

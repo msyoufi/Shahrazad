@@ -7,6 +7,7 @@ import { ImageStorageService } from '../../../shared/services/image-storage';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { type CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ConfirmDialogService } from '../../../shared/components/confirmation-dialog/confirm-dialog.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'shari-painting-form',
@@ -18,6 +19,7 @@ export class PaintingForm {
   imageStorageService = inject(ImageStorageService);
   paintingsService = inject(PaintingsService);
   confirmDialog = inject(ConfirmDialogService);
+  router = inject(Router);
   snackbar = inject(Snackbar);
 
   MAX_CLOSEUP_COUNT = 5;
@@ -146,10 +148,6 @@ export class PaintingForm {
     }
 
     this.mainImage = file;
-  }
-
-  closeForm(): void {
-    this.form.reset();
   }
 
   async onSaveClick(): Promise<void> {
@@ -300,5 +298,9 @@ export class PaintingForm {
     } finally {
       this.isLoading.set(false);
     }
+  }
+
+  closeForm(): void {
+    this.router.navigateByUrl('dashboard-1975/overview')
   }
 }
