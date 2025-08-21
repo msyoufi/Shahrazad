@@ -20,7 +20,7 @@ export class Home {
   page = signal(1);
 
   lastPage = 0;
-  perPage: number = 2;
+  perPage: number = 12;
 
   constructor() {
     this.getLastPageNum();
