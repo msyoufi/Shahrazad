@@ -1,5 +1,20 @@
-.form-title {
-  padding: .5rem .25rem;
+.painting-form-component-container,
+.painting-form,
+.main-image-container,
+.close-ups-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.painting-form-component-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  gap: 1.5rem;
+}
+
+.title {
+  padding: .5rem;
   font-size: 1.1rem;
   font-weight: 500;
 }
@@ -10,25 +25,12 @@
   gap: 1rem;
 }
 
-.buttons-box {
-  display: flex;
-  padding: .5rem 0;
-  gap: 1rem;
-  justify-content: flex-end;
-}
-
-.form-title {
-  padding: .5rem .25rem;
-  font-size: 1.1rem;
-  font-weight: 500;
-}
-
 .images-view {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  min-height: 8rem;
-  padding: .5rem;
-  gap: .5rem;
+  min-height: 9rem;
+  padding: .225rem;
+  gap: .25rem;
   border: 2px dashed black;
 }
 
@@ -45,7 +47,8 @@
   }
 
   button {
-    padding: .25rem;
+    padding: .1rem;
+    font-size: .8rem;
     color: var(--red);
     border: 2px solid var(--red);
     border-radius: var(--radius);
@@ -66,22 +69,21 @@
   background-color: var(--primary-color);
 }
 
-.buttons-progress-bar {
-  display: flex;
-  padding: .5rem 0;
-  gap: 1rem;
-  justify-content: space-between;
+.overlay-content-box {
+  width: 100%;
+  max-width: 400px;
   align-items: center;
+}
 
-  .progress {
-    font-size: .8rem;
-    padding-left: .5rem;
-  }
+.progress {
+  font-size: 1.2rem;
 }
 
 .buttons-box {
   display: flex;
   gap: 1rem;
+  padding: 1rem 0;
+  justify-content: flex-end;
 }
 
 .cdk-drag-preview {
