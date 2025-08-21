@@ -1,5 +1,5 @@
 import { inject, Injectable, OnDestroy, signal } from '@angular/core';
-import { collection, doc, Firestore, onSnapshot, orderBy, query, Unsubscribe, DocumentReference, setDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
+import { collection, doc, Firestore, onSnapshot, orderBy, query, Unsubscribe, DocumentReference, setDoc, updateDoc, deleteDoc, writeBatch } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +42,16 @@ export class PaintingsService implements OnDestroy {
   updatePainting(newData: PaintingUpdate): Promise<void> {
     const { id, ...paintingData } = newData;
     return updateDoc(this.getDocRef(id), paintingData);
+  }
+
+  updatePaintingsOrder(paintings: Painting[]): Promise<void> {
+    const batch = writeBatch(this.db);
+
+    paintings.forEach((p, i) =>
+      batch.update(this.getDocRef(p.id), { order: i + 1 })
+    );
+
+    return batch.commit();
   }
 
   deletePainting(id: string): Promise<void> {
