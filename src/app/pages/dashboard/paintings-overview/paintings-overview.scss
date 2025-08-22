@@ -29,6 +29,10 @@
   cursor: pointer;
 }
 
+.painting-item:hover {
+  border-color: var(--primary-color);
+}
+
 img {
   height: 7.5rem;
   object-fit: cover;
@@ -43,12 +47,13 @@ img {
   top: .5rem;
   right: .5rem;
   border-radius: var(--radius);
-  color: var(--primary-color);
-  border: 2px solid var(--primary-color);
+  color: var(--gray);
+  border: 2px solid var(--gray);
 }
 
-.painting-item:hover {
-  border-color: var(--primary-color);
+.order-button:hover {
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
 }
 
 .add-box {
