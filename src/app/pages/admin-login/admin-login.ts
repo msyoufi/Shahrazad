@@ -1,4 +1,4 @@
-import { Component, inject, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
 import { AuthService } from '../../shared/services/auth';
 import { Router } from '@angular/router';
 import { Snackbar } from '../../shared/components/snackbar';
@@ -14,15 +14,20 @@ import { FirebaseError } from '@angular/fire/app';
   templateUrl: './admin-login.html',
   styleUrl: './admin-login.scss'
 })
-export class AdminLogin {
+export class AdminLogin implements OnInit {
   authService = inject(AuthService);
   router = inject(Router);
   snackbar = inject(Snackbar);
 
   form = viewChild.required<NgForm>('form');
+  emailInput = viewChild.required<ElementRef<HTMLInputElement>>('emailInput');
+
   isLoggingIn = signal(false);
   isResetingPW = signal(false);
 
+  ngOnInit(): void {
+    this.emailInput().nativeElement.focus();
+  }
 
   async onSubmit(): Promise<void> {
     if (this.form().controls['email']?.invalid) {

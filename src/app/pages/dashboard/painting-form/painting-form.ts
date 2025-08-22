@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, Input, signal } from '@angular/core';
+import { Component, computed, effect, ElementRef, inject, Input, OnInit, signal, viewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ShariButton } from '../../../shared/components/button/shari-button';
 import { Snackbar } from '../../../shared/components/snackbar';
@@ -14,7 +14,7 @@ import { PaintingFormService } from './painting-form.service';
   templateUrl: './painting-form.html',
   styleUrl: './painting-form.scss'
 })
-export class PaintingForm {
+export class PaintingForm implements OnInit {
   formService = inject(PaintingFormService);
   confirmDialog = inject(ConfirmDialogService);
   router = inject(Router);
@@ -34,6 +34,7 @@ export class PaintingForm {
 
   MAX_CLOSEUP_COUNT = 5;
   currentYear = new Date().getFullYear();
+  titleInput = viewChild.required<ElementRef<HTMLInputElement>>('titleInput');
 
   mainImage = signal<LocalImageUrl | undefined>(undefined);
   closeUps = signal<(LocalImageUrl | ImageUrls)[]>([]);
@@ -49,6 +50,10 @@ export class PaintingForm {
 
   constructor() {
     this.populateForm();
+  }
+
+  ngOnInit(): void {
+    this.titleInput().nativeElement.focus();
   }
 
   populateForm(): void {

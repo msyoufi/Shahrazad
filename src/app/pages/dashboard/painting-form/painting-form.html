@@ -11,7 +11,7 @@
     </p>
 
     <div class="control-field">
-      <input type="text" id="title" formControlName="title" class="shari-input" required>
+      <input type="text" id="title" formControlName="title" class="shari-input" required #titleInput>
       <label for="title" [class.top]="form.get('title')?.value">Title*</label>
     </div>
 
