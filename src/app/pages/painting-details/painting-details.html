@@ -1,0 +1,33 @@
+@let pt = painting();
+
+@if (pt) {
+<div class="painting-detalis-component-grid">
+  <div class="images-list">
+    <img [src]="pt.main_image.thumbnail" alt="Main painting thumbnail" (click)="onImageClick(pt.main_image.large)">
+
+    @for(closeUp of pt.close_ups; track closeUp.id){
+    <img [src]="closeUp.thumbnail" (click)="onImageClick(closeUp.large)" alt="Close-up thumbnail of the main painting">
+    }
+
+  </div>
+
+  <div class="image-view-box">
+    <img [src]="currentImage()" alt="Painting Image View" (load)="isLoading.set(false)">
+
+    @if(isLoading()){
+    <div class="loading-overlay">
+      <mat-spinner [diameter]="25" [strokeWidth]="2" />
+    </div>
+    }
+  </div>
+
+  <div class="data-box">
+    <h2>{{pt.title}}</h2>
+    <p>{{pt.material}}</p>
+    <p>{{pt.width}} x {{pt.height}} cm</p>
+    <p>Year: {{pt.year}}</p>
+  </div>
+</div>
+} @else {
+<mat-spinner [diameter]="20" [strokeWidth]="2" />
+}
