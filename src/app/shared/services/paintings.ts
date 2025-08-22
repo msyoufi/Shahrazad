@@ -65,7 +65,6 @@ export class PaintingsService implements OnDestroy {
   }
 
   private writeNewOrder(paintings: Painting[]): Promise<void> {
-    console.log('updating order')
     const batch = writeBatch(this.db);
 
     paintings.forEach((p, i) =>
