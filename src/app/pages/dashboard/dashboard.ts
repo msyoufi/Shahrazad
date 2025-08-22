@@ -23,7 +23,7 @@ export class Dashboard {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(e => {
         if (e instanceof NavigationEnd) {
-          const path = e.url.split('/').at(-1) ?? '';
+          const path = this.router.url.split('/').at(-1) ?? '';
           this.currentTab.set(path);
         }
       });
