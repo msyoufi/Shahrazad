@@ -68,10 +68,16 @@ export class PaintingFormService {
   }
 
   async deletePainting(painting: Painting): Promise<void> {
-    const { id, main_image, close_ups } = painting;
+    const { id, main_image, order, close_ups } = painting;
 
-    this.progress.set('Deleting Images...');
+    this.progress.set('Deleting All Images...');
     await this.imageStorageService.bulkDeleteImages([main_image, ...close_ups], id);
+
+    // Reorder all paintings if is not the last one
+    if (order !== this.paintingsService.paintings.length) {
+      this.progress.set("Reordering the Paintings...");
+      await this.paintingsService.updatePaintingsOrder(id, order, true);
+    }
 
     this.progress.set("Deleting Painting's Data...");
     await this.paintingsService.deletePainting(id);
