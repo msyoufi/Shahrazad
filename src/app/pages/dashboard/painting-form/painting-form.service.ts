@@ -38,7 +38,7 @@ export class PaintingFormService {
 
     const newPainting = {
       id,
-      order: this.paintingsService.paintings.length,
+      order: this.paintingsService.paintings.length + 1,
       main_image,
       close_ups,
       ...payload
