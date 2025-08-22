@@ -34,8 +34,13 @@ export class OrderModal implements OnInit {
   async onSaveClick(): Promise<void> {
     if (!this.inputValue) return;
 
-    this.isLoading.set(true);
     const newOrder = Number(this.inputValue);
+    if (newOrder === this.painting().order) {
+      this.closeModal();
+      return;
+    }
+
+    this.isLoading.set(true);
 
     try {
       await this.paintingsService.updatePaintingsOrder(this.painting().id, newOrder);
