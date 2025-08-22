@@ -17,18 +17,6 @@
 
     <div class="half-inputs-wrapper">
       <div class="control-field">
-        <input type="text" id="material" formControlName="material" class="shari-input">
-        <label for="material" [class.top]="form.get('material')?.value">Material</label>
-      </div>
-
-      <div class="control-field">
-        <input type="number" id="year" formControlName="year" class="shari-input" min="2000" [max]="currentYear">
-        <label for="year" [class.top]="form.get('year')?.value">Year</label>
-      </div>
-    </div>
-
-    <div class="half-inputs-wrapper">
-      <div class="control-field">
         <input type="number" id="width" formControlName="width" class="shari-input" min="1" required>
         <label for="width" [class.top]="form.get('width')?.value">Width* (cm)</label>
       </div>
@@ -36,6 +24,18 @@
       <div class="control-field">
         <input type="number" id="height" formControlName="height" class="shari-input" min="1" required>
         <label for="height" [class.top]="form.get('height')?.value">Height* (cm)</label>
+      </div>
+    </div>
+
+    <div class="half-inputs-wrapper">
+      <div class="control-field">
+        <input type="text" id="material" formControlName="material" class="shari-input">
+        <label for="material" [class.top]="form.get('material')?.value">Material</label>
+      </div>
+
+      <div class="control-field">
+        <input type="number" id="year" formControlName="year" class="shari-input" min="2000" [max]="currentYear">
+        <label for="year" [class.top]="form.get('year')?.value">Year</label>
       </div>
     </div>
   </form>
