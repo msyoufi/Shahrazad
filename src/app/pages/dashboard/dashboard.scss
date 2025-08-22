@@ -27,18 +27,3 @@
   background-color: var(--primary-color);
   color: var(--background-color);
 }
-
-.logout-link {
-  display: flex;
-  justify-content: center;
-  min-width: 4rem;
-  font-weight: 550;
-  font-size: .9rem;
-  color: var(--red);
-  cursor: pointer;
-}
-
-.logout-link:hover {
-  color: var(--background-color);
-  background-color: var(--red);
-}
