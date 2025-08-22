@@ -6,7 +6,7 @@
     @for(painting of column; track $index){
     <div class="painting-item" [routerLink]="'/painting/' + painting.id">
 
-      <img [src]="painting.main_image.thumbnail" [alt]="'Painting:' + painting.title">
+      <img [src]="painting.main_image.large" [alt]="'Painting:' + painting.title">
 
       <div class="painting-info-overlay">
         <h3>{{painting.title}}</h3>
