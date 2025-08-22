@@ -1,0 +1,26 @@
+<div class="overlay">
+  <div class="overlay-content-box">
+
+    <p class="title">New Order for {{painting().title}}</p>
+
+    <div class="control-field">
+      <input type="number" id="new_order" name="new_order" class="shari-input" min="1"
+        [max]="paintingsService.paintings.length" [(ngModel)]="inputValue" required #orderInput>
+      <label for="new_order" [class.top]="inputValue">New Order*</label>
+    </div>
+
+    <div class="buttons-box">
+      <shari-button type="button" variant="outlined" (onClick)="closeModal()" [disabled]="isLoading()">
+        Cancel
+      </shari-button>
+
+      <shari-button type="button" (onClick)="onSaveClick()" [disabled]="!inputValue || isLoading()">
+        @if (isLoading()) {
+        <mat-spinner [diameter]="15" [strokeWidth]="2" />
+        } @else {
+        Save
+        }
+      </shari-button>
+    </div>
+  </div>
+</div>

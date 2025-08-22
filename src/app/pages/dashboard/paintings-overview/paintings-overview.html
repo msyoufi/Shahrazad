@@ -20,7 +20,10 @@
       <p>{{painting.material}}</p>
       <p>{{painting.width}} x {{painting.height}} cm</p>
       <p>Year: {{painting.year}}</p>
+      <p>order: {{painting.order}}</p>
     </div>
+
+    <button (click)="openOrderModal($event, painting)">order</button>
   </a>
   }
 
@@ -30,3 +33,7 @@
 <mat-paginator [length]="total" [pageSize]="pageSize()" [pageSizeOptions]="[10, 25, 50]" aria-label="Select page"
   showFirstLastButtons (page)="onPageChange($event)">
 </mat-paginator>
+
+@if (selectedPainting()) {
+<shari-order-modal [painting]="selectedPainting()!" (close)="closeOrderModal()" />
+}

@@ -3,10 +3,11 @@ import { ShariButton } from "../../../shared/components/button/shari-button";
 import { PaintingsService } from '../../../shared/services/paintings';
 import { Router, RouterLink } from '@angular/router';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { OrderModal } from './order-modal/order-modal';
 
 @Component({
   selector: 'shari-paintings-overview',
-  imports: [RouterLink, ShariButton, MatPaginatorModule],
+  imports: [RouterLink, ShariButton, MatPaginatorModule, OrderModal],
   templateUrl: './paintings-overview.html',
   styleUrl: './paintings-overview.scss'
 })
@@ -17,6 +18,8 @@ export class PaintingsOverview {
   paintings = signal<Painting[]>([]);
   pageIndex = signal(0);
   pageSize = signal(10);
+
+  selectedPainting = signal<Painting | null>(null);
 
   constructor() {
     this.setInitialPageSize();
@@ -48,5 +51,15 @@ export class PaintingsOverview {
 
   onAddClick(): void {
     this.router.navigateByUrl('/dashboard-1975/painting/new');
+  }
+
+  openOrderModal(event: MouseEvent, painting: Painting): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.selectedPainting.set(painting);
+  }
+
+  closeOrderModal(): void {
+    this.selectedPainting.set(null);
   }
 }
