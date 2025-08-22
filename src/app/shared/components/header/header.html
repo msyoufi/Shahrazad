@@ -1,4 +1,25 @@
 <div class="header-component-container">
-  <p>header works!</p>
+  <a class="logo" routerLink="">
+    <h1>Shahrazad's Art</h1>
+  </a>
+
+  <nav class="header-nav-bar">
+    <a routerLink="" class="header-link">Home</a>
+
+    @if (authService.user) {
+    <a routerLink="/dashboard-1975" class="header-link">Dashboard</a>
+    }
+  </nav>
+
+
+  @if (authService.user) {
+  <shari-button class="logout-button" type="button" variant="outlined" color="red" (onClick)="onLogoutClick()" [disabled]="isLoggingOut()">
+    @if(isLoggingOut()){
+    <mat-spinner [diameter]="15" [strokeWidth]="2" />
+    } @else {
+    Logout
+    }
+  </shari-button>
+  }
 
 </div>

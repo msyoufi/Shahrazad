@@ -1,4 +1,35 @@
 .header-component-container {
-  padding: 2rem 0;
-  border-bottom: 2px solid black;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 2rem 0 4rem;
+  align-items: center;
+}
+
+.header-nav-bar {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+a {
+  text-decoration: none;
+  font-size: 1.2rem;
+  color: var(--text-color);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a.logo {
+  font-size: initial;
+}
+
+a.logo:hover {
+  text-decoration: none;
+}
+
+.logout-button {
+  width: fit-content;
+  justify-self: right;
 }
