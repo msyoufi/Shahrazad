@@ -10,17 +10,17 @@ export class ImageStorageService {
   async compressAndUpload(
     img: File,
     paintingId: string,
-    name: string = 'main',
+    id: string = 'main',
     order: number = 0
   ): Promise<ImageUrls> {
     const { large, thumbnail } = this.compressImage(img);
-    const { largRef, thumbnailRef } = this.getImageRef(paintingId, name);
+    const { largRef, thumbnailRef } = this.getImageRef(paintingId, id);
 
     return {
-      id: name,
+      id,
       large: await this.uploadFile(large, largRef),
       thumbnail: await this.uploadFile(thumbnail, thumbnailRef),
-      order: name === 'main' ? 0 : order
+      order: id === 'main' ? 0 : order
     };
   }
 
@@ -37,15 +37,17 @@ export class ImageStorageService {
     return Promise.all(deletePromises);
   }
 
-  async deleteImage(paintingId: string, name: string): Promise<void[]> {
-    const { largRef, thumbnailRef } = this.getImageRef(paintingId, name);
+  async deleteImage(paintingId: string, id: string): Promise<void[]> {
+    const { largRef, thumbnailRef } = this.getImageRef(paintingId, id);
     return Promise.all([deleteObject(largRef), deleteObject(thumbnailRef)]);
   }
 
-  private getImageRef(paintingId: string, name: string) {
+  private getImageRef(paintingId: string, id: string) {
+    const path = paintingId + '/' + id;
+
     return {
-      largRef: ref(this.storage, `paintings/${paintingId}/${name}`),
-      thumbnailRef: ref(this.storage, `paintings/${paintingId}/${name}_thumbnail`)
+      largRef: ref(this.storage, `paintings/${path}`),
+      thumbnailRef: ref(this.storage, `paintings/${path}_thumbnail`)
     };
   }
 
