@@ -20,10 +20,9 @@
       <p>{{painting.material}}</p>
       <p>{{painting.width}} x {{painting.height}} cm</p>
       <p>Year: {{painting.year}}</p>
-      <p>order: {{painting.order}}</p>
     </div>
 
-    <button (click)="openOrderModal($event, painting)">order</button>
+    <button class="order-button" (click)="openOrderModal($event, painting)">{{painting.order}}</button>
   </a>
   }
 
