@@ -11,18 +11,18 @@
 </div>
 
 <div class="paintings-grid">
-  @for(painting of paintings(); track painting.id){
-  <a class="painting-item" [routerLink]="'/dashboard-1975/painting/' + painting.id">
-    <img [src]="painting.main_image.thumbnail" alt="">
+  @for(pt of paintings(); track pt.id){
+  <a class="painting-item" [routerLink]="'/dashboard-1975/painting/' + pt.id">
+    <img [src]="pt.main_image.thumbnail" alt="">
 
     <div class="painting-data">
-      <p>{{painting.title}}</p>
-      <p>{{painting.material}}</p>
-      <p>{{painting.width}} x {{painting.height}} cm</p>
-      <p>Year: {{painting.year}}</p>
+      <p>{{pt.title}}</p>
+      <p>{{pt.material}}</p>
+      <p>{{pt.width}} x {{pt.height}} cm</p>
+      <p>{{pt.year ? 'Year: ' + pt.year : ''}}</p>
     </div>
 
-    <button class="order-button" (click)="openOrderModal($event, painting)">{{painting.order}}</button>
+    <button class="order-button" (click)="openOrderModal($event, pt)">{{pt.order}}</button>
   </a>
   }
 
