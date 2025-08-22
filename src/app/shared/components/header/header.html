@@ -13,7 +13,8 @@
 
 
   @if (authService.user) {
-  <shari-button class="logout-button" type="button" variant="outlined" color="red" (onClick)="onLogoutClick()" [disabled]="isLoggingOut()">
+  <shari-button class="logout-button" type="button" variant="outlined" color="red" (onClick)="onLogoutClick()"
+    [disabled]="isLoggingOut()">
     @if(isLoggingOut()){
     <mat-spinner [diameter]="15" [strokeWidth]="2" />
     } @else {
