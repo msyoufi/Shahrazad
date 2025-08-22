@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Storage, uploadBytes, getDownloadURL, type StorageReference, ref, deleteObject } from '@angular/fire/storage';
+import imageCompression, { Options } from 'browser-image-compression';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class ImageStorageService {
     id: string = 'main',
     order: number = 0
   ): Promise<ImageUrls> {
-    const { large, thumbnail } = this.compressImage(img);
+    const { large, thumbnail } = await this.compressImage(img);
     const { largRef, thumbnailRef } = this.getImageRef(paintingId, id);
 
     return {
@@ -51,11 +52,25 @@ export class ImageStorageService {
     };
   }
 
-  private compressImage(img: File) {
-    // TODO
+  private largCompressionOpt: Options = {
+    maxSizeMB: 2,
+    maxWidthOrHeight: 3000,
+    fileType: 'image/jpeg'
+  };
+
+  private thumbnailCompressionOpt: Options = {
+    maxSizeMB: 0.02,
+    maxWidthOrHeight: 500,
+    fileType: 'image/jpeg'
+  };
+
+  private async compressImage(img: File): Promise<{
+    large: File;
+    thumbnail: File;
+  }> {
     return {
-      large: img,
-      thumbnail: img
+      large: await imageCompression(img, this.largCompressionOpt),
+      thumbnail: await imageCompression(img, this.thumbnailCompressionOpt),
     };
   }
 }
