@@ -61,7 +61,7 @@ export class PaintingForm implements OnInit {
       const painting = this.painting();
       if (!painting) return;
 
-      const { title, material, width, height, year, order, close_ups } = painting;
+      const { title, material, width, height, year, close_ups } = painting;
 
       this.form.patchValue({
         title,
@@ -70,6 +70,8 @@ export class PaintingForm implements OnInit {
         height: height.toString(),
         year: year.toString()
       });
+      
+      if (!close_ups.length) return;
 
       const initialCloseUps = close_ups.slice().sort((a, b) => a.order - b.order);
       this.closeUps.set(initialCloseUps);
