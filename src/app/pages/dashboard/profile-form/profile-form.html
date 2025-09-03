@@ -1,1 +1,42 @@
-<p>profile-form works!</p>
+@let loading = isLoading();
+
+<form [formGroup]="form">
+  <h2 class="title">
+    Profile
+  </h2>
+
+  <div class="control-field">
+    <input type="file" id="profile_image" name="profile_image" class="shari-input" accept="image/*"
+      (change)="onImageChange($event, 'profile')">
+    <label for="profile_image" [class.top]="true">Profile Image</label>
+  </div>
+
+  <div class="control-field">
+    <input type="file" id="cover_image" name="cover_image" class="shari-input" accept="image/*"
+      (change)="onImageChange($event, 'profile')">
+    <label for="cover_image" [class.top]="true">Cover Image</label>
+  </div>
+
+  <div class="control-field">
+    <input type="text" id="name" formControlName="name" class="shari-input">
+    <label for="name" [class.top]="form.get('name')?.value">Name</label>
+  </div>
+
+  <div class="control-field">
+    <textarea type="text" id="bio" formControlName="bio" class="shari-input"></textarea>
+    <label for="bio" [class.top]="form.get('bio')?.value">Bio</label>
+  </div>
+
+  <div class="buttons-box">
+    <shari-button type="button" variant="outlined" (onClick)="closeForm()" [disabled]="loading">
+      Cancel
+    </shari-button>
+    <shari-button type="button" (onClick)="onSaveClick()" [disabled]="loading">
+      @if (loading) {
+      <mat-spinner [diameter]="15" [strokeWidth]="2" />
+      } @else {
+      Save
+      }
+    </shari-button>
+  </div>
+</form>
