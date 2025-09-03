@@ -5,6 +5,7 @@ import { PaintingsOverview } from './pages/dashboard/paintings-overview/painting
 import { PaintingForm } from './pages/dashboard/painting-form/painting-form';
 import { PaintingDetails } from './pages/painting-details/painting-details';
 import { About } from './pages/about/about';
+import { ProfileForm } from './pages/dashboard/profile-form/profile-form';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -23,6 +24,7 @@ export const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: 'overview' },
       { path: 'overview', component: PaintingsOverview },
       { path: 'painting/:id', component: PaintingForm },
+      { path: 'profile', component: ProfileForm },
     ]
   }
 ];

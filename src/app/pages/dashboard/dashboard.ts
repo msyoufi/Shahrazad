@@ -15,10 +15,10 @@ export class Dashboard {
   currentTab = signal('');
 
   constructor() {
-    this.listenToPathChnages();
+    this.listenToRouteChanges();
   }
 
-  listenToPathChnages(): void {
+  listenToRouteChanges(): void {
     this.router.events
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(e => {
