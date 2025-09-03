@@ -1,10 +1,11 @@
 import { Component, computed, effect, inject, Input, signal } from '@angular/core';
 import { PaintingsService } from '../../shared/services/paintings';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { Swipe } from '../../shared/directives/swipe';
 
 @Component({
   selector: 'shari-painting-details',
-  imports: [MatProgressSpinner],
+  imports: [MatProgressSpinner, Swipe],
   templateUrl: './painting-details.html',
   styleUrl: './painting-details.scss'
 })
@@ -15,25 +16,59 @@ export class PaintingDetails {
     this.paintingId.set(id);
   }
 
+  // use a computed signal for the painting in case the the paintings in the paintingsservice are still loading.
   paintingId = signal('');
   painting = computed<Painting | undefined>(() =>
     this.paintingsService.paintings.find(p => p.id === this.paintingId())
   );
 
-  currentImage = signal('');
+  currentImageUrl = signal('');
   isLoading = signal(false);
+  swiperButtonVisible = signal(false);
+  private timeoutId: any;
+
+  // the index of the current image matches the image's order (main image index = 0).
+  private currentIndex = 0;
 
   constructor() {
     effect(() => {
-      this.isLoading.set(true);
-      const mainImageUrl = this.painting()?.main_image.large;
-      this.currentImage.set(mainImageUrl ?? '');
+      const mainImageUrl = this.painting()?.main_image.large ?? '';
+      this.setImageUrl(mainImageUrl, 0);
     });
   }
 
-  onImageClick(nextUrl: string): void {
-    if (nextUrl === this.currentImage()) return;
+  onImageClick(nextUrl: string, index: number): void {
+    if (nextUrl === this.currentImageUrl()) return;
+    this.setImageUrl(nextUrl, index);
+  }
+
+  onImageSwipe(direction: 'left' | 'right'): void {
+    const painting = this.painting();
+    if (!painting) return;
+
+    const allImages = [painting.main_image].concat(painting.close_ups);
+
+    const nextIndex = direction === 'left'
+      ? this.currentIndex + 1
+      : this.currentIndex - 1;
+
+    if (nextIndex >= allImages.length || nextIndex < 0)
+      return;
+
+    const nextUrl = allImages.find(img => img.order === nextIndex)!.large;
+    this.setImageUrl(nextUrl, nextIndex);
+  }
+
+  private setImageUrl(nextUrl: string, nextIndex: number): void {
     this.isLoading.set(true);
-    this.currentImage.set(nextUrl);
+    this.currentImageUrl.set(nextUrl);
+    this.currentIndex = nextIndex;
+  }
+
+  onImageViewBoxInteraction() {
+    this.swiperButtonVisible.set(true);
+
+    clearTimeout(this.timeoutId);
+    this.timeoutId = setTimeout(() => this.swiperButtonVisible.set(false), 2000);
   }
 }

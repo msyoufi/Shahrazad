@@ -3,22 +3,35 @@
 @if (pt) {
 <div class="painting-detalis-component-grid">
   <div class="images-list">
-    <img [src]="pt.main_image.thumbnail" alt="Main painting thumbnail" (click)="onImageClick(pt.main_image.large)">
+    <img [src]="pt.main_image.thumbnail" alt="Main painting thumbnail"
+      (click)="onImageClick(pt.main_image.large, pt.main_image.order)">
 
     @for(closeUp of pt.close_ups; track closeUp.id){
-    <img [src]="closeUp.thumbnail" (click)="onImageClick(closeUp.large)" alt="Close-up thumbnail of the main painting">
+    <img [src]="closeUp.thumbnail" (click)="onImageClick(closeUp.large, closeUp.order)"
+      alt="A thumbnail of a Close-up of the painting">
     }
 
   </div>
 
-  <div class="image-view-box">
-    <img [src]="currentImage()" alt="Painting Image View" (load)="isLoading.set(false)">
+  <div class="image-view-box" (click)="onImageViewBoxInteraction()" (touchstart)="onImageViewBoxInteraction()">
+    <img [src]="currentImageUrl()" alt="Painting Image View" (load)="isLoading.set(false)" shariSwipe
+      (swipe)="onImageSwipe($event)">
 
     @if(isLoading()){
     <div class="loading-overlay">
       <mat-spinner [diameter]="25" [strokeWidth]="2" />
     </div>
     }
+
+    <button class="image-swiper-button left" [class.visible]="swiperButtonVisible()" (click)="onImageSwipe('right')"
+      [disabled]="!swiperButtonVisible()">
+      &#8592;
+    </button>
+    <button class="image-swiper-button right" [class.visible]="swiperButtonVisible()" (click)="onImageSwipe('left')"
+      [disabled]="!swiperButtonVisible()">
+      &#8594;
+
+    </button>
   </div>
 
   <div class="data-box">

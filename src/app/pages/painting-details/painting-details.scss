@@ -40,6 +40,32 @@
     left: 0;
     cursor: default;
   }
+
+  .image-swiper-button {
+    display: none;
+    width: fit-content;
+    padding: .3rem;
+    font-size: 1.5rem;
+    border-radius: var(--radius);
+    position: absolute;
+    top: 50%;
+    background-color: var(--gray);
+    color: #fff;
+    opacity: 0;
+    transition: .15s;
+
+    &.visible {
+      opacity: .7;
+    }
+
+    &.right {
+      right: 0;
+    }
+
+    &.left {
+      left: 0;
+    }
+  }
 }
 
 .data-box {
@@ -77,6 +103,10 @@ p {
 
   .images-list {
     display: none;
+  }
+
+  .image-view-box .image-swiper-button {
+    display: block;
   }
 
   .data-box {
