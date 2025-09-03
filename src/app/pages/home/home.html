@@ -1,9 +1,9 @@
 <div class="gallery-grid">
 
-  @for(column of paintingsColumns(); track $index){
+  @for (column of paintingsColumns(); track $index) {
   <div>
 
-    @for(painting of column; track $index){
+    @for (painting of column; track painting.id) {
     <div class="painting-item" [routerLink]="'/painting/' + painting.id">
 
       <img [src]="painting.main_image.large" [alt]="'Painting:' + painting.title">
