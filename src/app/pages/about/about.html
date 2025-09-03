@@ -1,0 +1,24 @@
+@let pf = profile();
+
+@if (pf) {
+<div class="about-component-container">
+  <div>
+    <img [src]="pf.profileImageUrl" alt="" class="profile-image">
+
+    <h2 class="name">{{pf.name}}</h2>
+
+    <a href="">social media link</a>
+    <a href="">social media link</a>
+    <a href="">social media link</a>
+  </div>
+
+  <div>
+    <img [src]="pf.coverImageUrl" alt="" class="cover-image">
+
+    <p class="bio">{{pf.bio}}</p>
+  </div>
+</div>
+
+} @else {
+<mat-spinner [diameter]="20" [strokeWidth]="2" />
+}

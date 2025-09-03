@@ -4,10 +4,12 @@ import { authGuard } from './auth.guard';
 import { PaintingsOverview } from './pages/dashboard/paintings-overview/paintings-overview';
 import { PaintingForm } from './pages/dashboard/painting-form/painting-form';
 import { PaintingDetails } from './pages/painting-details/painting-details';
+import { About } from './pages/about/about';
 
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'painting/:id', component: PaintingDetails },
+  { path: 'about', component: About },
   {
     path: 'login-1975',
     canActivate: [authGuard],
