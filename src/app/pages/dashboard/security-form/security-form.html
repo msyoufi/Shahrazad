@@ -2,7 +2,7 @@
 @let user = authService.user;
 
 <form [formGroup]="passwordForm" (ngSubmit)="onPasswordFormSubmit()">
-  @if (!user?.emailVerified) {
+  @if (user?.emailVerified) {
   <h2 class="title">
     Email Address: <span class="green">
       {{user?.email}} &#10004;
