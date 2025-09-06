@@ -73,7 +73,7 @@ export class AdminLogin implements OnInit {
     const email = this.form().value.email;
 
     try {
-      await this.authService.resetPassword(email);
+      await this.authService.sendPasswordResetLink(email);
       this.snackbar.show(`Reset Link Sent To:\n ${email}`, 'green', 5000);
 
     } catch (err: unknown) {

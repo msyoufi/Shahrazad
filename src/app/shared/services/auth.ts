@@ -1,5 +1,5 @@
 import { inject, Injectable, OnDestroy, signal } from '@angular/core';
-import { Auth, EmailAuthProvider, onAuthStateChanged, reauthenticateWithCredential, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, Unsubscribe, updatePassword, type User } from '@angular/fire/auth';
+import { Auth, EmailAuthProvider, onAuthStateChanged, reauthenticateWithCredential, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, Unsubscribe, updatePassword, type User } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class AuthService implements OnDestroy {
   }
 
   private subscribeToUserChanges(): void {
-    this.unsubscribe = onAuthStateChanged(this.auth, (user) => {
+    this.unsubscribe = onAuthStateChanged(this.auth, user => {
       this.currentUser.set(user);
     });
   }
@@ -37,17 +37,21 @@ export class AuthService implements OnDestroy {
     await signOut(this.auth);
   }
 
-  async reauthenticatUser(user: User, email: string, password: string): Promise<void> {
-    const credential = EmailAuthProvider.credential(email, password);
-    await reauthenticateWithCredential(user, credential);
+  sendVerificationLink(user: User): Promise<void> {
+    return sendEmailVerification(user);
   }
 
-  changePassword(user: User, newPassword: string): Promise<void> {
+  sendPasswordResetLink(email: string): Promise<void> {
+    return sendPasswordResetEmail(this.auth, email);
+  }
+
+  setNewPassword(user: User, newPassword: string): Promise<void> {
     return updatePassword(user, newPassword);
   }
 
-  resetPassword(email: string): Promise<void> {
-    return sendPasswordResetEmail(this.auth, email);
+  async reauthenticatUser(user: User, email: string, password: string): Promise<void> {
+    const credential = EmailAuthProvider.credential(email, password);
+    await reauthenticateWithCredential(user, credential);
   }
 
   ngOnDestroy(): void {
