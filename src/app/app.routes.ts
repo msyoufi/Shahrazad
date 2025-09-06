@@ -6,6 +6,7 @@ import { PaintingForm } from './pages/dashboard/painting-form/painting-form';
 import { PaintingDetails } from './pages/painting-details/painting-details';
 import { About } from './pages/about/about';
 import { ProfileForm } from './pages/dashboard/profile-form/profile-form';
+import { SecurityForm } from './pages/dashboard/security-form/security-form';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -25,6 +26,7 @@ export const routes: Routes = [
       { path: 'overview', component: PaintingsOverview },
       { path: 'painting/:id', component: PaintingForm },
       { path: 'profile', component: ProfileForm },
+      { path: 'security', component: SecurityForm },
     ]
   }
 ];
