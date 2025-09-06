@@ -26,6 +26,7 @@ export class ProfileForm {
   });
 
   isLoading = signal(false);
+  progress = signal('');
 
   constructor() {
     this.populateForm();
@@ -38,10 +39,7 @@ export class ProfileForm {
 
       const { name, bio } = profile;
 
-      this.form.patchValue({
-        name,
-        bio,
-      });
+      this.form.patchValue({ name, bio });
 
     } catch (err: unknown) {
       this.snackbar.show('Unable To Load The Profile Data', 'red');
@@ -76,19 +74,23 @@ export class ProfileForm {
     }
 
     this.isLoading.set(true);
+    let formData = this.form.getRawValue();
 
     try {
-
       if (this.profileImage) {
-        // update profile image
+        this.progress.set('Uploading profile image...');
+        const profileImageUrl = await this.uploadImage(this.profileImage, 'profile');
+        formData = Object.assign(formData, { profileImageUrl });
       }
 
       if (this.coverImage) {
-        // update cover image
+        this.progress.set('Uploading cover image...');
+        const coverImageUrl = await this.uploadImage(this.coverImage, 'cover');
+        formData = Object.assign(formData, { coverImageUrl });
       }
 
-      const newData = this.form.getRawValue();
-      await this.profileService.updateProfile(newData);
+      this.progress.set('Updating profile data...');
+      await this.profileService.updateProfile(formData);
 
       this.snackbar.show('Profile Updated');
 
@@ -97,7 +99,14 @@ export class ProfileForm {
 
     } finally {
       this.isLoading.set(false);
+      this.progress.set('Done');
+      this.profileImage = undefined;
+      this.coverImage = undefined;
     }
+  }
+
+  private uploadImage(img: File, name: 'profile' | 'cover'): Promise<string> {
+    return this.profileService.compressAndUpload(img, name);
   }
 
   closeForm(): void {
