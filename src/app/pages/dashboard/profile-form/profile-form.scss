@@ -11,3 +11,23 @@ form {
   font-size: 1.1rem;
   font-weight: 500;
 }
+
+.progress-buttons-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.progress {
+  margin-left: 1rem;
+  align-self: center;
+}
+
+@media (max-width: 560px) {
+  .progress-buttons-wrapper {
+    flex-direction: column-reverse;
+  }
+
+  .progress {
+    align-self: flex-start;
+  }
+}

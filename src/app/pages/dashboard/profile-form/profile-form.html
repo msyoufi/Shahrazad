@@ -27,16 +27,22 @@
     <label for="bio" [class.top]="form.get('bio')?.value">Bio</label>
   </div>
 
-  <div class="buttons-box">
-    <shari-button type="button" variant="outlined" (onClick)="closeForm()" [disabled]="loading">
-      Cancel
-    </shari-button>
-    <shari-button type="button" (onClick)="onSaveClick()" [disabled]="loading">
-      @if (loading) {
-      <mat-spinner [diameter]="15" [strokeWidth]="2" />
-      } @else {
-      Save
-      }
-    </shari-button>
+  <div class="progress-buttons-wrapper">
+    <p class="progress">{{progress()}}</p>
+
+    <div class="buttons-box">
+      <shari-button type="button" variant="outlined" (onClick)="closeForm()" [disabled]="loading">
+        Cancel
+      </shari-button>
+
+      <shari-button type="button" (onClick)="onSaveClick()" [disabled]="loading">
+        @if (loading) {
+        <mat-spinner [diameter]="15" [strokeWidth]="2" />
+        } @else {
+        Save
+        }
+      </shari-button>
+    </div>
   </div>
+
 </form>
