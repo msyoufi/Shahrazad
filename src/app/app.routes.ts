@@ -4,10 +4,13 @@ import { authGuard } from './auth.guard';
 import { PaintingsOverview } from './pages/dashboard/paintings-overview/paintings-overview';
 import { PaintingForm } from './pages/dashboard/painting-form/painting-form';
 import { PaintingDetails } from './pages/painting-details/painting-details';
+import { About } from './pages/about/about';
+import { ProfileForm } from './pages/dashboard/profile-form/profile-form';
 
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'painting/:id', component: PaintingDetails },
+  { path: 'about', component: About },
   {
     path: 'login-1975',
     canActivate: [authGuard],
@@ -21,6 +24,7 @@ export const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: 'overview' },
       { path: 'overview', component: PaintingsOverview },
       { path: 'painting/:id', component: PaintingForm },
+      { path: 'profile', component: ProfileForm },
     ]
   }
 ];

@@ -51,3 +51,9 @@
 .ng-invalid.ng-dirty.ng-touched+label {
   color: var(--red);
 }
+
+textarea {
+  resize: vertical;
+  min-height: 5rem;
+  max-height: 15rem;
+}

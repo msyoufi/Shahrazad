@@ -1,0 +1,25 @@
+@let pf = profile();
+
+@if (pf) {
+<div class="about-component-container">
+  <div>
+    <img class="profile-image" [src]="pf.profileImageUrl" alt="">
+
+    <h2 class="name">{{pf.name}}</h2>
+
+    <a href="">Instagram link</a>
+    <a href="">Email address</a>
+  </div>
+
+  <div>
+    <img class="cover-image" [src]="pf.coverImageUrl" alt="">
+
+    <p class="bio">{{pf.bio}}</p>
+  </div>
+</div>
+
+} @else {
+<div class="loader-box">
+  <mat-spinner [diameter]="20" [strokeWidth]="2" />
+</div>
+}

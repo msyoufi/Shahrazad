@@ -6,9 +6,9 @@
 <div class="painting-form-component-container">
 
   <form [formGroup]="form" class="painting-form">
-    <p class="title">
-      {{pt ? 'Edit ' + pt!.title : 'New Painting'}}
-    </p>
+    <h2 class="title">
+      {{pt ? 'Edit: ' + pt!.title : 'New Painting'}}
+    </h2>
 
     <div class="control-field">
       <input type="text" id="title" formControlName="title" class="shari-input" required #titleInput>

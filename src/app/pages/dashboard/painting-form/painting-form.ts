@@ -70,7 +70,7 @@ export class PaintingForm implements OnInit {
         height: height.toString(),
         year: year.toString()
       });
-      
+
       if (!close_ups.length) return;
 
       const initialCloseUps = close_ups.slice().sort((a, b) => a.order - b.order);
@@ -219,6 +219,6 @@ export class PaintingForm implements OnInit {
   }
 
   closeForm(): void {
-    this.router.navigateByUrl('dashboard-1975/overview')
+    this.router.navigateByUrl('dashboard-1975/overview');
   }
 }
