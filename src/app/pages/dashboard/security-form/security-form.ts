@@ -29,12 +29,19 @@ export class SecurityForm {
     const user = this.authService.user;
     if (!user) return;
 
+    const { email, emailVerified } = user;
+
+    if (!emailVerified) {
+      this.snackbar.show('Please Verify Your Email First!', 'red');
+      return;
+    }
+
     this.isUpdatingPassword.set(true);
 
     const { currentPassword, newPassword } = this.passwordForm.getRawValue();
 
     try {
-      await this.authService.reauthenticatUser(user, user.email!, currentPassword);
+      await this.authService.reauthenticatUser(user, email!, currentPassword);
       await this.authService.setNewPassword(user, newPassword);
 
       this.passwordForm.reset();
