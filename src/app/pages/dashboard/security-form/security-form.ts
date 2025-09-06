@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Snackbar } from '../../../shared/components/snackbar';
 import { PasswordToggle } from '../../../shared/components/password-toggle';
 import { AuthService } from '../../../shared/services/auth';
+import ShariValidators from '../../../shared/validators/custom.validators';
 
 @Component({
   selector: 'shari-security-form',
@@ -20,7 +21,7 @@ export class SecurityForm {
 
   passwordForm = new FormGroup({
     currentPassword: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    newPassword: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    newPassword: new FormControl('', { nonNullable: true, validators: [Validators.required, ShariValidators.password] }),
   });
 
   isUpdatingPassword = signal(false);
