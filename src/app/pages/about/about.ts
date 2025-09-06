@@ -19,7 +19,6 @@ export class About {
 
   async getProfile(): Promise<void> {
     const profile = await this.profileService.getProfile();
-    console.log(profile)
     this.profile.set(profile);
   }
 }
