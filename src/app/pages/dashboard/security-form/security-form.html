@@ -1,1 +1,48 @@
-<p>security-form works!</p>
+@let updatingPW = isUpdatingPassword();
+@let user = authService.user;
+
+<form [formGroup]="passwordForm" (ngSubmit)="onPasswordFormSubmit()">
+  @if (!user?.emailVerified) {
+  <h2 class="title">
+    Email Address: <span class="green">
+      {{user?.email}} &#10004;
+    </span>
+  </h2>
+
+  } @else {
+  <h2 class="title">
+    Please Verfiy Your Email Address: {{user ? user.email : ''}}
+  </h2>
+
+  <shari-button type="button" variant="outlined" color="red" (onClick)="onVerifyEmailClick()">
+    Send Verification Link
+  </shari-button>
+  }
+
+  <h2 class="title">
+    Update Password
+  </h2>
+
+  <div class="control-field">
+    <input type="password" id="currentPassword" formControlName="currentPassword" class="shari-input" #currPwInput>
+    <label for="currentPassword" [class.top]="passwordForm.get('currentPassword')?.value">Current Password</label>
+    <shari-password-toggle [input]="currPwInput" />
+  </div>
+
+  <div class="control-field">
+    <input type="password" id="newPassword" formControlName="newPassword" class="shari-input" #newPwInput>
+    <label for="newPassword" [class.top]="passwordForm.get('newPassword')?.value">New Password</label>
+    <shari-password-toggle [input]="newPwInput" />
+  </div>
+
+  <div class="buttons-box">
+    <shari-button type="submit" class="pw-reset-button" [disabled]="updatingPW">
+      @if (updatingPW) {
+      <mat-spinner [diameter]="15" [strokeWidth]="2" />
+      } @else {
+      Reset Password
+      }
+    </shari-button>
+  </div>
+
+</form>
