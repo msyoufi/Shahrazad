@@ -35,12 +35,15 @@
     <shari-password-toggle [input]="newPwInput" />
   </div>
 
-  <div class="buttons-box">
-    <shari-button type="submit" class="pw-reset-button" [disabled]="updatingPW">
+
+  <div class="form-footer">
+    <small class="password-error">{{passwordError()}}</small>
+
+    <shari-button type="submit" class="pw-reset-button" [disabled]="updatingPW || passwordForm.invalid">
       @if (updatingPW) {
       <mat-spinner [diameter]="15" [strokeWidth]="2" />
       } @else {
-      Reset Password
+      Save Password
       }
     </shari-button>
   </div>

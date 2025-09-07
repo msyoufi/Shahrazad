@@ -19,3 +19,13 @@ form {
 .pw-reset-button {
   min-width: 9rem;
 }
+
+.password-error {
+  margin: 1rem;
+  color: var(--red);
+}
+
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+}
