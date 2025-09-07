@@ -1,33 +1,37 @@
-<form #form="ngForm" class="overlay-content-box" (ngSubmit)="onSubmit()">
-  <h2>Hallo Shari :) Schön, dass du da bist!</h2>
+<div class="overlay">
+  <form #form="ngForm" class="overlay-content-box" (ngSubmit)="onSubmit()">
+    <h2>Hallo Shari :) Schön, dass du da bist!</h2>
 
-  <div class="control-field">
-    <input type="email" id="email" name="email" class="shari-input" ngModel required email #emailInput>
-    <label for="email" [class.top]="form.value.email">Email*</label>
-  </div>
+    <div class="control-field">
+      <input type="email" id="email" name="email" class="shari-input" ngModel required email #emailInput>
+      <label for="email" [class.top]="form.value.email">Email*</label>
+    </div>
 
-  <div class="control-field">
-    <input type="password" id="password" name="password" class="shari-input" ngModel required password #pwInput>
-    <label for="password" [class.top]="form.value.password">Password*</label>
-    <shari-password-toggle [input]="pwInput" />
-  </div>
+    <div class="control-field">
+      <input type="password" id="password" name="password" class="shari-input" ngModel required password #pwInput>
+      <label for="password" [class.top]="form.value.password">Password*</label>
+      <shari-password-toggle [input]="pwInput" />
+    </div>
 
-  <div class="buttons-box">
-    <shari-button type="submit" [loading]="isLoggingIn()" [disabled]="form.invalid || isLoggingIn() || isResetingPW()">
-      @if(isLoggingIn()){
-      <mat-spinner [diameter]="15" [strokeWidth]="2" />
-      } @else {
-      Login
-      }
-    </shari-button>
+    <div class="buttons-box">
+      <shari-button type="submit" [loading]="isLoggingIn()"
+        [disabled]="form.invalid || isLoggingIn() || isResetingPW()">
+        @if(isLoggingIn()){
+        <mat-spinner [diameter]="15" [strokeWidth]="2" />
+        } @else {
+        Login
+        }
+      </shari-button>
 
-    <shari-button type="button" variant="outlined" color="red" (onClick)="onResetPasswordClick()"
-      [disabled]="!form.value.email || isResetingPW() || isLoggingIn()">
-      @if(isResetingPW()){
-      <mat-spinner [diameter]="15" [strokeWidth]="2" />
-      } @else {
-      Reset Password
-      }
-    </shari-button>
-  </div>
-</form>
+      <shari-button type="button" variant="outlined" color="red" (onClick)="onResetPasswordClick()"
+        [disabled]="!form.value.email || isResetingPW() || isLoggingIn()">
+        @if(isResetingPW()){
+        <mat-spinner [diameter]="15" [strokeWidth]="2" />
+        } @else {
+        Reset Password
+        }
+      </shari-button>
+    </div>
+  </form>
+
+</div>
