@@ -38,6 +38,22 @@
   min-height: 50vh;
 }
 
+.links-list {
+  margin-top: 1rem;
+}
+
+.icon-link {
+  display: flex;
+  align-items: center;
+  padding: .5rem 0;
+  gap: .5rem;
+
+  img {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
 @media (max-width: 900px) {
   .about-component-container {
     grid-template-columns: 1fr;
