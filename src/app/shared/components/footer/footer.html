@@ -1,1 +1,16 @@
-<p>footer works!</p>
+<div class="footer-component-container">
+  <a class="logo" routerLink="">
+    <h3>Shahrazad's Art</h3>
+  </a>
+
+  <nav class="footer-nav">
+    <a routerLink="" class="header-link">Home</a>
+    <a routerLink="/about" class="header-link">About</a>
+
+    @if (authService.user) {
+    <a routerLink="/dashboard-1975" class="header-link">Dashboard</a>
+    }
+  </nav>
+
+  <small class="copywrites">&copy; Shahrazad's Art. All Rights Reserved</small>
+</div>

@@ -1,0 +1,27 @@
+.footer-component-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 2rem 0;
+  gap: 2rem;
+  border-top: 2px solid var(--border-color);
+}
+
+.footer-nav {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+a.logo {
+  font-size: 1rem;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.copywrites {
+  width: 100%;
+}
