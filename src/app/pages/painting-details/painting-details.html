@@ -43,7 +43,7 @@
 <div id="focus_overlay" class="focus-container overlay" [class.visible]="isFocusMode()"
   (click)="onFocusContainerClick($event)" (mousemove)="showControls()">
   <div class="control-bar" [class.visible]="controlsVisible()">
-    <p>51 / 55</p>
+    <p>{{currentIndex + 1}} / {{pt.close_ups.length + 1}}</p>
     <button (click)="closeFocusMode()">&#10005;</button>
   </div>
 

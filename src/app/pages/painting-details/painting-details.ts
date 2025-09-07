@@ -28,7 +28,7 @@ export class PaintingDetails {
   private timeoutId: any;
 
   // the index of the current image matches the image's order (main image index = 0).
-  private currentIndex = 0;
+  currentIndex = 0;
 
   isFocusMode = signal(false);
 
@@ -78,8 +78,8 @@ export class PaintingDetails {
   }
 
   onImageViewClick() {
-    this.controlsVisible.set(false);
     this.isFocusMode.set(true);
+    this.showControls();
   }
 
   onFocusContainerClick(event: MouseEvent) {
