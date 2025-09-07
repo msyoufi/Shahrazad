@@ -5,8 +5,9 @@ export default class ShariValidators {
     const password = control.value;
     const errors: any = {};
 
-    if (/\s/.test(password)) errors.hasWhiteSpace = true;
-    if (!/[A-Za-z]/.test(password)) errors.noLetter = true;
+    if (/\s/.test(password)) errors.whiteSpace = true;
+    if (!/[A-Z]/.test(password)) errors.noUpper = true;
+    if (!/[a-z]/.test(password)) errors.noLower = true;
     if (!/\d/.test(password)) errors.noDigit = true;
 
     return Object.keys(errors).length ? errors : null;

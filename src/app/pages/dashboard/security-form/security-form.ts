@@ -21,7 +21,7 @@ export class SecurityForm {
 
   passwordForm = new FormGroup({
     currentPassword: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    newPassword: new FormControl('', { nonNullable: true, validators: [Validators.required, ShariValidators.password] }),
+    newPassword: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(8), ShariValidators.password] }),
   });
 
   isUpdatingPassword = signal(false);
