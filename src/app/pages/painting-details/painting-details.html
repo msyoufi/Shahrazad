@@ -4,18 +4,18 @@
 <div class="painting-detalis-component-grid">
   <div class="images-list">
     <img [src]="pt.main_image.thumbnail" alt="Main painting thumbnail"
-      (click)="onImageClick(pt.main_image.large, pt.main_image.order)">
+      (click)="onImageSelect(pt.main_image.large, pt.main_image.order)">
 
     @for(closeUp of pt.close_ups; track closeUp.id){
-    <img [src]="closeUp.thumbnail" (click)="onImageClick(closeUp.large, closeUp.order)"
+    <img [src]="closeUp.thumbnail" (click)="onImageSelect(closeUp.large, closeUp.order)"
       alt="A thumbnail of a Close-up of the painting">
     }
 
   </div>
 
-  <div class="image-view-box" (click)="onImageViewBoxInteraction()" (touchstart)="onImageViewBoxInteraction()">
+  <div class="image-view-box" (mousemove)="onImageViewBoxInteraction()" (touchstart)="onImageViewBoxInteraction()">
     <img [src]="currentImageUrl()" alt="Painting Image View" (load)="isLoading.set(false)" shariSwipe
-      (swipe)="onImageSwipe($event)">
+      (swipe)="onImageSwipe($event)" (click)="onImageViewClick()">
 
     @if(isLoading()){
     <div class="loading-overlay">
@@ -23,15 +23,14 @@
     </div>
     }
 
-    <button class="image-swiper-button left" [class.visible]="swiperButtonVisible()" (click)="onImageSwipe('right')"
-      [disabled]="!swiperButtonVisible()">
-      &#8592;
-    </button>
-    <button class="image-swiper-button right" [class.visible]="swiperButtonVisible()" (click)="onImageSwipe('left')"
-      [disabled]="!swiperButtonVisible()">
-      &#8594;
-
-    </button>
+    <div class="swiper-buttons-box" [class.visible]="swiperButtonsVisible()">
+      <button (click)="onImageSwipe('right')" [disabled]="!swiperButtonsVisible()">
+        &#8592;
+      </button>
+      <button (click)="onImageSwipe('left')" [disabled]="!swiperButtonsVisible()">
+        &#8594;
+      </button>
+    </div>
   </div>
 
   <div class="painting-data-box">

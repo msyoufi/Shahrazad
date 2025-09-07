@@ -24,7 +24,7 @@ export class PaintingDetails {
 
   currentImageUrl = signal('');
   isLoading = signal(false);
-  swiperButtonVisible = signal(false);
+  swiperButtonsVisible = signal(false);
   private timeoutId: any;
 
   // the index of the current image matches the image's order (main image index = 0).
@@ -37,9 +37,10 @@ export class PaintingDetails {
     });
   }
 
-  onImageClick(nextUrl: string, index: number): void {
+  onImageSelect(nextUrl: string, index: number): void {
     if (nextUrl === this.currentImageUrl()) return;
     this.setImageUrl(nextUrl, index);
+    this.swiperButtonsVisible.set(false);
   }
 
   onImageSwipe(direction: 'left' | 'right'): void {
@@ -66,9 +67,9 @@ export class PaintingDetails {
   }
 
   onImageViewBoxInteraction() {
-    this.swiperButtonVisible.set(true);
+    this.swiperButtonsVisible.set(true);
 
     clearTimeout(this.timeoutId);
-    this.timeoutId = setTimeout(() => this.swiperButtonVisible.set(false), 2000);
+    this.timeoutId = setTimeout(() => this.swiperButtonsVisible.set(false), 2000);
   }
 }
