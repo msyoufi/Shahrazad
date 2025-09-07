@@ -49,7 +49,6 @@ export class OrderModal implements OnInit {
       this.closeModal();
 
     } catch (err: unknown) {
-      console.log(err);
       this.snackbar.show('Reorder Failed', 'red');
 
     } finally {
