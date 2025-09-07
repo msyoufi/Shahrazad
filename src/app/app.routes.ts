@@ -22,8 +22,8 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./pages/dashboard/dashboard').then(comp => comp.Dashboard),
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'overview' },
-      { path: 'overview', component: PaintingsOverview },
+      { path: '', pathMatch: 'full', redirectTo: 'paintings' },
+      { path: 'paintings', component: PaintingsOverview },
       { path: 'painting/:id', component: PaintingForm },
       { path: 'profile', component: ProfileForm },
       { path: 'security', component: SecurityForm },

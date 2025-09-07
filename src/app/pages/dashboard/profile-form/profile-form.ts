@@ -110,6 +110,6 @@ export class ProfileForm {
   }
 
   closeForm(): void {
-    this.router.navigateByUrl('dashboard-1975/overview');
+    this.router.navigateByUrl('dashboard-1975/paintings');
   }
 }
