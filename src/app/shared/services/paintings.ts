@@ -1,11 +1,13 @@
 import { inject, Injectable, OnDestroy, signal } from '@angular/core';
 import { collection, doc, Firestore, onSnapshot, orderBy, query, Unsubscribe, DocumentReference, setDoc, updateDoc, deleteDoc, writeBatch } from '@angular/fire/firestore';
+import { Snackbar } from '../components/snackbar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaintingsService implements OnDestroy {
   private db = inject(Firestore);
+  snackbar = inject(Snackbar);
 
   private paintings$ = signal<Painting[]>([]);
 
@@ -30,7 +32,7 @@ export class PaintingsService implements OnDestroy {
       });
 
     } catch (err: unknown) {
-      console.log(err);
+      this.snackbar.show('Cannot load paintings from the database!', 'red');
     }
   }
 
