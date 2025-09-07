@@ -13,7 +13,7 @@
 
   </div>
 
-  <div class="image-view-box" (mousemove)="onImageViewBoxInteraction()" (touchstart)="onImageViewBoxInteraction()">
+  <div class="image-view-box" (mousemove)="showControls()" (touchstart)="showControls()">
     <img [src]="currentImageUrl()" alt="Painting Image View" (load)="isLoading.set(false)" shariSwipe
       (swipe)="onImageSwipe($event)" (click)="onImageViewClick()">
 
@@ -23,11 +23,11 @@
     </div>
     }
 
-    <div class="swiper-buttons-box" [class.visible]="swiperButtonsVisible()">
-      <button (click)="onImageSwipe('right')" [disabled]="!swiperButtonsVisible()">
+    <div class="swiper-buttons-box" [class.visible]="controlsVisible()">
+      <button (click)="onImageSwipe('right')" [disabled]="!controlsVisible()">
         &#8592;
       </button>
-      <button (click)="onImageSwipe('left')" [disabled]="!swiperButtonsVisible()">
+      <button (click)="onImageSwipe('left')" [disabled]="!controlsVisible()">
         &#8594;
       </button>
     </div>
@@ -35,11 +35,32 @@
 
   <div class="painting-data-box">
     <h2>{{pt.title}}</h2>
-    <p>{{pt.material}}</p>
+    <p>{{pt.material}} &#8226; {{pt.year ? pt.year : ''}}</p>
     <p>{{pt.width}} x {{pt.height}} cm</p>
-    <p>{{pt.year ? 'Year: ' + pt.year : ''}}</p>
   </div>
 </div>
+
+<div id="focus_overlay" class="focus-container overlay" [class.visible]="isFocusMode()"
+  (click)="onFocusContainerClick($event)" (mousemove)="showControls()">
+  <div class="control-bar" [class.visible]="controlsVisible()">
+    <p>51 / 55</p>
+    <button (click)="closeFocusMode()">&#10005;</button>
+  </div>
+
+  <img [src]="currentImageUrl()" alt="Painting Image View" (load)="isLoading.set(false)" shariSwipe
+    (swipe)="onImageSwipe($event)" (touchstart)="showControls()">
+
+  <div class="swiper-buttons-box" [class.visible]="controlsVisible()">
+    <button (click)="onImageSwipe('right')" [disabled]="!controlsVisible()">
+      &#8592;
+    </button>
+    <button (click)="onImageSwipe('left')" [disabled]="!controlsVisible()">
+      &#8594;
+    </button>
+  </div>
+
+</div>
+
 } @else {
 <mat-spinner [diameter]="20" [strokeWidth]="2" />
 }

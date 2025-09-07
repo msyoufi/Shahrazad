@@ -24,11 +24,13 @@ export class PaintingDetails {
 
   currentImageUrl = signal('');
   isLoading = signal(false);
-  swiperButtonsVisible = signal(false);
+  controlsVisible = signal(false);
   private timeoutId: any;
 
   // the index of the current image matches the image's order (main image index = 0).
   private currentIndex = 0;
+
+  isFocusMode = signal(false);
 
   constructor() {
     effect(() => {
@@ -40,10 +42,12 @@ export class PaintingDetails {
   onImageSelect(nextUrl: string, index: number): void {
     if (nextUrl === this.currentImageUrl()) return;
     this.setImageUrl(nextUrl, index);
-    this.swiperButtonsVisible.set(false);
+    this.controlsVisible.set(false);
   }
 
   onImageSwipe(direction: 'left' | 'right'): void {
+    this.showControls();
+
     const painting = this.painting();
     if (!painting) return;
 
@@ -66,10 +70,28 @@ export class PaintingDetails {
     this.currentIndex = nextIndex;
   }
 
-  onImageViewBoxInteraction() {
-    this.swiperButtonsVisible.set(true);
+  showControls() {
+    this.controlsVisible.set(true);
 
     clearTimeout(this.timeoutId);
-    this.timeoutId = setTimeout(() => this.swiperButtonsVisible.set(false), 2000);
+    this.timeoutId = setTimeout(() => this.controlsVisible.set(false), 2000);
+  }
+
+  onImageViewClick() {
+    this.controlsVisible.set(false);
+    this.isFocusMode.set(true);
+  }
+
+  onFocusContainerClick(event: MouseEvent) {
+    event.stopPropagation();
+
+    const targetId = (event.target as HTMLElement).id;
+    if (targetId === 'focus_overlay') {
+      this.closeFocusMode();
+    }
+  }
+
+  closeFocusMode() {
+    this.isFocusMode.set(false);
   }
 }
