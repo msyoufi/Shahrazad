@@ -7,6 +7,7 @@ import { PaintingDetails } from './pages/painting-details/painting-details';
 import { About } from './pages/about/about';
 import { ProfileForm } from './pages/dashboard/profile-form/profile-form';
 import { SecurityForm } from './pages/dashboard/security-form/security-form';
+import { HomeForm } from './pages/dashboard/home-form/home-form';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -25,6 +26,7 @@ export const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: 'paintings' },
       { path: 'paintings', component: PaintingsOverview },
       { path: 'painting/:id', component: PaintingForm },
+      { path: 'home', component: HomeForm },
       { path: 'profile', component: ProfileForm },
       { path: 'security', component: SecurityForm },
     ]
