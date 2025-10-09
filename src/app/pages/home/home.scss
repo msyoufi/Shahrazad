@@ -1,8 +1,17 @@
+.hero-text {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 2rem 1rem 6rem;
+  text-align: justify;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   max-width: 1000px;
-  margin: 4rem auto;
+  margin: 0 auto 4rem;
   column-gap: 1.5rem;
 }
 
@@ -44,6 +53,10 @@
 }
 
 @media (max-width:450px) {
+  .hero-text {
+    padding: 2rem 1rem;
+  }
+
   .gallery-grid {
     grid-template-columns: 1fr;
   }

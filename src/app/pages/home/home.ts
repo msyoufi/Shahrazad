@@ -3,6 +3,7 @@ import { PaintingsService } from '../../shared/services/paintings';
 import { RouterLink } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { HomeHeroService } from '../../shared/services/home-hero';
 
 @Component({
   selector: 'shari-home',
@@ -12,9 +13,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class Home {
   paintingsService = inject(PaintingsService);
+  homeHeroService = inject(HomeHeroService);
   breakpointObserver = inject(BreakpointObserver);
   destroyRef = inject(DestroyRef);
 
+  hero = signal<HomeHero | undefined>(undefined);
   paintingsColumns = signal<Painting[][]>([]);
   columnsCount = signal(3);
   page = signal(1);
@@ -23,9 +26,15 @@ export class Home {
   perPage: number = 12;
 
   constructor() {
+    this.getHeroContent();
     this.getLastPageNum();
     this.arrangePaintingsInColumns();
     this.subscribeToScreenResize();
+  }
+
+  async getHeroContent(): Promise<void> {
+    const heroContent = await this.homeHeroService.getHeroContent();
+    this.hero.set(heroContent);
   }
 
   getLastPageNum(): void {
