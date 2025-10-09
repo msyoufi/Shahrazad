@@ -62,14 +62,15 @@ export class PaintingForm implements OnInit {
       const painting = this.painting();
       if (!painting) return;
 
-      const { title, material, width, height, year, close_ups } = painting;
+      const { title, material, width, height, year, price, close_ups } = painting;
 
       this.form.patchValue({
         title,
         material,
         width: width.toString(),
         height: height.toString(),
-        year: year.toString()
+        year: year.toString(),
+        price: price.toString()
       });
 
       if (!close_ups.length) return;
