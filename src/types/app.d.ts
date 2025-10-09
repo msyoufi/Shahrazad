@@ -3,3 +3,7 @@ interface ConfirmationDialogData {
   message: string,
   actionButton: string
 }
+
+interface HomeHero {
+  textContent: string
+}
