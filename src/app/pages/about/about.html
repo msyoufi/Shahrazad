@@ -13,10 +13,15 @@
         <a href="http://www.instagram.com/shari_art_cape_town" target="_blank">@shari_art_cape_town</a>
       </p>
 
+      @let email = pf.email;
+
+      @if (email) {
       <p class="icon-link">
         <img src="./email_icon.png" alt="Email Icon">
-        <a href="mailto:test@mail.com" target="_blank">test@mail.com</a>
+        <a [href]="'mailto:' + email" target="_blank">{{email}}</a>
       </p>
+      }
+
     </ul>
   </div>
 

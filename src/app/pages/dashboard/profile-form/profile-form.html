@@ -23,6 +23,11 @@
   </div>
 
   <div class="control-field">
+    <input type="email" id="email" formControlName="email" class="shari-input">
+    <label for="email" [class.top]="form.get('email')?.value">Email</label>
+  </div>
+
+  <div class="control-field">
     <textarea type="text" id="bio" formControlName="bio" class="shari-input"></textarea>
     <label for="bio" [class.top]="form.get('bio')?.value">Bio</label>
   </div>
