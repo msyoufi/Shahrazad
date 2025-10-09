@@ -3,14 +3,14 @@
 
 <form [formGroup]="passwordForm" (ngSubmit)="onPasswordFormSubmit()">
   @if (user?.emailVerified) {
-  <h2 class="title">
+  <h2 class="form-title">
     Email Address: <span class="green">
       {{user?.email}} &#10004;
     </span>
   </h2>
 
   } @else {
-  <h2 class="title">
+  <h2 class="form-title">
     Please Verfiy Your Email Address: {{user ? user.email : ''}}
   </h2>
 
@@ -19,7 +19,7 @@
   </shari-button>
   }
 
-  <h2 class="title">
+  <h2 class="form-title">
     Update Password
   </h2>
 

@@ -5,8 +5,8 @@
 
 <div class="painting-form-component-container">
 
-  <form [formGroup]="form" class="painting-form">
-    <h2 class="title">
+  <form [formGroup]="form">
+    <h2 class="form-title">
       {{pt ? 'Edit: ' + pt!.title : 'New Painting'}}
     </h2>
 
@@ -46,7 +46,7 @@
   </form>
 
   <div class="main-image-container">
-    <p class="title">Main Image</p>
+    <p class="form-title">Main Image</p>
 
     <input type="file" id="main_image" name="main_image" class="shari-input" accept="image/*"
       (change)="onMainImageChange($event)" #mainImageInput>
@@ -60,7 +60,7 @@
   </div>
 
   <div class="close-ups-container">
-    <p class="title">Close-Up Images</p>
+    <p class="form-title">Close-Up Images</p>
 
     <label for="closeup" class="add-close-up-label">Add Clos-Ups +</label>
     <input type="file" id="closeup" name="closeup" accept="image/*" (change)="onCloseUpImageChange($event)" multiple

@@ -1,5 +1,4 @@
 .painting-form-component-container,
-.painting-form,
 .main-image-container,
 .close-ups-container {
   display: flex;
@@ -10,13 +9,12 @@
 .painting-form-component-container {
   max-width: 900px;
   margin: 2rem auto;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
-.title {
-  padding: .5rem;
-  font-size: 1.1rem;
-  font-weight: 500;
+form {
+  margin: 0;
+  gap: 1rem;
 }
 
 .half-inputs-wrapper {
@@ -70,14 +68,10 @@
   text-align: center;
   padding: .5rem .8rem;
   border-radius: var(--radius);
-  background-color: var(--secondary-color);
+  background-color: var(--primary-color);
   color: var(--background-color);
   cursor: pointer;
   transition: var(--transition);
-}
-
-.add-close-up-label:hover {
-  background-color: var(--primary-color);
 }
 
 .overlay-content-box {
