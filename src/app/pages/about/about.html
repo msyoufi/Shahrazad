@@ -28,7 +28,7 @@
   <div>
     <img class="cover-image" [src]="pf.coverImageUrl" alt="">
 
-    <p class="bio">{{pf.bio}}</p>
+    <p class="bio" [innerHtml]="pf.bio"></p>
   </div>
 </div>
 
