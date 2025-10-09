@@ -37,6 +37,7 @@
     <h2>{{pt.title}}</h2>
     <p>{{pt.material}} &#8226; {{pt.year ? pt.year : ''}}</p>
     <p>{{pt.width}} x {{pt.height}} cm</p>
+    <p>{{pt.price | currency : 'R' : 'code' : '1.0-0'}}</p>
   </div>
 </div>
 

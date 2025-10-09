@@ -2,10 +2,11 @@ import { Component, computed, effect, inject, Input, signal } from '@angular/cor
 import { PaintingsService } from '../../shared/services/paintings';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Swipe } from '../../shared/directives/swipe';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'shari-painting-details',
-  imports: [MatProgressSpinner, Swipe],
+  imports: [MatProgressSpinner, Swipe, CurrencyPipe],
   templateUrl: './painting-details.html',
   styleUrl: './painting-details.scss'
 })

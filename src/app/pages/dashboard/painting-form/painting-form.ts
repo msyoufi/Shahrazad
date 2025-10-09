@@ -45,7 +45,8 @@ export class PaintingForm implements OnInit {
     material: new FormControl('', { nonNullable: true }),
     width: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
     height: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
-    year: new FormControl('', { nonNullable: true, validators: [Validators.min(2000), Validators.max(this.currentYear)] })
+    year: new FormControl('', { nonNullable: true, validators: [Validators.min(2000), Validators.max(this.currentYear)] }),
+    price: new FormControl('', { nonNullable: true, validators: [Validators.min(1)] })
   });
 
   constructor() {
@@ -118,14 +119,15 @@ export class PaintingForm implements OnInit {
   }
 
   preparePayload(): PaintingFormData {
-    const { title, material, width, height, year } = this.form.getRawValue();
+    const { title, material, width, height, year, price } = this.form.getRawValue();
 
     return {
       title,
       material,
       width: Number(width),
       height: Number(height),
-      year: Number(year)
+      year: Number(year),
+      price: Number(price)
     };
   }
 

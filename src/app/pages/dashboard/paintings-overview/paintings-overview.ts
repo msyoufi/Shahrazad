@@ -4,10 +4,11 @@ import { PaintingsService } from '../../../shared/services/paintings';
 import { Router, RouterLink } from '@angular/router';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { OrderModal } from './order-modal/order-modal';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'shari-paintings-overview',
-  imports: [RouterLink, ShariButton, MatPaginatorModule, OrderModal],
+  imports: [RouterLink, ShariButton, MatPaginatorModule, OrderModal, CurrencyPipe],
   templateUrl: './paintings-overview.html',
   styleUrl: './paintings-overview.scss'
 })

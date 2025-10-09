@@ -5,7 +5,8 @@ interface Painting {
   width: number,
   height: number,
   year: number,
-  order: number
+  price: number,
+  order: number,
   main_image: ImageUrls,
   close_ups: ImageUrls[]
 }

@@ -38,6 +38,11 @@
         <label for="year" [class.top]="form.get('year')?.value">Year</label>
       </div>
     </div>
+
+    <div class="control-field">
+      <input type="number" id="price" formControlName="price" class="shari-input" min="1" required>
+      <label for="price" [class.top]="form.get('price')?.value">Price* (ZAR)</label>
+    </div>
   </form>
 
   <div class="main-image-container">

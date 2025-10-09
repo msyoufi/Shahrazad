@@ -16,10 +16,10 @@
     <img [src]="pt.main_image.thumbnail" alt="">
 
     <div class="painting-data">
-      <p>{{pt.title}}</p>
+      <p class="title">{{pt.title}}</p>
       <p>{{pt.material}}</p>
       <p>{{pt.width}} x {{pt.height}} cm</p>
-      <p>{{pt.year ? 'Year: ' + pt.year : ''}}</p>
+      <p>{{pt.year ? 'Year: ' + pt.year : ''}} - Price: {{pt.price | currency : 'R' : 'code' : '1.0-0'}}</p>
     </div>
 
     <button class="order-button" (click)="openOrderModal($event, pt)">{{pt.order}}</button>
