@@ -35,9 +35,17 @@
 
   <div class="painting-data-box">
     <h2>{{pt.title}}</h2>
-    <p>{{pt.material}} &#8226; {{pt.year ? pt.year : ''}}</p>
-    <p>{{pt.width}} x {{pt.height}} cm</p>
-    <p>{{pt.price | currency : 'R' : 'code' : '1.0-0'}}</p>
+    <p>
+      {{pt.material}}
+      {{(pt.material && pt.year) ? '•' : ''}}
+      {{pt.year || ''}}
+    </p>
+    <p> {{pt.width}} x {{pt.height}} cm </p>
+    <p>
+      {{(pt.price_zar || '') | currency : 'R' : 'symbol' : '1.0-0'}}
+      {{(pt.price_zar && pt.price_eur) ? '|' : ''}}
+      {{(pt.price_eur || '') | currency : 'EUR' : 'symbol' : '1.0-0'}}
+    </p>
   </div>
 </div>
 

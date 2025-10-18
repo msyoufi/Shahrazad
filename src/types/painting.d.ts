@@ -1,11 +1,12 @@
 interface Painting {
   id: string,
   title: string,
-  material: string,
   width: number,
   height: number,
+  material: string,
   year: number,
-  price: number,
+  price_zar: number,
+  price_eur: number,
   order: number,
   main_image: ImageUrls,
   close_ups: ImageUrls[]
