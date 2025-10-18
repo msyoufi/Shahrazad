@@ -4,6 +4,11 @@ interface ConfirmationDialogData {
   actionButton: string
 }
 
-interface HomeHero {
-  textContent: string
+interface Profile {
+  name: string,
+  bio_html: string,
+  email: string,
+  hero_html: string,
+  profileImageUrl: string,
+  coverImageUrl: string
 }
