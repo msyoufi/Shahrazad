@@ -3,7 +3,7 @@ import { PaintingsService } from '../../shared/services/paintings';
 import { RouterLink } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { HomeHeroService } from '../../shared/services/home-hero';
+import { ProfileService } from '../../shared/services/profile';
 
 @Component({
   selector: 'shari-home',
@@ -13,11 +13,11 @@ import { HomeHeroService } from '../../shared/services/home-hero';
 })
 export class Home {
   paintingsService = inject(PaintingsService);
-  homeHeroService = inject(HomeHeroService);
+  profileService = inject(ProfileService);
   breakpointObserver = inject(BreakpointObserver);
   destroyRef = inject(DestroyRef);
 
-  hero = signal<HomeHero | undefined>(undefined);
+  heroHtml = signal<string>('');
   paintingsColumns = signal<Painting[][]>([]);
   columnsCount = signal(3);
   page = signal(1);
@@ -26,15 +26,15 @@ export class Home {
   perPage: number = 12;
 
   constructor() {
-    this.getHeroContent();
+    this.getHeroHtml();
     this.getLastPageNum();
     this.arrangePaintingsInColumns();
     this.subscribeToScreenResize();
   }
 
-  async getHeroContent(): Promise<void> {
-    const heroContent = await this.homeHeroService.getHeroContent();
-    this.hero.set(heroContent);
+  async getHeroHtml(): Promise<void> {
+    const profile = await this.profileService.getProfile();
+    this.heroHtml.set(profile?.hero_html ?? '');
   }
 
   getLastPageNum(): void {
