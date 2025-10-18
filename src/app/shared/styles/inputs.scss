@@ -57,3 +57,9 @@ textarea {
   min-height: 15rem;
   max-height: 25rem;
 }
+
+.half-inputs-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}

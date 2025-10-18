@@ -22,8 +22,9 @@ export class ProfileForm {
 
   form = new FormGroup({
     name: new FormControl('', { nonNullable: true }),
-    bio: new FormControl('', { nonNullable: true }),
+    bio_html: new FormControl('', { nonNullable: true }),
     email: new FormControl('', { nonNullable: true }),
+    hero_html: new FormControl('', { nonNullable: true })
   });
 
   isLoading = signal(false);
@@ -38,9 +39,7 @@ export class ProfileForm {
       const profile = await this.profileService.getProfile();
       if (!profile) return;
 
-      const { name, bio, email } = profile;
-
-      this.form.patchValue({ name, bio, email });
+      this.form.patchValue(profile);
 
     } catch (err: unknown) {
       this.snackbar.show('Unable To Load The Profile Data', 'red');

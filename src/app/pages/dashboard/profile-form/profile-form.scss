@@ -16,4 +16,10 @@
   .progress {
     align-self: flex-start;
   }
+
+  .half-inputs-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 }
