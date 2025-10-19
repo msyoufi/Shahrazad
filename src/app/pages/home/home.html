@@ -1,4 +1,6 @@
-<p class="hero-text" [innerHtml]="heroHtml()"></p>
+@let heroHtml = profileService.profile?.hero_html;
+
+<p class="hero-text" [innerHtml]="heroHtml"></p>
 
 <div class="gallery-grid">
 

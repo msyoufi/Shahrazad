@@ -17,7 +17,6 @@ export class Home {
   breakpointObserver = inject(BreakpointObserver);
   destroyRef = inject(DestroyRef);
 
-  heroHtml = signal<string>('');
   paintingsColumns = signal<Painting[][]>([]);
   columnsCount = signal(3);
   page = signal(1);
@@ -26,15 +25,9 @@ export class Home {
   perPage: number = 12;
 
   constructor() {
-    this.getHeroHtml();
     this.getLastPageNum();
     this.arrangePaintingsInColumns();
     this.subscribeToScreenResize();
-  }
-
-  async getHeroHtml(): Promise<void> {
-    const profile = await this.profileService.getProfile();
-    this.heroHtml.set(profile?.hero_html ?? '');
   }
 
   getLastPageNum(): void {
