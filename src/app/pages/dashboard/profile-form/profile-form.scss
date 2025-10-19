@@ -1,6 +1,56 @@
-.progress-buttons-wrapper {
+.studio-shots-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.image-box {
+  display: grid;
+  grid-template-columns: 25% 3rem auto;
+  padding: .25rem;
+  gap: 2rem;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  cursor: move;
+
+  img {
+    max-height: 3.5rem;
+    object-fit: contain;
+  }
+
+  span {
+    font-weight: 550;
+  }
+
+  .online {
+    color: var(--green);
+  }
+
+  shari-button {
+    width: fit-content;
+    justify-self: right;
+  }
+}
+
+.image-boxes-wrapper .image-box:last-child {
+  border: none;
+}
+
+.studio-shots-input-label {
+  margin: 0 .5rem;
+  text-align: center;
+  padding: .5rem .8rem;
+  border: 3px solid var(--primary-color);
+  border-radius: var(--radius);
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.form-footer {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 1rem 0;
 }
 
@@ -10,19 +60,10 @@
 
 .progress {
   margin-left: 1rem;
-  align-self: center;
   font-weight: 600;
 }
 
 @media (max-width: 560px) {
-  .progress-buttons-wrapper {
-    flex-direction: column-reverse;
-  }
-
-  .progress {
-    align-self: flex-start;
-  }
-
   .half-inputs-wrapper {
     display: grid;
     grid-template-columns: 1fr;

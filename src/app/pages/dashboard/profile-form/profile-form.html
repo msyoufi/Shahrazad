@@ -36,6 +36,33 @@
     <label for="bio_html" [class.top]="form.get('bio_html')?.value">Bio</label>
   </div>
 
+  <div class="studio-shots-container">
+    <p class="form-title">Studio Shots</p>
+
+    <div class="image-boxes-wrapper" cdkDropList [cdkDropListData]="studioShotsUrls()"
+      (cdkDropListDropped)="onStudioShotDrop($event)" cdkDropListOrientation="vertical" cdkDropListLockAxis="y">
+      @for (img of studioShotsUrls(); track img.url){
+      <div class="image-box" cdkDrag>
+        <img [src]="img.url" alt="">
+
+        @if (img.hasOwnProperty('id')) {
+        <span class="online">Online</span>
+        } @else {
+        <span>New</span>
+        }
+
+        <shari-button type="button" variant="outlined" color="red"
+          (onClick)="onRemoveImageClick(img)">Remove</shari-button>
+      </div>
+      }
+    </div>
+
+    <label for="studio_shots" class="studio-shots-input-label">Add Studio Shots +</label>
+    <input type="file" id="studio_shots" accept="image/*" (change)="onStudioShotsChange($event)" multiple hidden>
+  </div>
+
+  <p class="form-title">Homepage</p>
+
   <div class="control-field">
     <textarea type="text" id="hero_html" formControlName="hero_html" class="shari-input"></textarea>
     <label for="hero_html" [class.top]="form.get('hero_html')?.value">Hero Text</label>
@@ -45,7 +72,7 @@
     Use HTML to format the text (Inline styles do not work though!).
   </small>
 
-  <div class="progress-buttons-wrapper">
+  <div class="form-footer">
     <p class="progress">{{progress()}}</p>
 
     <shari-button type="button" (onClick)="onSaveClick()" [disabled]="loading">
