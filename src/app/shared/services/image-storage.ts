@@ -53,15 +53,17 @@ export class ImageStorageService {
   }
 
   private largCompressionOpt: Options = {
-    maxSizeMB: 2,
+    maxSizeMB: 1,
     maxWidthOrHeight: 3000,
-    fileType: 'image/jpeg'
+    fileType: 'image/webp',
+    alwaysKeepResolution: true
   };
 
   private thumbnailCompressionOpt: Options = {
     maxSizeMB: 0.02,
-    maxWidthOrHeight: 500,
-    fileType: 'image/jpeg'
+    maxWidthOrHeight: 800,
+    fileType: 'image/webp',
+    initialQuality: 0.75,
   };
 
   private async compressImage(img: File): Promise<{
