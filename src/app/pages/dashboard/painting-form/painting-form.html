@@ -69,14 +69,14 @@
   <div class="close-ups-container">
     <p class="form-title">Close-Up Images</p>
 
-    <label for="closeup" class="add-close-up-label">Add Clos-Ups +</label>
+    <label for="closeup" class="add-close-up-label">Add Close-Ups +</label>
     <input type="file" id="closeup" name="closeup" accept="image/*" (change)="onCloseUpImageChange($event)" multiple
       hidden>
 
     <div class="close-ups-grid" cdkDropList [cdkDropListData]="closeUps()" (cdkDropListDropped)="onCloseUpDrop($event)"
       cdkDropListOrientation="horizontal" cdkDropListLockAxis="x">
       @for (closeup of closeUps(); track $index){
-      <div class="clos-up-box" cdkDrag>
+      <div class="close-up-box" cdkDrag>
         <button (click)="onRemoveCloseUpClick(closeup, $index)">Remove</button>
         <img [src]="closeup.thumbnail" alt="">
       </div>
