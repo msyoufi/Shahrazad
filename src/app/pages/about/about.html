@@ -32,6 +32,12 @@
   </div>
 </div>
 
+<div class="studio-shots-container" #studioShotsBox>
+  @for (img of pf.studioShotsUrls; track img.id) {
+  <img [src]="img.url" [alt]="'Studio Shot_' + ($index + 1)">
+  }
+</div>
+
 } @else {
 <div class="loader-box">
   <mat-spinner [diameter]="20" [strokeWidth]="2" />
