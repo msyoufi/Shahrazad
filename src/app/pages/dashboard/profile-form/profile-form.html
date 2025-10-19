@@ -41,26 +41,20 @@
     <label for="hero_html" [class.top]="form.get('hero_html')?.value">Hero Text</label>
   </div>
 
-  <small>
+  <small class="html-hint">
     Use HTML to format the text (Inline styles do not work though!).
   </small>
 
   <div class="progress-buttons-wrapper">
     <p class="progress">{{progress()}}</p>
 
-    <div class="buttons-box">
-      <shari-button type="button" variant="outlined" (onClick)="closeForm()" [disabled]="loading">
-        Cancel
-      </shari-button>
-
-      <shari-button type="button" (onClick)="onSaveClick()" [disabled]="loading">
-        @if (loading) {
-        <mat-spinner [diameter]="15" [strokeWidth]="2" />
-        } @else {
-        Save
-        }
-      </shari-button>
-    </div>
+    <shari-button type="button" (onClick)="onSaveClick()" [disabled]="loading">
+      @if (loading) {
+      <mat-spinner [diameter]="15" [strokeWidth]="2" />
+      } @else {
+      Save
+      }
+    </shari-button>
   </div>
 
 </form>

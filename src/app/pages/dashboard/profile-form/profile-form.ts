@@ -3,7 +3,6 @@ import { ProfileService } from '../../../shared/services/profile';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Snackbar } from '../../../shared/components/snackbar';
 import { ShariButton } from '../../../shared/components/button/shari-button';
-import { Router } from '@angular/router';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
@@ -14,7 +13,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 })
 export class ProfileForm {
   profileService = inject(ProfileService);
-  router = inject(Router);
+  confirmDialog = inject(ConfirmDialogService);
   snackbar = inject(Snackbar);
 
   profileImage: File | undefined;
@@ -107,9 +106,5 @@ export class ProfileForm {
 
   private uploadImage(img: File, name: 'profile' | 'cover'): Promise<string> {
     return this.profileService.compressAndUpload(img, name);
-  }
-
-  closeForm(): void {
-    this.router.navigateByUrl('dashboard-1975/paintings');
   }
 }

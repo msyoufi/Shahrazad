@@ -1,11 +1,17 @@
 .progress-buttons-wrapper {
   display: flex;
   justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.html-hint {
+  margin-left: 1rem;
 }
 
 .progress {
   margin-left: 1rem;
   align-self: center;
+  font-weight: 600;
 }
 
 @media (max-width: 560px) {
