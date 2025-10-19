@@ -137,11 +137,10 @@ export class PaintingForm implements OnInit {
 
   onMainImageChange(e: any): void {
     const file = e.target.files[0];
-    if (!file) return;
+    if (!file || !this.formService.checkValidImage(file)) return;
 
-    const { checkValidImage, getLocalUrl } = this.formService;
-    if (!checkValidImage(file)) return;
-    this.mainImage.set(getLocalUrl(file));
+    const localUrl = this.formService.getLocalUrl(file);
+    this.mainImage.set(localUrl);
   }
 
   onRemoveMainImageClick(input: HTMLInputElement): void {
@@ -154,11 +153,12 @@ export class PaintingForm implements OnInit {
     if (!files.length) return;
 
     const localUrls: LocalImageUrl[] = [];
-    const { checkValidImage, getLocalUrl } = this.formService;
 
     for (const file of files) {
-      if (!checkValidImage(file)) return;
-      localUrls.push(getLocalUrl(file));
+      if (!this.formService.checkValidImage(file)) return;
+
+      const localUrl = this.formService.getLocalUrl(file);
+      localUrls.push(localUrl);
     }
 
     let nextCloseUps = this.closeUps().concat(localUrls);
