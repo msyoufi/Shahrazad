@@ -15,12 +15,12 @@ interface Painting {
 interface ImageUrls {
   id: string,
   large: string,
-  thumbnail: string
-  order: number,
+  thumbnail: string,
+  order: number
 }
 
 interface LocalImageUrl {
-  file: File
+  file: File,
   thumbnail: string
 }
 
