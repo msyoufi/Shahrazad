@@ -55,25 +55,19 @@
 
 .studio-shots-container {
   display: flex;
-  padding: 1rem 0;
+  flex-wrap: wrap;
   margin-bottom: 10rem;
   gap: 1.25rem;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  cursor: grab;
+  justify-content: center;
   user-select: none;
 
   img {
     max-height: 50vh;
-    transition: transform 0.3s ease;
+    transition: 0.3s ease;
 
     &:hover {
       transform: scale(1.03);
     }
-  }
-
-  &.active {
-    cursor: grabbing;
   }
 }
 
