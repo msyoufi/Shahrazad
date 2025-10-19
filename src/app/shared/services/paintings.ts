@@ -7,7 +7,7 @@ import { Snackbar } from '../components/snackbar';
 })
 export class PaintingsService implements OnDestroy {
   private db = inject(Firestore);
-  snackbar = inject(Snackbar);
+  private snackbar = inject(Snackbar);
 
   private paintings$ = signal<Painting[]>([]);
 
