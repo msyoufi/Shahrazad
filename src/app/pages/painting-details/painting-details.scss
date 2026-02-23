@@ -71,23 +71,28 @@
 .painting-data-box {
   display: flex;
   flex-direction: column;
-  height: fit-content;
-  padding: 2rem;
-  row-gap: .5rem;
-  background-color: var(--background-color);
-  border: 2px solid var(--border-color);
-  border-radius: 15px;
+  row-gap: 1.5rem;
+
+  div {
+    padding: 0 1rem 1rem;
+    border-left: 2px solid var(--border-color);
+  }
 
   h2 {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     font-size: 1.5rem;
     font-weight: 500;
-    line-height: 1.25;
   }
 
   p {
+    margin-bottom: .5rem;
     font-size: 1rem;
     color: var(--gray);
+  }
+
+
+  .description-box p {
+    text-align: justify;
   }
 }
 
