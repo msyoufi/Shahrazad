@@ -12,11 +12,16 @@
 
 <div class="paintings-grid">
   @for(pt of paintings(); track pt.id){
-  <a class="painting-item" [routerLink]="'/dashboard-1975/painting/' + pt.id">
+  <a class="painting-item" [class.soled]="pt.is_soled" [routerLink]="'/dashboard-1975/painting/' + pt.id">
     <img [src]="pt.main_image.thumbnail" alt="">
 
     <div class="painting-data">
-      <p class="title">{{pt.title}}</p>
+      <p class="title">
+        {{pt.title}}
+        @if(pt.is_soled){
+          <i>(soled)</i>
+        }
+      </p>
       <p>
         {{pt.material}}
         {{(pt.material && pt.year) ? '•' : ''}}

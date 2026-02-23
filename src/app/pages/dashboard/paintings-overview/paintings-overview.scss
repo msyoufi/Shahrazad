@@ -27,6 +27,14 @@
   color: var(--text-color);
   position: relative;
   cursor: pointer;
+
+  &.soled {
+    border-color: #d434343f;
+
+    &:hover {
+      border-color: var(--red);
+    }
+  }
 }
 
 .painting-item:hover {
