@@ -7,10 +7,11 @@ import { type CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angula
 import { ConfirmDialogService } from '../../../shared/components/confirmation-dialog/confirm-dialog.service';
 import { Router } from '@angular/router';
 import { PaintingFormService } from './painting-form.service';
+import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'shari-painting-form',
-  imports: [ReactiveFormsModule, ShariButton, MatProgressSpinner, CdkDrag, CdkDropList],
+  imports: [ReactiveFormsModule, ShariButton, MatProgressSpinner, CdkDrag, CdkDropList, MatSlideToggle],
   templateUrl: './painting-form.html',
   styleUrl: './painting-form.scss'
 })
@@ -48,6 +49,8 @@ export class PaintingForm implements OnInit {
     year: new FormControl('', { nonNullable: true, validators: [Validators.min(2000), Validators.max(this.currentYear)] }),
     price_zar: new FormControl('', { nonNullable: true, validators: [Validators.min(1)] }),
     price_eur: new FormControl('', { nonNullable: true, validators: [Validators.min(1)] }),
+    description: new FormControl('', { nonNullable: true }),
+    is_soled: new FormControl(false, { nonNullable: true }),
   });
 
   constructor() {
@@ -63,16 +66,18 @@ export class PaintingForm implements OnInit {
       const painting = this.painting();
       if (!painting) return;
 
-      const { title, material, width, height, year, price_eur, price_zar, close_ups } = painting;
+      const { title, material, width, height, year, price_eur, price_zar, close_ups, description, is_soled } = painting;
 
       this.form.patchValue({
         title,
         material,
+        description,
+        is_soled,
         width: width.toString(),
         height: height.toString(),
         year: (year || '').toString(),
         price_zar: (price_zar || '').toString(),
-        price_eur: (price_eur || '').toString()
+        price_eur: (price_eur || '').toString(),
       });
 
       if (!close_ups.length) return;
@@ -122,16 +127,18 @@ export class PaintingForm implements OnInit {
   }
 
   preparePayload(): PaintingFormData {
-    const { title, material, width, height, year, price_eur, price_zar } = this.form.getRawValue();
+    const { title, material, width, height, year, price_eur, price_zar, description, is_soled } = this.form.getRawValue();
 
     return {
       title,
       material,
+      is_soled,
+      description,
       width: Number(width),
       height: Number(height),
       year: Number(year),
       price_zar: Number(price_zar),
-      price_eur: Number(price_eur)
+      price_eur: Number(price_eur),
     };
   }
 

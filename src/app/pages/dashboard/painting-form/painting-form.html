@@ -10,6 +10,12 @@
       {{pt ? 'Edit: ' + pt!.title : 'New Painting'}}
     </h2>
 
+    <div class="soled-toggle-box">
+      <mat-slide-toggle [checked]="form.get('is_soled')" formControlName="is_soled">
+        <b>Soled</b>
+      </mat-slide-toggle>
+    </div>
+
     <div class="control-field">
       <input type="text" id="title" formControlName="title" class="shari-input" required #titleInput>
       <label for="title" [class.top]="form.get('title')?.value">Title*</label>
@@ -48,6 +54,11 @@
         <input type="number" id="price_eur" formControlName="price_eur" class="shari-input" min="1">
         <label for="price_eur" [class.top]="form.get('price_eur')?.value">Price (EUR)</label>
       </div>
+    </div>
+
+    <div class="control-field">
+      <textarea type="text" id="description" formControlName="description" class="shari-input"></textarea>
+      <label for="description" [class.top]="form.get('description')?.value">Description</label>
     </div>
 
   </form>
