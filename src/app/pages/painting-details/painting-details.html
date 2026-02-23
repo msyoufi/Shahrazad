@@ -34,18 +34,26 @@
   </div>
 
   <div class="painting-data-box">
-    <h2>{{pt.title}}</h2>
+    <h2>
+      {{pt.title}}
+      @if(pt.is_soled){
+      <i>(soled)</i>
+      }
+    </h2>
     <p>
       {{pt.material}}
       {{(pt.material && pt.year) ? '•' : ''}}
       {{pt.year || ''}}
     </p>
     <p> {{pt.width}} x {{pt.height}} cm </p>
+
+    @if(!pt.is_soled){
     <p>
       {{(pt.price_zar || '') | currency : 'R' : 'symbol' : '1.0-0'}}
       {{(pt.price_zar && pt.price_eur) ? '|' : ''}}
       {{(pt.price_eur || '') | currency : 'EUR' : 'symbol' : '1.0-0'}}
     </p>
+    }
   </div>
 </div>
 

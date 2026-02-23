@@ -13,8 +13,14 @@
       <img [src]="painting.main_image.large" [alt]="'Painting:' + painting.title">
 
       <div class="painting-info-overlay">
-        <h3>{{painting.title}}</h3>
+        <h3 class="title">
+          {{painting.title}}
+          @if(painting.is_soled){
+          <i>(soled)</i>
+          }
+        </h3>
         <p>{{painting.material}}</p>
+        <p> {{painting.width}} x {{painting.height}} cm </p>
       </div>
 
     </div>
