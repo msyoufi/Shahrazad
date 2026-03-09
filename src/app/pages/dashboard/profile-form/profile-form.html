@@ -1,32 +1,40 @@
 @let loading = isLoading();
 
 <form [formGroup]="form">
-  <h2 class="form-title">
-    Profile
-  </h2>
+  <h2 class="form-title">Profile</h2>
 
   <div class="half-inputs-wrapper">
     <div class="control-field">
-      <input type="file" id="profile_image" class="shari-input" accept="image/*"
-        (change)="onImageChange($event, 'profile')">
+      <input
+        type="file"
+        id="profile_image"
+        class="shari-input"
+        accept="image/*"
+        (change)="onImageChange($event, 'profile')"
+      />
       <label for="profile_image" [class.top]="true">Profile Image</label>
     </div>
 
     <div class="control-field">
-      <input type="file" id="cover_image" class="shari-input" accept="image/*"
-        (change)="onImageChange($event, 'cover')">
+      <input
+        type="file"
+        id="cover_image"
+        class="shari-input"
+        accept="image/*"
+        (change)="onImageChange($event, 'cover')"
+      />
       <label for="cover_image" [class.top]="true">Cover Image</label>
     </div>
   </div>
 
   <div class="half-inputs-wrapper">
     <div class="control-field">
-      <input type="text" id="name" formControlName="name" class="shari-input">
+      <input type="text" id="name" formControlName="name" class="shari-input" />
       <label for="name" [class.top]="form.get('name')?.value">Name</label>
     </div>
 
     <div class="control-field">
-      <input type="email" id="email" formControlName="email" class="shari-input">
+      <input type="email" id="email" formControlName="email" class="shari-input" />
       <label for="email" [class.top]="form.get('email')?.value">Email</label>
     </div>
   </div>
@@ -39,26 +47,46 @@
   <div class="studio-shots-container">
     <p class="form-title">Studio Shots</p>
 
-    <div class="image-boxes-wrapper" cdkDropList [cdkDropListData]="studioShotsUrls()"
-      (cdkDropListDropped)="onStudioShotDrop($event)" cdkDropListOrientation="vertical" cdkDropListLockAxis="y">
-      @for (img of studioShotsUrls(); track img.url){
-      <div class="image-box" cdkDrag>
-        <img [src]="img.url" alt="">
+    <div
+      class="image-boxes-wrapper"
+      cdkDropList
+      [cdkDropListData]="studioShotsUrls()"
+      (cdkDropListDropped)="onStudioShotDrop($event)"
+      cdkDropListOrientation="vertical"
+      cdkDropListLockAxis="y"
+    >
+      @for (img of studioShotsUrls(); track img.url) {
+        <div class="image-box" cdkDrag>
+          <p>{{ $index + 1 }}</p>
 
-        @if (img.hasOwnProperty('id')) {
-        <span class="online">Online</span>
-        } @else {
-        <span>New</span>
-        }
+          <img [src]="img.url" alt="" />
 
-        <shari-button type="button" variant="outlined" color="red"
-          (onClick)="onRemoveImageClick(img)">Remove</shari-button>
-      </div>
+          @if ('order' in img) {
+            <span class="online">Online ({{ img.order }})</span>
+          } @else {
+            <span style="color: var(--red)">New ({{ $index + 1 }})</span>
+          }
+
+          <shari-button
+            type="button"
+            variant="outlined"
+            color="red"
+            (onClick)="onRemoveImageClick(img)"
+            >Remove</shari-button
+          >
+        </div>
       }
     </div>
 
     <label for="studio_shots" class="studio-shots-input-label">Add Studio Shots +</label>
-    <input type="file" id="studio_shots" accept="image/*" (change)="onStudioShotsChange($event)" multiple hidden>
+    <input
+      type="file"
+      id="studio_shots"
+      accept="image/*"
+      (change)="onStudioShotsChange($event)"
+      multiple
+      hidden
+    />
   </div>
 
   <p class="form-title">Homepage</p>
@@ -73,15 +101,14 @@
   </small>
 
   <div class="form-footer">
-    <p class="progress">{{progress()}}</p>
+    <p class="progress">{{ progress() }}</p>
 
     <shari-button type="button" (onClick)="onSaveClick()" [disabled]="loading">
       @if (loading) {
-      <mat-spinner [diameter]="15" [strokeWidth]="2" />
+        <mat-spinner [diameter]="15" [strokeWidth]="2" />
       } @else {
-      Save
+        Save
       }
     </shari-button>
   </div>
-
 </form>

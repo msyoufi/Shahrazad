@@ -1,65 +1,81 @@
 @let pf = profileService.profile;
 
 @if (pf) {
-  <div class="about-component-container">
-    <div>
-      <div class="profile-image-box">
-        @if (isLoadingProfileImg()) {
-          <div class="skeleton"></div>
-        }
-
-        <img
-          [src]="pf.profileImageUrl"
-          (load)="isLoadingProfileImg.set(false)"
-          [class.invisible]="isLoadingProfileImg()"
-          alt="My profile picture"
-        />
-      </div>
-
-      <h2 class="name">{{ pf.name }}</h2>
-
-      <ul class="links-list">
-        <p class="icon-link">
-          <img src="./instagram_icon.png" alt="Instagram Icon" />
-          <a href="http://www.instagram.com/shari_art_cape_town" target="_blank"
-            >@shari_art_cape_town</a
-          >
-        </p>
-
-        @let email = pf.email;
-
-        @if (email) {
-          <p class="icon-link">
-            <img src="./email_icon.png" alt="Email Icon" />
-            <a [href]="'mailto:' + email" target="_blank">{{ email }}</a>
-          </p>
-        }
-      </ul>
-    </div>
-
-    <div>
-      <div class="cover-image-box">
-        @if (isLoadingCoverImg()) {
-          <div class="skeleton"></div>
-        }
-
-        <img
-          [src]="pf.coverImageUrl"
-          (load)="isLoadingCoverImg.set(false)"
-          [class.invisible]="isLoadingCoverImg()"
-          alt="A paintig of mine as the cover picture"
-        />
-      </div>
-
-      <p class="bio" [innerHtml]="pf.bio_html"></p>
-    </div>
-  </div>
-
-  <div class="studio-shots-container" #studioShotsBox>
-    @for (img of pf.studioShotsUrls; track img.id) {
-      <img [src]="img.url" [alt]="'Studio Shot_' + ($index + 1)" />
+  <!-- Hero Banner -->
+  <section class="hero-section">
+    @if (isLoadingCoverImg()) {
+      <div class="skeleton hero-skeleton"></div>
     }
-  </div>
+
+    <img
+      class="hero-image"
+      [src]="pf.coverImageUrl"
+      (load)="isLoadingCoverImg.set(false)"
+      [class.invisible]="isLoadingCoverImg()"
+      alt="Cover image"
+    />
+
+    <div class="hero-overlay"></div>
+    <h1 class="hero-name">{{ pf.name }}</h1>
+  </section>
+
+  <!-- Artist Intro: Profile + Contact -->
+  <section class="artist-intro">
+    <div class="profile-image-box">
+      @if (isLoadingProfileImg()) {
+        <div class="skeleton profile-skeleton"></div>
+      }
+
+      <img
+        [src]="pf.profileImageUrl"
+        (load)="isLoadingProfileImg.set(false)"
+        [class.invisible]="isLoadingProfileImg()"
+        alt="My profile picture"
+      />
+    </div>
+
+    <div class="contact-links">
+      <a class="contact-link" href="http://www.instagram.com/shari_art_cape_town" target="_blank">
+        <img src="./instagram_icon.png" alt="Instagram Icon" />
+        <span>@shari_art_cape_town</span>
+      </a>
+
+      @let email = pf.email;
+
+      @if (email) {
+        <a class="contact-link" [href]="'mailto:' + email" target="_blank">
+          <img src="./email_icon.png" alt="Email Icon" />
+          <span>{{ email }}</span>
+        </a>
+      }
+    </div>
+  </section>
+
+  <!-- Story Section: Bio + Studio Images Alternating -->
+  <section class="story-section">
+    @for (txt_img of profileService.bioText_ImageList; track $index) {
+      <div class="story-block" [class.reverse]="$odd">
+        <p
+          class="story-text slide-left"
+          [innerHtml]="txt_img.text"
+          [class.slide-left]="!$odd"
+          [class.slide-right]="$odd"
+          #animateOnScroll
+        ></p>
+
+        <div class="story-image">
+          <div
+            class="image-placeholder"
+            [class.slide-left]="$odd"
+            [class.slide-right]="!$odd"
+            #animateOnScroll
+          >
+            <img [src]="txt_img.imageUrl" alt="In the studio" />
+          </div>
+        </div>
+      </div>
+    }
+  </section>
 } @else {
   <div class="loader-box">
     <mat-spinner [diameter]="20" [strokeWidth]="2" />

@@ -1,91 +1,200 @@
-.about-component-container {
-  display: grid;
-  grid-template-columns: 25% auto;
-  gap: 3rem;
-  margin: 5rem 0 3rem;
+// ─── Hero Banner ───
 
-  & > div {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  div:first-child {
-    align-items: center;
-  }
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  overflow: hidden;
 }
 
-.profile-image-box {
-  display: flex;
-  max-width: 15rem;
+.hero-image {
   width: 100%;
-  height: 18rem;
-  margin-bottom: 2rem;
-  justify-content: center;
-
-  img {
-    height: 100%;
-    object-fit: contain;
-    border-radius: var(--radius);
-  }
+  height: 100%;
+  object-fit: cover;
 }
 
-.cover-image-box {
-  width: 100%;
-  height: 18rem;
-  margin-bottom: 2rem;
+.hero-skeleton {
+  position: absolute;
+  inset: 0;
+}
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: var(--radius);
-  }
+.hero-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to top, var(--background-color), transparent);
+  pointer-events: none;
+}
+
+.hero-name {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  white-space: nowrap;
 }
 
 img.invisible {
   display: none;
 }
 
-.bio {
-  font-size: 1rem;
-  text-align: justify;
-  line-height: 1.5;
-}
+// ─── Artist Intro ───
 
-.links-list {
-  margin-top: 1rem;
-}
-
-.icon-link {
+.artist-intro {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 0.5rem 0;
+  margin: 0 auto;
+  padding: 0 2rem 2rem;
+}
+
+.profile-image-box {
+  width: 12rem;
+  height: 12rem;
+  margin-top: -6rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid var(--background-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+
+  .profile-skeleton {
+    border-radius: 50%;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// ─── Contact Links ───
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.contact-link {
+  display: inline-flex;
+  align-items: center;
   gap: 0.5rem;
+  color: var(--gray);
+  text-decoration: none;
+  transition: color var(--transition);
 
   img {
     width: 1.25rem;
     height: 1.25rem;
+    opacity: 0.6;
+    transition: opacity var(--transition);
   }
-}
 
-.studio-shots-container {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 10rem;
-  gap: 1.25rem;
-  justify-content: center;
-  user-select: none;
+  &:hover {
+    color: var(--primary-color);
+    text-decoration: none;
 
-  img {
-    max-height: 50vh;
-    transition: 0.3s ease;
-
-    &:hover {
-      transform: scale(1.03);
+    img {
+      opacity: 1;
     }
   }
 }
+
+// ─── Story Section ───
+
+.story-section {
+  max-width: 70rem;
+  margin: 2rem auto 6rem;
+  padding: 0 2rem;
+}
+
+.story-block {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  padding: 2rem 0;
+
+  &.reverse {
+    flex-direction: row-reverse;
+  }
+}
+
+.story-text {
+  flex: 1;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  text-align: justify;
+  color: var(--text-color);
+}
+
+.story-image {
+  flex: 1;
+  max-width: 45%;
+}
+
+// ─── Image Placeholder (shimmer while loading) ───
+
+.image-placeholder {
+  width: 55%;
+  min-height: 12rem;
+  background: linear-gradient(110deg, #e8e8e8 8%, #f5f5f5 18%, #e8e8e8 33%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+  border-radius: var(--radius);
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    display: block;
+    border-radius: var(--radius);
+  }
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+// ─── Scroll Animations ───
+
+.slide-left,
+.slide-right {
+  opacity: 0;
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+.slide-left {
+  transform: translateX(-80px);
+}
+
+.slide-right {
+  transform: translateX(80px);
+}
+
+.slide-left.visible,
+.slide-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+// ─── Loader ───
 
 .loader-box {
   display: flex;
@@ -94,8 +203,70 @@ img.invisible {
   min-height: 50vh;
 }
 
-@media (max-width: 900px) {
-  .about-component-container {
-    grid-template-columns: 1fr;
+// ─── Responsive ───
+
+@media (max-width: 768px) {
+  .hero-section {
+    height: 45vh;
+  }
+
+  .hero-name {
+    font-size: 1.8rem;
+  }
+
+  .profile-image-box {
+    width: 10rem;
+    height: 10rem;
+    margin-top: -5rem;
+  }
+
+  .story-block {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .story-image {
+    max-width: 80%;
+  }
+
+  .gallery-row .image-placeholder {
+    width: 75%;
+  }
+
+  .bio {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .hero-section {
+    height: 35vh;
+  }
+
+  .hero-name {
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+  }
+
+  .artist-intro {
+    padding: 0 1rem 1.5rem;
+  }
+
+  .contact-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .story-section {
+    padding: 0 1rem;
+  }
+
+  .story-image {
+    max-width: 100%;
+  }
+
+  .gallery-row .image-placeholder {
+    width: 90%;
   }
 }

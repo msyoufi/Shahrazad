@@ -1,12 +1,19 @@
 import { inject, Injectable, OnDestroy, signal } from '@angular/core';
 import { Unsubscribe } from '@angular/fire/database';
 import { doc, Firestore, DocumentReference, updateDoc, onSnapshot } from '@angular/fire/firestore';
-import { Storage, uploadBytes, ref, getDownloadURL, deleteObject, StorageReference } from '@angular/fire/storage';
 import imageCompression from 'browser-image-compression';
 import { Snackbar } from '../components/snackbar';
+import {
+  Storage,
+  uploadBytes,
+  ref,
+  getDownloadURL,
+  deleteObject,
+  StorageReference,
+} from '@angular/fire/storage';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProfileService implements OnDestroy {
   private db = inject(Firestore);
@@ -14,11 +21,16 @@ export class ProfileService implements OnDestroy {
   private snackbar = inject(Snackbar);
 
   private profile$ = signal<Profile | undefined>(undefined);
+  private bioText_ImageList$ = signal<BioTextWithImage[]>([]);
 
   private unsubscribe: Unsubscribe | undefined;
 
   get profile(): Profile | undefined {
     return this.profile$();
+  }
+
+  get bioText_ImageList(): BioTextWithImage[] {
+    return this.bioText_ImageList$();
   }
 
   constructor() {
@@ -29,15 +41,34 @@ export class ProfileService implements OnDestroy {
     const profileRef = this.getProfileRef();
 
     try {
-      this.unsubscribe = onSnapshot(profileRef, querySnapshot => {
+      this.unsubscribe = onSnapshot(profileRef, (querySnapshot) => {
         const profile = querySnapshot.data() as Profile;
-        profile.studioShotsUrls.sort((a, b) => a.order - b.order);
         this.profile$.set(profile);
-      });
 
+        this.createBioText_ImageList(profile);
+      });
     } catch (err: unknown) {
       this.snackbar.show('Cannot load the profile data!', 'red');
     }
+  }
+
+  private createBioText_ImageList(profile: Profile): void {
+    const list: BioTextWithImage[] = [];
+    const { bio_html, studioShotsUrls } = profile;
+
+    const sortedImages = studioShotsUrls.slice().sort((a, b) => a.order - b.order);
+    const textChunks = bio_html.split('---');
+
+    const maxItemsCount = Math.max(sortedImages.length, textChunks.length);
+
+    for (let i = 0; i < maxItemsCount; i++) {
+      list.push({
+        text: textChunks[i] ?? '',
+        imageUrl: sortedImages[i]?.url ?? '',
+      });
+    }
+
+    this.bioText_ImageList$.set(list);
   }
 
   updateProfile(newData: Partial<Profile>): Promise<void> {
@@ -58,12 +89,15 @@ export class ProfileService implements OnDestroy {
     return this.uploadImage(compressedImage, name);
   }
 
-  async updateStudioShots(images: (StudioShotUrl | LocalStudioShotImage)[]): Promise<StudioShotUrl[]> {
+  async updateStudioShots(
+    images: (StudioShotUrl | LocalStudioShotImage)[],
+  ): Promise<StudioShotUrl[]> {
     if (!this.profile) throw new Error();
 
     // delete removed online images
-    const remainedIds = images.filter(img => 'id' in img).map(img => img.id);
-    const removedImages = this.profile.studioShotsUrls.filter(img => !remainedIds.includes(img.id)) ?? [];
+    const remainedIds = images.filter((img) => 'id' in img).map((img) => img.id);
+    const removedImages =
+      this.profile.studioShotsUrls.filter((img) => !remainedIds.includes(img.id)) ?? [];
 
     if (removedImages.length) {
       await this.bulkDeleteImages(removedImages);
@@ -77,21 +111,22 @@ export class ProfileService implements OnDestroy {
 
   private async uploadStudioShots(
     images: (StudioShotUrl | LocalStudioShotImage)[],
-    lastId: number
+    lastId: number,
   ): Promise<StudioShotUrl[]> {
     const uploadPromises = images.map(async (img, i) => {
       const order = i + 1;
 
-      if ('id' in img) { // already online, just update order
+      if ('id' in img) {
+        // already online, just update order
         img.order = order;
-
-      } else { // upload new image
+      } else {
+        // upload new image
         const id = (++lastId).toString();
 
         img = {
           id,
           order,
-          url: await this.compressAndUpload(img.file, id)
+          url: await this.compressAndUpload(img.file, id),
         };
       }
 
@@ -112,7 +147,7 @@ export class ProfileService implements OnDestroy {
       maxSizeMB: 1,
       maxWidthOrHeight: 3000,
       fileType: 'image/webp',
-      alwaysKeepResolution: true
+      alwaysKeepResolution: true,
     });
   }
 
