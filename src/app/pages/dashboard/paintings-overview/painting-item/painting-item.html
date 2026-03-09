@@ -1,0 +1,44 @@
+@let pt = painting();
+
+<a
+  class="painting-item"
+  [class.soled]="pt.is_soled"
+  [routerLink]="'/dashboard-1975/painting/' + pt.id"
+>
+  <div class="image-box">
+    @if (isLoading()) {
+      <div class="skeleton"></div>
+    }
+
+    <img
+      [src]="pt.main_image.thumbnail"
+      [class.invisibile]="isLoading()"
+      (load)="isLoading.set(false)"
+      alt=""
+    />
+  </div>
+
+  <div class="data-box">
+    <p class="title">
+      {{ pt.title }}
+      @if (pt.is_soled) {
+        <i>(soled)</i>
+      }
+    </p>
+    <p>
+      {{ pt.material }}
+      {{ pt.material && pt.year ? '•' : '' }}
+      {{ pt.year || '' }}
+    </p>
+    <p>{{ pt.width }} x {{ pt.height }} cm</p>
+    <p>
+      {{ pt.price_zar || '' | currency: 'R' : 'symbol' : '1.0-0' }}
+      {{ pt.price_zar && pt.price_eur ? '|' : '' }}
+      {{ pt.price_eur || '' | currency: 'EUR' : 'symbol' : '1.0-0' }}
+    </p>
+  </div>
+
+  <button class="order-button" (click)="onOrderButtonClick($event, pt)">
+    {{ pt.order }}
+  </button>
+</a>

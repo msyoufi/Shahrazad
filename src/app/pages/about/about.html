@@ -1,45 +1,67 @@
 @let pf = profileService.profile;
 
 @if (pf) {
-<div class="about-component-container">
-  <div>
-    <img class="profile-image" [src]="pf.profileImageUrl" alt="">
+  <div class="about-component-container">
+    <div>
+      <div class="profile-image-box">
+        @if (isLoadingProfileImg()) {
+          <div class="skeleton"></div>
+        }
 
-    <h2 class="name">{{pf.name}}</h2>
+        <img
+          [src]="pf.profileImageUrl"
+          (load)="isLoadingProfileImg.set(false)"
+          [class.invisible]="isLoadingProfileImg()"
+          alt="My profile picture"
+        />
+      </div>
 
-    <ul class="links-list">
-      <p class="icon-link">
-        <img src="./instagram_icon.png" alt="Instagram Icon">
-        <a href="http://www.instagram.com/shari_art_cape_town" target="_blank">@shari_art_cape_town</a>
-      </p>
+      <h2 class="name">{{ pf.name }}</h2>
 
-      @let email = pf.email;
+      <ul class="links-list">
+        <p class="icon-link">
+          <img src="./instagram_icon.png" alt="Instagram Icon" />
+          <a href="http://www.instagram.com/shari_art_cape_town" target="_blank"
+            >@shari_art_cape_town</a
+          >
+        </p>
 
-      @if (email) {
-      <p class="icon-link">
-        <img src="./email_icon.png" alt="Email Icon">
-        <a [href]="'mailto:' + email" target="_blank">{{email}}</a>
-      </p>
-      }
+        @let email = pf.email;
 
-    </ul>
+        @if (email) {
+          <p class="icon-link">
+            <img src="./email_icon.png" alt="Email Icon" />
+            <a [href]="'mailto:' + email" target="_blank">{{ email }}</a>
+          </p>
+        }
+      </ul>
+    </div>
+
+    <div>
+      <div class="cover-image-box">
+        @if (isLoadingCoverImg()) {
+          <div class="skeleton"></div>
+        }
+
+        <img
+          [src]="pf.coverImageUrl"
+          (load)="isLoadingCoverImg.set(false)"
+          [class.invisible]="isLoadingCoverImg()"
+          alt="A paintig of mine as the cover picture"
+        />
+      </div>
+
+      <p class="bio" [innerHtml]="pf.bio_html"></p>
+    </div>
   </div>
 
-  <div>
-    <img class="cover-image" [src]="pf.coverImageUrl" alt="">
-
-    <p class="bio" [innerHtml]="pf.bio_html"></p>
+  <div class="studio-shots-container" #studioShotsBox>
+    @for (img of pf.studioShotsUrls; track img.id) {
+      <img [src]="img.url" [alt]="'Studio Shot_' + ($index + 1)" />
+    }
   </div>
-</div>
-
-<div class="studio-shots-container" #studioShotsBox>
-  @for (img of pf.studioShotsUrls; track img.id) {
-  <img [src]="img.url" [alt]="'Studio Shot_' + ($index + 1)">
-  }
-</div>
-
 } @else {
-<div class="loader-box">
-  <mat-spinner [diameter]="20" [strokeWidth]="2" />
-</div>
+  <div class="loader-box">
+    <mat-spinner [diameter]="20" [strokeWidth]="2" />
+  </div>
 }

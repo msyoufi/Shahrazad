@@ -1,16 +1,24 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { ShariButton } from "../../../shared/components/button/shari-button";
+import { ShariButton } from '../../../shared/components/button/shari-button';
 import { PaintingsService } from '../../../shared/services/paintings';
 import { Router, RouterLink } from '@angular/router';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { OrderModal } from './order-modal/order-modal';
-import { CurrencyPipe } from '@angular/common';
+import { PaintingItem } from './painting-item/painting-item';
+import { PaintingItemLoader } from './painting-item/painting-item-loader';
 
 @Component({
   selector: 'shari-paintings-overview',
-  imports: [RouterLink, ShariButton, MatPaginatorModule, OrderModal, CurrencyPipe],
+  imports: [
+    RouterLink,
+    ShariButton,
+    MatPaginatorModule,
+    OrderModal,
+    PaintingItem,
+    PaintingItemLoader,
+  ],
   templateUrl: './paintings-overview.html',
-  styleUrl: './paintings-overview.scss'
+  styleUrl: './paintings-overview.scss',
 })
 export class PaintingsOverview {
   paintingsService = inject(PaintingsService);
@@ -19,6 +27,8 @@ export class PaintingsOverview {
   paintings = signal<Painting[]>([]);
   pageIndex = signal(0);
   pageSize = signal(10);
+
+  loadersCount = Array.from({ length: this.pageSize() });
 
   selectedPainting = signal<Painting | null>(null);
 
@@ -34,9 +44,10 @@ export class PaintingsOverview {
 
   paginatePaintings(): void {
     effect(() => {
-      const end = this.pageIndex() + this.pageSize();
+      const start = this.pageIndex() * this.pageSize();
+      const end = start + this.pageSize();
 
-      const paginated = this.paintingsService.paintings.slice(this.pageIndex(), end);
+      const paginated = this.paintingsService.paintings.slice(start, end);
       this.paintings.set(paginated);
     });
   }
@@ -54,9 +65,7 @@ export class PaintingsOverview {
     this.router.navigateByUrl('/dashboard-1975/painting/new');
   }
 
-  openOrderModal(event: MouseEvent, painting: Painting): void {
-    event.preventDefault();
-    event.stopPropagation();
+  openOrderModal(painting: Painting): void {
     this.selectedPainting.set(painting);
   }
 

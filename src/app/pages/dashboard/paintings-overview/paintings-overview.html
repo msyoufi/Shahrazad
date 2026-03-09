@@ -2,50 +2,41 @@
 
 <div class="overview-header">
   <p>
-    Total: {{total}}
+    @if (total) {
+      Total: {{ total }}
+    } @else {
+      loading...
+    }
   </p>
 
-  <shari-button (onClick)="onAddClick()">
-    New Painting +
-  </shari-button>
+  <shari-button (onClick)="onAddClick()"> New Painting + </shari-button>
 </div>
 
 <div class="paintings-grid">
-  @for(pt of paintings(); track pt.id){
-  <a class="painting-item" [class.soled]="pt.is_soled" [routerLink]="'/dashboard-1975/painting/' + pt.id">
-    <img [src]="pt.main_image.thumbnail" alt="">
+  @if (!total) {
+    @for (_ of loadersCount; track $index) {
+      <shari-painting-item-loader />
+    }
+  } @else {
+    @for (pt of paintings(); track pt.id) {
+      <shari-painting-item [painting]="pt" (orderButtonClick)="openOrderModal($event)" />
+    }
 
-    <div class="painting-data">
-      <p class="title">
-        {{pt.title}}
-        @if(pt.is_soled){
-          <i>(soled)</i>
-        }
-      </p>
-      <p>
-        {{pt.material}}
-        {{(pt.material && pt.year) ? '•' : ''}}
-        {{pt.year || ''}}
-      </p>
-      <p> {{pt.width}} x {{pt.height}} cm </p>
-      <p>
-        {{(pt.price_zar || '') | currency : 'R' : 'symbol' : '1.0-0'}}
-        {{(pt.price_zar && pt.price_eur) ? '|' : ''}}
-        {{(pt.price_eur || '') | currency : 'EUR' : 'symbol' : '1.0-0'}}
-      </p>
-    </div>
-
-    <button class="order-button" (click)="openOrderModal($event, pt)">{{pt.order}}</button>
-  </a>
+    <a class="add-box" routerLink="/dashboard-1975/painting/new">+</a>
   }
-
-  <a class="add-box" routerLink="/dashboard-1975/painting/new">+</a>
 </div>
 
-<mat-paginator [length]="total" [pageSize]="pageSize()" [pageSizeOptions]="[10, 25, 50]" aria-label="Select page"
-  showFirstLastButtons (page)="onPageChange($event)">
+<mat-paginator
+  [length]="total"
+  [pageSize]="pageSize()"
+  [pageSizeOptions]="[10, 25, 50]"
+  aria-label="Select page"
+  showFirstLastButtons
+  (page)="onPageChange($event)"
+  [disabled]="!total"
+>
 </mat-paginator>
 
 @if (selectedPainting()) {
-<shari-order-modal [painting]="selectedPainting()!" (close)="closeOrderModal()" />
+  <shari-order-modal [painting]="selectedPainting()!" (close)="closeOrderModal()" />
 }
