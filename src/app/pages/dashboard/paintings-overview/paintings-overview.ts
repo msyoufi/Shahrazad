@@ -48,6 +48,7 @@ export class PaintingsOverview {
 
     const paginated = this.paintingsService.paintings.slice(start, end);
     this.paintings.set(paginated);
+    scroll({ top: 0 });
   }
 
   onPageChange(e: PageEvent): void {
