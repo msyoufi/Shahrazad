@@ -34,7 +34,7 @@ export class PaintingsOverview {
 
   constructor() {
     this.setInitialPageSize();
-    this.paginatePaintings();
+    effect(() => this.paginatePaintings());
   }
 
   setInitialPageSize(): void {
@@ -43,13 +43,11 @@ export class PaintingsOverview {
   }
 
   paginatePaintings(): void {
-    effect(() => {
-      const start = this.pageIndex() * this.pageSize();
-      const end = start + this.pageSize();
+    const start = this.pageIndex() * this.pageSize();
+    const end = start + this.pageSize();
 
-      const paginated = this.paintingsService.paintings.slice(start, end);
-      this.paintings.set(paginated);
-    });
+    const paginated = this.paintingsService.paintings.slice(start, end);
+    this.paintings.set(paginated);
   }
 
   onPageChange(e: PageEvent): void {

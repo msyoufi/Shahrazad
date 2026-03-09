@@ -1,4 +1,14 @@
-import { Component, computed, effect, ElementRef, inject, Input, OnInit, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  Input,
+  OnInit,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ShariButton } from '../../../shared/components/button/shari-button';
 import { Snackbar } from '../../../shared/components/snackbar';
@@ -11,9 +21,16 @@ import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-to
 
 @Component({
   selector: 'shari-painting-form',
-  imports: [ReactiveFormsModule, ShariButton, MatProgressSpinner, CdkDrag, CdkDropList, MatSlideToggle],
+  imports: [
+    ReactiveFormsModule,
+    ShariButton,
+    MatProgressSpinner,
+    CdkDrag,
+    CdkDropList,
+    MatSlideToggle,
+  ],
   templateUrl: './painting-form.html',
-  styleUrl: './painting-form.scss'
+  styleUrl: './painting-form.scss',
 })
 export class PaintingForm implements OnInit {
   formService = inject(PaintingFormService);
@@ -44,9 +61,18 @@ export class PaintingForm implements OnInit {
   form = new FormGroup({
     title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     material: new FormControl('', { nonNullable: true }),
-    width: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
-    height: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.min(1)] }),
-    year: new FormControl('', { nonNullable: true, validators: [Validators.min(2000), Validators.max(this.currentYear)] }),
+    width: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.min(1)],
+    }),
+    height: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.min(1)],
+    }),
+    year: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.min(2000), Validators.max(this.currentYear)],
+    }),
     price_zar: new FormControl('', { nonNullable: true, validators: [Validators.min(1)] }),
     price_eur: new FormControl('', { nonNullable: true, validators: [Validators.min(1)] }),
     description: new FormControl('', { nonNullable: true }),
@@ -54,7 +80,7 @@ export class PaintingForm implements OnInit {
   });
 
   constructor() {
-    this.populateForm();
+    effect(() => this.populateForm());
   }
 
   ngOnInit(): void {
@@ -62,29 +88,38 @@ export class PaintingForm implements OnInit {
   }
 
   populateForm(): void {
-    effect(() => {
-      const painting = this.painting();
-      if (!painting) return;
+    const painting = this.painting();
+    if (!painting) return;
 
-      const { title, material, width, height, year, price_eur, price_zar, close_ups, description, is_soled } = painting;
+    const {
+      title,
+      material,
+      width,
+      height,
+      year,
+      price_eur,
+      price_zar,
+      close_ups,
+      description,
+      is_soled,
+    } = painting;
 
-      this.form.patchValue({
-        title,
-        material,
-        description,
-        is_soled,
-        width: width.toString(),
-        height: height.toString(),
-        year: (year || '').toString(),
-        price_zar: (price_zar || '').toString(),
-        price_eur: (price_eur || '').toString(),
-      });
-
-      if (!close_ups.length) return;
-
-      const initialCloseUps = close_ups.slice().sort((a, b) => a.order - b.order);
-      this.closeUps.set(initialCloseUps);
+    this.form.patchValue({
+      title,
+      material,
+      description,
+      is_soled,
+      width: width.toString(),
+      height: height.toString(),
+      year: (year || '').toString(),
+      price_zar: (price_zar || '').toString(),
+      price_eur: (price_eur || '').toString(),
     });
+
+    if (!close_ups.length) return;
+
+    const initialCloseUps = close_ups.slice().sort((a, b) => a.order - b.order);
+    this.closeUps.set(initialCloseUps);
   }
 
   async onSaveClick(): Promise<void> {
@@ -104,22 +139,18 @@ export class PaintingForm implements OnInit {
       if (currPainting) {
         await this.formService.updatePainting(currPainting, payload, mainImage, this.closeUps());
         message = 'Changes Saved';
-
       } else if (!mainImage) {
         // on new painting creation at least the main image MUST be uploaded!
         this.snackbar.show('Please select a main image!', 'red');
         return;
-
       } else {
         await this.formService.createPainting(payload, mainImage, this.closeUps());
       }
 
       this.snackbar.show(message);
       this.closeForm();
-
     } catch (err: unknown) {
       this.snackbar.show('Unable To Save Changes!', 'red');
-
     } finally {
       this.isLoading.set(false);
       this.formService.progress.set('');
@@ -127,7 +158,8 @@ export class PaintingForm implements OnInit {
   }
 
   preparePayload(): PaintingFormData {
-    const { title, material, width, height, year, price_eur, price_zar, description, is_soled } = this.form.getRawValue();
+    const { title, material, width, height, year, price_eur, price_zar, description, is_soled } =
+      this.form.getRawValue();
 
     return {
       title,
@@ -189,7 +221,7 @@ export class PaintingForm implements OnInit {
       const confirm = await this.confirmDialog.open({
         title: 'Remove Close-Up',
         message: `Remove the image at position ${index + 1}?`,
-        actionButton: 'Remove'
+        actionButton: 'Remove',
       });
 
       if (!confirm) return;
@@ -206,7 +238,7 @@ export class PaintingForm implements OnInit {
     const confirm = await this.confirmDialog.open({
       title: 'Delete Painting',
       message: `Delete the painting: ${painting.title} and all its images?`,
-      actionButton: 'Delete'
+      actionButton: 'Delete',
     });
 
     if (!confirm) return;
@@ -221,10 +253,8 @@ export class PaintingForm implements OnInit {
       await this.formService.deletePainting(painting);
       this.snackbar.show('Painting Deleted!');
       this.closeForm();
-
     } catch (err: unknown) {
       this.snackbar.show('Unable To Remove The Painting!', 'red');
-
     } finally {
       this.isLoading.set(false);
       this.formService.progress.set('');

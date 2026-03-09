@@ -9,7 +9,7 @@ import { ProfileService } from '../../shared/services/profile';
   selector: 'shari-home',
   imports: [RouterLink],
   templateUrl: './home.html',
-  styleUrl: './home.scss'
+  styleUrl: './home.scss',
 })
 export class Home {
   paintingsService = inject(PaintingsService);
@@ -25,43 +25,40 @@ export class Home {
   perPage: number = 12;
 
   constructor() {
-    this.getLastPageNum();
-    this.arrangePaintingsInColumns();
+    effect(() => this.getLastPageNum());
+    effect(() => this.arrangePaintingsInColumns());
     this.subscribeToScreenResize();
   }
 
   getLastPageNum(): void {
-    effect(() => {
-      this.lastPage = Math.ceil(this.paintingsService.paintings.length / this.perPage);
-    });
+    this.lastPage = Math.ceil(this.paintingsService.paintings.length / this.perPage);
   }
 
   arrangePaintingsInColumns(): void {
-    effect(() => {
-      const allPaintings = this.paintingsService.paintings;
-      if (!allPaintings.length) return;
+    const allPaintings = this.paintingsService.paintings;
+    if (!allPaintings.length) return;
 
-      const colCount = this.columnsCount();
-      const paintingsCols: Painting[][] = Array.from({ length: colCount }, () => []);
-      const end = this.perPage * this.page();
-      const batch = allPaintings.slice(0, end);
+    const colCount = this.columnsCount();
+    const paintingsCols: Painting[][] = Array.from({ length: colCount }, () => []);
+    const end = this.perPage * this.page();
+    const batch = allPaintings.slice(0, end);
 
-      let i = 0;
-      for (const item of batch) {
-        if (i >= colCount) i = 0;
+    let i = 0;
+    for (const item of batch) {
+      if (i >= colCount) i = 0;
 
-        paintingsCols[i].push(item);
-        i++;
-      }
+      paintingsCols[i].push(item);
+      i++;
+    }
 
-      this.paintingsColumns.set(paintingsCols);
-    });
+    this.paintingsColumns.set(paintingsCols);
   }
 
   subscribeToScreenResize(): void {
-    this.breakpointObserver.observe(['(max-width: 850px)', '(max-width: 450px)'])
+    this.breakpointObserver
+      .observe(['(max-width: 850px)', '(max-width: 450px)'])
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(result => {
+      .subscribe((result) => {
         let nextCount = 3;
         const { '(max-width: 450px)': small, '(max-width: 850px)': medium } = result.breakpoints;
 
@@ -79,7 +76,7 @@ export class Home {
     if (this.scrollThrottled) return;
 
     this.scrollThrottled = true;
-    setTimeout(() => this.scrollThrottled = false, 100);
+    setTimeout(() => (this.scrollThrottled = false), 100);
 
     const currPage = this.page();
     if (currPage >= this.lastPage) return;

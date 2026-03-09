@@ -11,7 +11,7 @@ import { type CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angula
   selector: 'shari-profile-form',
   imports: [ReactiveFormsModule, ShariButton, MatProgressSpinner, CdkDrag, CdkDropList],
   templateUrl: './profile-form.html',
-  styleUrl: './profile-form.scss'
+  styleUrl: './profile-form.scss',
 })
 export class ProfileForm {
   profileService = inject(ProfileService);
@@ -26,7 +26,7 @@ export class ProfileForm {
     name: new FormControl('', { nonNullable: true }),
     bio_html: new FormControl('', { nonNullable: true }),
     email: new FormControl('', { nonNullable: true }),
-    hero_html: new FormControl('', { nonNullable: true })
+    hero_html: new FormControl('', { nonNullable: true }),
   });
 
   studioShotsUrls = signal<(StudioShotUrl | LocalStudioShotImage)[]>([]);
@@ -34,19 +34,17 @@ export class ProfileForm {
   progress = signal('');
 
   constructor() {
-    this.populateForm();
+    effect(() => this.populateForm());
   }
 
   populateForm(): void {
-    effect(() => {
-      const profile = this.profileService.profile;
-      if (!profile) return;
+    const profile = this.profileService.profile;
+    if (!profile) return;
 
-      const { studioShotsUrls, profileImageUrl, coverImageUrl, ...profileData } = profile;
+    const { studioShotsUrls, profileImageUrl, coverImageUrl, ...profileData } = profile;
 
-      this.form.patchValue(profileData);
-      this.studioShotsUrls.set(studioShotsUrls);
-    });
+    this.form.patchValue(profileData);
+    this.studioShotsUrls.set(studioShotsUrls);
   }
 
   async onSaveClick(): Promise<void> {
@@ -84,11 +82,9 @@ export class ProfileForm {
       this.progress.set('Done');
       this.profileImage = undefined;
       this.coverImage = undefined;
-
     } catch (err: unknown) {
       this.snackbar.show('Unable To Save Changes!', 'red');
       this.progress.set('');
-
     } finally {
       this.isLoading.set(false);
     }
@@ -98,10 +94,8 @@ export class ProfileForm {
     const file = e.target.files[0];
     if (!file || !this.checkValidImage(file)) return;
 
-    if (target === 'profile')
-      this.profileImage = file;
-    else
-      this.coverImage = file;
+    if (target === 'profile') this.profileImage = file;
+    else this.coverImage = file;
   }
 
   onStudioShotsChange(e: any): void {
@@ -115,7 +109,7 @@ export class ProfileForm {
 
       localUrls.push({
         url: URL.createObjectURL(file),
-        file: file
+        file: file,
       });
     }
 
@@ -135,17 +129,16 @@ export class ProfileForm {
       const confirm = await this.confirmDialog.open({
         title: 'Remove a Studio Shot',
         message: 'Remove this image from the "About" page?',
-        actionButton: 'Remove'
+        actionButton: 'Remove',
       });
 
       if (!confirm) return;
 
-      nextImagesUrls = this.studioShotsUrls().filter(img =>
-        'id' in img ? img.id !== target.id : true // keep all local images
+      nextImagesUrls = this.studioShotsUrls().filter(
+        (img) => ('id' in img ? img.id !== target.id : true), // keep all local images
       );
-
     } else {
-      nextImagesUrls = this.studioShotsUrls().filter(img => img.url !== target.url);
+      nextImagesUrls = this.studioShotsUrls().filter((img) => img.url !== target.url);
     }
 
     this.studioShotsUrls.set(nextImagesUrls);

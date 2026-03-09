@@ -8,7 +8,7 @@ import { CurrencyPipe } from '@angular/common';
   selector: 'shari-painting-details',
   imports: [MatProgressSpinner, Swipe, CurrencyPipe],
   templateUrl: './painting-details.html',
-  styleUrl: './painting-details.scss'
+  styleUrl: './painting-details.scss',
 })
 export class PaintingDetails {
   paintingsService = inject(PaintingsService);
@@ -20,7 +20,7 @@ export class PaintingDetails {
   // use a computed signal for the painting in case the the paintings in the paintingsservice are still loading.
   paintingId = signal('');
   painting = computed<Painting | undefined>(() =>
-    this.paintingsService.paintings.find(p => p.id === this.paintingId())
+    this.paintingsService.paintings.find((p) => p.id === this.paintingId()),
   );
 
   currentImageUrl = signal('');
@@ -54,14 +54,11 @@ export class PaintingDetails {
 
     const allImages = [painting.main_image].concat(painting.close_ups);
 
-    const nextIndex = direction === 'left'
-      ? this.currentIndex + 1
-      : this.currentIndex - 1;
+    const nextIndex = direction === 'left' ? this.currentIndex + 1 : this.currentIndex - 1;
 
-    if (nextIndex >= allImages.length || nextIndex < 0)
-      return;
+    if (nextIndex >= allImages.length || nextIndex < 0) return;
 
-    const nextUrl = allImages.find(img => img.order === nextIndex)!.large;
+    const nextUrl = allImages.find((img) => img.order === nextIndex)!.large;
     this.setImageUrl(nextUrl, nextIndex);
   }
 
