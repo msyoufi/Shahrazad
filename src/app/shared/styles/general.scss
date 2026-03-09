@@ -132,3 +132,14 @@ ul {
     background-color: #c5c5c5;
   }
 }
+
+.loader-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+}
+
+img.invisible {
+  display: none;
+}

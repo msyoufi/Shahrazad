@@ -42,10 +42,6 @@
   white-space: nowrap;
 }
 
-img.invisible {
-  display: none;
-}
-
 // ─── Artist Intro ───
 
 .artist-intro {
@@ -192,15 +188,6 @@ img.invisible {
 .slide-right.visible {
   opacity: 1;
   transform: translateX(0);
-}
-
-// ─── Loader ───
-
-.loader-box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 50vh;
 }
 
 // ─── Responsive ───

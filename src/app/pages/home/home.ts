@@ -1,13 +1,14 @@
 import { Component, DestroyRef, effect, HostListener, inject, signal } from '@angular/core';
 import { PaintingsService } from '../../shared/services/paintings';
-import { RouterLink } from '@angular/router';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProfileService } from '../../shared/services/profile';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { PaintingPreview } from './painting-preview/painting-preview';
 
 @Component({
   selector: 'shari-home',
-  imports: [RouterLink],
+  imports: [MatProgressSpinner, PaintingPreview],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
@@ -22,7 +23,7 @@ export class Home {
   page = signal(1);
 
   lastPage = 0;
-  perPage: number = 12;
+  perPage: number = 9;
 
   constructor() {
     effect(() => this.getLastPageNum());

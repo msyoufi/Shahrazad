@@ -1,0 +1,47 @@
+.painting-preview {
+  display: flex;
+  position: relative;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+
+  .skeleton {
+    height: 15rem;
+
+    &.large {
+      height: 20rem;
+    }
+  }
+
+  img {
+    width: 100%;
+  }
+
+  &:hover .painting-info-overlay {
+    opacity: 1;
+  }
+}
+
+.painting-info-overlay {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  gap: 0.5rem;
+  position: absolute;
+  top: 0;
+  align-items: center;
+  justify-content: center;
+  background-color: #00000077;
+  transition: 0.4s;
+  opacity: 0;
+  color: #fff;
+}
+
+.order {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  opacity: 0.6;
+}

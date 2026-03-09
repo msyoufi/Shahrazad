@@ -2,31 +2,18 @@
 
 <p class="hero-text" [innerHtml]="heroHtml"></p>
 
-<div class="gallery-grid">
-
-  @for (column of paintingsColumns(); track $index) {
-  <div>
-
-    @for (painting of column; track painting.id) {
-    <div class="painting-item" [routerLink]="'/painting/' + painting.id">
-
-      <img [src]="painting.main_image.large" [alt]="'Painting:' + painting.title">
-
-      <div class="painting-info-overlay">
-        <h3 class="title">
-          {{painting.title}}
-          @if(painting.is_soled){
-          <i>(soled)</i>
-          }
-        </h3>
-        <p>{{painting.material}}</p>
-        <p> {{painting.width}} x {{painting.height}} cm </p>
-      </div>
-
-    </div>
-    }
-
+@if (!paintingsService.paintings.length) {
+  <div class="loader-box">
+    <mat-spinner [diameter]="20" [strokeWidth]="2" />
   </div>
-  }
+}
 
+<div class="gallery-grid">
+  @for (column of paintingsColumns(); track $index; let i = $index) {
+    <div>
+      @for (painting of column; track painting.id) {
+        <shari-painting-preview [painting]="painting" />
+      }
+    </div>
+  }
 </div>
