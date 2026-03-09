@@ -1,9 +1,22 @@
 import { inject, Injectable, OnDestroy, signal } from '@angular/core';
-import { collection, doc, Firestore, onSnapshot, orderBy, query, Unsubscribe, DocumentReference, setDoc, updateDoc, deleteDoc, writeBatch } from '@angular/fire/firestore';
+import {
+  collection,
+  doc,
+  Firestore,
+  onSnapshot,
+  orderBy,
+  query,
+  Unsubscribe,
+  DocumentReference,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+  writeBatch,
+} from '@angular/fire/firestore';
 import { Snackbar } from '../components/snackbar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PaintingsService implements OnDestroy {
   private db = inject(Firestore);
@@ -25,12 +38,11 @@ export class PaintingsService implements OnDestroy {
     try {
       const q = query(collection(this.db, 'paintings'), orderBy('order'));
 
-      this.unsubscribe = onSnapshot(q, querySnapshot => {
+      this.unsubscribe = onSnapshot(q, (querySnapshot) => {
         const paintings: Painting[] = [];
-        querySnapshot.forEach(doc => paintings.push({ ...doc.data(), id: doc.id } as Painting));
+        querySnapshot.forEach((doc) => paintings.push({ ...doc.data(), id: doc.id } as Painting));
         this.paintings$.set(paintings);
       });
-
     } catch (err: unknown) {
       this.snackbar.show('Cannot load paintings from the database!', 'red');
     }
@@ -50,10 +62,14 @@ export class PaintingsService implements OnDestroy {
     return deleteDoc(this.getDocRef(id));
   }
 
-  updatePaintingsOrder(paintingId: string, newOrder: number, isDelete: boolean = false): Promise<void> {
+  updatePaintingsOrder(
+    paintingId: string,
+    newOrder: number,
+    isDelete: boolean = false,
+  ): Promise<void> {
     const list = this.paintings.slice();
 
-    const index = list.findIndex(p => p.id === paintingId);
+    const index = list.findIndex((p) => p.id === paintingId);
     if (index < 0) throw new Error();
 
     const [moved] = list.splice(index, 1);
@@ -69,9 +85,7 @@ export class PaintingsService implements OnDestroy {
   private writeNewOrder(paintings: Painting[]): Promise<void> {
     const batch = writeBatch(this.db);
 
-    paintings.forEach((p, i) =>
-      batch.update(this.getDocRef(p.id), { order: i + 1 })
-    );
+    paintings.forEach((p, i) => batch.update(this.getDocRef(p.id), { order: i + 1 }));
 
     return batch.commit();
   }
@@ -81,6 +95,6 @@ export class PaintingsService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe && this.unsubscribe();
+    this.unsubscribe?.();
   }
 }

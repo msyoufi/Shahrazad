@@ -160,6 +160,6 @@ export class ProfileService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe && this.unsubscribe();
+    this.unsubscribe?.();
   }
 }

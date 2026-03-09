@@ -1,8 +1,20 @@
 import { inject, Injectable, OnDestroy, signal } from '@angular/core';
-import { Auth, EmailAuthProvider, onAuthStateChanged, reauthenticateWithCredential, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, Unsubscribe, updatePassword, type User } from '@angular/fire/auth';
+import {
+  Auth,
+  EmailAuthProvider,
+  onAuthStateChanged,
+  reauthenticateWithCredential,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signOut,
+  Unsubscribe,
+  updatePassword,
+  type User,
+} from '@angular/fire/auth';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
   private auth = inject(Auth);
@@ -20,7 +32,7 @@ export class AuthService implements OnDestroy {
   }
 
   private subscribeToUserChanges(): void {
-    this.unsubscribe = onAuthStateChanged(this.auth, user => {
+    this.unsubscribe = onAuthStateChanged(this.auth, (user) => {
       this.currentUser.set(user);
     });
   }
@@ -55,6 +67,6 @@ export class AuthService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe && this.unsubscribe();
+    this.unsubscribe?.();
   }
 }
