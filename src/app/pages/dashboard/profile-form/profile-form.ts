@@ -32,9 +32,11 @@ export class ProfileForm {
   studioShotsUrls = signal<(StudioShotUrl | LocalStudioShotImage)[]>([]);
   isLoading = signal(false);
   progress = signal('');
+  bioSectionsCount = signal('');
 
   constructor() {
     effect(() => this.populateForm());
+    this.calcualteBioSectionsCount();
   }
 
   populateForm(): void {
@@ -45,6 +47,14 @@ export class ProfileForm {
 
     this.form.patchValue(profileData);
     this.studioShotsUrls.set(studioShotsUrls);
+  }
+
+  calcualteBioSectionsCount(): void {
+    this.form.valueChanges.subscribe((newValue) => {
+      const textChunks = newValue.bio_html?.split('---').filter(Boolean) ?? [];
+      const newSectionsCount = textChunks.length ? `(${textChunks.length} Sections)` : '';
+      this.bioSectionsCount.set(newSectionsCount);
+    });
   }
 
   async onSaveClick(): Promise<void> {

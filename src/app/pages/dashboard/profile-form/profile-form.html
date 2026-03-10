@@ -41,7 +41,9 @@
 
   <div class="control-field">
     <textarea type="text" id="bio_html" formControlName="bio_html" class="shari-input"></textarea>
-    <label for="bio_html" [class.top]="form.get('bio_html')?.value">Bio</label>
+    <label for="bio_html" [class.top]="form.get('bio_html')?.value">
+      Bio {{ bioSectionsCount() }}
+    </label>
   </div>
 
   <div class="studio-shots-container">
