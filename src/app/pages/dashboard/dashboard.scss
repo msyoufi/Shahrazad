@@ -1,24 +1,25 @@
 .nav-bar {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   border-bottom: 2px solid var(--primary-color);
-  margin-bottom: 1rem;
-}
+  margin: 2rem 0 3rem;
 
-.nav-links-list {
-  display: flex;
-  gap: .1rem;
+  .material-icons {
+    pointer-events: none;
+  }
 }
 
 .nav-link {
-  min-width: 4.5rem;
-  padding: .5rem .75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem;
+  gap: 0.25rem;
   color: var(--text-color);
   text-decoration: none;
-  text-align: center;
   border-radius: var(--radius) var(--radius) 0 0;
   transition: var(--transition);
+  font-weight: 500;
 }
 
 .nav-link:hover {
@@ -28,5 +29,4 @@
 .nav-link.selected {
   background-color: var(--primary-color);
   color: var(--background-color);
-  font-weight: 500;
 }

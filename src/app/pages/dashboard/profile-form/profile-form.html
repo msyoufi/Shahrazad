@@ -47,6 +47,8 @@
   <div class="studio-shots-container">
     <p class="form-title">Studio Shots</p>
 
+    <label for="studio_shots" class="studio-shots-input-label"> Add Studio Shots + </label>
+
     <div
       class="image-boxes-wrapper"
       cdkDropList
@@ -67,18 +69,13 @@
             <span style="color: var(--red)">New ({{ $index + 1 }})</span>
           }
 
-          <shari-button
-            type="button"
-            variant="outlined"
-            color="red"
-            (onClick)="onRemoveImageClick(img)"
-            >Remove</shari-button
-          >
+          <button type="button" (click)="onRemoveImageClick(img)">
+            <i class="material-icons red">delete</i>
+          </button>
         </div>
       }
     </div>
 
-    <label for="studio_shots" class="studio-shots-input-label">Add Studio Shots +</label>
     <input
       type="file"
       id="studio_shots"

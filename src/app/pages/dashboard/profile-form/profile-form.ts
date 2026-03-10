@@ -120,6 +120,7 @@ export class ProfileForm {
 
   onStudioShotDrop(event: CdkDragDrop<(StudioShotUrl | LocalStudioShotImage)[]>): void {
     moveItemInArray(this.studioShotsUrls(), event.previousIndex, event.currentIndex);
+    this.studioShotsChanged = true;
   }
 
   async onRemoveImageClick(target: StudioShotUrl | LocalStudioShotImage): Promise<void> {
@@ -128,7 +129,7 @@ export class ProfileForm {
     if ('id' in target) {
       const confirm = await this.confirmDialog.open({
         title: 'Remove a Studio Shot',
-        message: 'Remove this image from the "About" page?',
+        message: 'Remove this image from the "About Me" page?',
         actionButton: 'Remove',
       });
 

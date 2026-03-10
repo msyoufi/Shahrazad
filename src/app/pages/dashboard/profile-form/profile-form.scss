@@ -6,7 +6,7 @@
 
 .image-box {
   display: grid;
-  grid-template-columns: 1rem 25% 4rem auto;
+  grid-template-columns: 1rem 25% auto 4rem;
   padding: 0.25rem;
   gap: 2rem;
   align-items: center;
@@ -26,7 +26,7 @@
     color: var(--green);
   }
 
-  shari-button {
+  button {
     width: fit-content;
     justify-self: right;
   }
@@ -37,14 +37,18 @@
 }
 
 .studio-shots-input-label {
-  margin: 0 0.5rem;
   text-align: center;
-  padding: 0.5rem 0.8rem;
-  border: 3px solid var(--primary-color);
+  padding: 0.25rem;
   border-radius: var(--radius);
+  border: 2px solid var(--primary-color);
   color: var(--primary-color);
-  cursor: pointer;
   transition: var(--transition);
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+  }
 }
 
 .form-footer {
