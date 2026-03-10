@@ -1,6 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, input, output, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, input, output, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'shari-painting-item',
@@ -10,6 +10,8 @@ import { RouterLink } from '@angular/router';
 })
 export class PaintingItem {
   painting = input.required<Painting>();
+  router = inject(Router);
+
   isLoading = signal(true);
   orderButtonClick = output<Painting>();
 
@@ -18,5 +20,11 @@ export class PaintingItem {
     e.stopPropagation();
 
     this.orderButtonClick.emit(painting);
+  }
+
+  onImageClick(e: MouseEvent): void {
+    e.preventDefault();
+    e.stopPropagation();
+    this.router.navigateByUrl(`/painting/${this.painting().id}`);
   }
 }

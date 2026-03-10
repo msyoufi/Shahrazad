@@ -5,7 +5,7 @@
   [class.soled]="pt.is_soled"
   [routerLink]="'/dashboard-1975/painting/' + pt.id"
 >
-  <div class="image-box">
+  <div class="image-box" role="button" (click)="onImageClick($event)">
     @if (isLoading()) {
       <div class="skeleton"></div>
     }
@@ -16,6 +16,8 @@
       (load)="isLoading.set(false)"
       alt=""
     />
+
+    <i class="material-icons">call_made</i>
   </div>
 
   <div class="data-box">

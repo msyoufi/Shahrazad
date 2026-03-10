@@ -28,6 +28,22 @@
 .image-box {
   display: flex;
   height: 100%;
+  position: relative;
+
+  i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+    color: var(--background-color);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  img:hover ~ i {
+    opacity: 0.7;
+  }
 }
 
 img {
