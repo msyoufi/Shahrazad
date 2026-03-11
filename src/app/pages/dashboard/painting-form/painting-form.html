@@ -107,7 +107,13 @@
   </form>
 
   <div class="main-image-container">
-    <p class="form-title">Main Image</p>
+    <div>
+      <p class="form-title">Main Image</p>
+
+      @if (pt) {
+        <img [src]="pt.main_image.thumbnail" alt="" />
+      }
+    </div>
 
     <input
       type="file"
@@ -165,8 +171,6 @@
 
   <div class="buttons-box">
     @if (pt) {
-      <img [src]="pt.main_image.thumbnail" alt="" />
-
       <shari-button
         type="button"
         color="red"
