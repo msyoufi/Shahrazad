@@ -21,7 +21,7 @@ export class ProfileService implements OnDestroy {
   private snackbar = inject(Snackbar);
 
   private profile$ = signal<Profile | undefined>(undefined);
-  private bioText_ImageList$ = signal<BioTextWithImage[]>([]);
+  private storyBlocks$ = signal<StoryBlock[]>([]);
 
   private unsubscribe: Unsubscribe | undefined;
 
@@ -29,8 +29,8 @@ export class ProfileService implements OnDestroy {
     return this.profile$();
   }
 
-  get bioText_ImageList(): BioTextWithImage[] {
-    return this.bioText_ImageList$();
+  get storyBlocks(): StoryBlock[] {
+    return this.storyBlocks$();
   }
 
   constructor() {
@@ -45,15 +45,15 @@ export class ProfileService implements OnDestroy {
         const profile = querySnapshot.data() as Profile;
         this.profile$.set(profile);
 
-        this.createBioText_ImageList(profile);
+        this.createStoryBlocks(profile);
       });
     } catch (err: unknown) {
       this.snackbar.show('Cannot load the profile data!', 'red');
     }
   }
 
-  private createBioText_ImageList(profile: Profile): void {
-    const list: BioTextWithImage[] = [];
+  private createStoryBlocks(profile: Profile): void {
+    const list: StoryBlock[] = [];
     const { bio_html, studioShotsUrls } = profile;
 
     const sortedImages = studioShotsUrls.slice().sort((a, b) => a.order - b.order);
@@ -65,10 +65,11 @@ export class ProfileService implements OnDestroy {
       list.push({
         text: textChunks[i] ?? '',
         imageUrl: sortedImages[i]?.url ?? '',
+        loading: true,
       });
     }
 
-    this.bioText_ImageList$.set(list);
+    this.storyBlocks$.set(list);
   }
 
   updateProfile(newData: Partial<Profile>): Promise<void> {

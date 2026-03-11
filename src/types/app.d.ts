@@ -25,7 +25,8 @@ interface LocalStudioShotImage {
   url: string;
 }
 
-interface BioTextWithImage {
+interface StoryBlock {
   text: string;
   imageUrl: string;
+  loading: boolean;
 }
