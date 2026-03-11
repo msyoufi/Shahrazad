@@ -1,0 +1,17 @@
+<button
+  class="swipe-button left"
+  [class.visible]="controlsVisible()"
+  (click)="onClick.emit(-1)"
+  [disabled]="!controlsVisible()"
+>
+  <span class="material-icons">chevron_left</span>
+</button>
+
+<button
+  class="swipe-button right"
+  [class.visible]="controlsVisible()"
+  (click)="onClick.emit(1)"
+  [disabled]="!controlsVisible()"
+>
+  <span class="material-icons">chevron_right</span>
+</button>

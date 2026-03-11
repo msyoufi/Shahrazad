@@ -1,71 +1,81 @@
-import { Component, computed, effect, inject, Input, signal } from '@angular/core';
+import { Component, computed, effect, HostListener, inject, Input, signal } from '@angular/core';
 import { PaintingsService } from '../../shared/services/paintings';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Swipe } from '../../shared/directives/swipe';
 import { CurrencyPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { AuthService } from '../../shared/services/auth';
+import { SwipeButtons } from './swipe-buttons/swipe-buttons';
+
+type ImageUrlsWithLoading = ImageUrls & {
+  loading_large: boolean;
+  loading_thumb: boolean;
+};
 
 @Component({
   selector: 'shari-painting-details',
-  imports: [MatProgressSpinner, Swipe, CurrencyPipe],
+  imports: [MatProgressSpinner, Swipe, CurrencyPipe, RouterLink, SwipeButtons],
   templateUrl: './painting-details.html',
   styleUrl: './painting-details.scss',
 })
 export class PaintingDetails {
   paintingsService = inject(PaintingsService);
+  authService = inject(AuthService);
 
   @Input() set id(id: string) {
     this.paintingId.set(id);
   }
 
-  // use a computed signal for the painting in case the the paintings in the paintingsservice are still loading.
   paintingId = signal('');
   painting = computed<Painting | undefined>(() =>
     this.paintingsService.paintings.find((p) => p.id === this.paintingId()),
   );
 
-  currentImageUrl = signal('');
-  isLoading = signal(false);
+  allImages = computed<ImageUrlsWithLoading[]>(() => {
+    const pt = this.painting();
+    if (!pt) return [];
+
+    return [pt.main_image, ...pt.close_ups].map((img) => ({
+      ...img,
+      loading_large: true,
+      loading_thumb: true,
+    }));
+  });
+
+  currentImgId = signal('');
+  currentImgNum = computed(
+    () => (this.allImages().find((img) => img.id === this.currentImgId())?.order ?? 0) + 1,
+  );
+
   controlsVisible = signal(false);
   private timeoutId: any;
-
-  // the index of the current image matches the image's order (main image index = 0).
-  currentIndex = 0;
 
   isFocusMode = signal(false);
 
   constructor() {
     effect(() => {
-      const mainImageUrl = this.painting()?.main_image.large ?? '';
-      this.setImageUrl(mainImageUrl, 0);
+      // Load the main image by default
+      const mainImgId = this.painting()?.main_image.id ?? '';
+      this.currentImgId.set(mainImgId);
     });
+
+    effect(() => this.toggleScroll());
   }
 
-  onImageSelect(nextUrl: string, index: number): void {
-    if (nextUrl === this.currentImageUrl()) return;
-    this.setImageUrl(nextUrl, index);
+  onThumbnailClick(nextImgId: string): void {
+    this.currentImgId.set(nextImgId);
     this.controlsVisible.set(false);
   }
 
-  onImageSwipe(direction: 'left' | 'right'): void {
+  setNextImage(delta: -1 | 1): void {
     this.showControls();
 
-    const painting = this.painting();
-    if (!painting) return;
+    const images = this.allImages();
+    const currentIndex = images.findIndex((img) => img.id === this.currentImgId());
+    const nextIndex = (currentIndex + delta + images.length) % images.length;
 
-    const allImages = [painting.main_image].concat(painting.close_ups);
-
-    const nextIndex = direction === 'left' ? this.currentIndex + 1 : this.currentIndex - 1;
-
-    if (nextIndex >= allImages.length || nextIndex < 0) return;
-
-    const nextUrl = allImages.find((img) => img.order === nextIndex)!.large;
-    this.setImageUrl(nextUrl, nextIndex);
-  }
-
-  private setImageUrl(nextUrl: string, nextIndex: number): void {
-    this.isLoading.set(true);
-    this.currentImageUrl.set(nextUrl);
-    this.currentIndex = nextIndex;
+    let nextImgId = images[nextIndex].id;
+    this.currentImgId.set(nextImgId);
   }
 
   showControls() {
@@ -89,7 +99,30 @@ export class PaintingDetails {
     }
   }
 
+  toggleScroll() {
+    if (this.isFocusMode()) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }
+
   closeFocusMode() {
     this.isFocusMode.set(false);
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onKeydown(event: KeyboardEvent): void {
+    switch (event.key) {
+      case 'Escape':
+        this.closeFocusMode();
+        break;
+      case 'ArrowLeft':
+        this.setNextImage(-1);
+        break;
+      case 'ArrowRight':
+        this.setNextImage(1);
+        break;
+    }
   }
 }

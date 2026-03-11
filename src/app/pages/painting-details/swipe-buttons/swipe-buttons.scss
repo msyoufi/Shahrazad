@@ -1,0 +1,45 @@
+.swipe-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-color: #ffffff7a;
+  color: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  pointer-events: none;
+
+  &.left {
+    left: 2rem;
+  }
+
+  &.right {
+    right: 2rem;
+  }
+
+  &.visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .material-icons {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 550px) {
+  .swipe-button {
+    &.left {
+      left: 0.5rem;
+    }
+
+    &.right {
+      right: 0.5rem;
+    }
+  }
+}

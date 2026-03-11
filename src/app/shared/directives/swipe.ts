@@ -1,13 +1,13 @@
 import { Directive, HostListener, output } from '@angular/core';
 
 @Directive({
-  selector: '[shariSwipe]'
+  selector: '[shariSwipe]',
 })
 export class Swipe {
   private startX = 0;
   private threshold = 60;
 
-  swipe = output<'left' | 'right'>();
+  swipe = output<-1 | 1>();
 
   @HostListener('touchstart', ['$event'])
   onTouchStart(event: TouchEvent): void {
@@ -19,10 +19,9 @@ export class Swipe {
     const endX = event.changedTouches[0].screenX;
     const deltaX = endX - this.startX;
 
-    if (Math.abs(deltaX) < this.threshold)
-      return;
+    if (Math.abs(deltaX) < this.threshold) return;
 
-    const direction = deltaX > 0 ? 'right' : 'left';
+    const direction = deltaX > 0 ? -1 : 1;
     this.swipe.emit(direction);
   }
 }

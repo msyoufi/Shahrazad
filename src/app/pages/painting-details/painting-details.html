@@ -1,92 +1,128 @@
 @let pt = painting();
+@let user = authService.user;
 
 @if (pt) {
-<div class="painting-detalis-component-grid">
-  <div class="images-list">
-    <img [src]="pt.main_image.thumbnail" alt="Main painting thumbnail"
-      (click)="onImageSelect(pt.main_image.large, pt.main_image.order)">
+  <div class="painting-details-grid">
+    <section class="image-section">
+      <div class="image-view-box" (mousemove)="showControls()" (touchstart)="showControls()">
+        @for (img of allImages(); track img.id) {
+          <img
+            class="fill"
+            [src]="img.large"
+            [class.visible]="currentImgId() === img.id"
+            [class.invisible]="img.loading_large"
+            (load)="img.loading_large = false"
+            (click)="onImageViewClick()"
+            (swipe)="setNextImage($event)"
+            shariSwipe
+            alt="Painting Image View"
+          />
 
-    @for(closeUp of pt.close_ups; track closeUp.id){
-    <img [src]="closeUp.thumbnail" (click)="onImageSelect(closeUp.large, closeUp.order)"
-      alt="A thumbnail of a Close-up of the painting">
-    }
-
-  </div>
-
-  <div class="image-view-box" (mousemove)="showControls()" (touchstart)="showControls()">
-    <img [src]="currentImageUrl()" alt="Painting Image View" (load)="isLoading.set(false)" shariSwipe
-      (swipe)="onImageSwipe($event)" (click)="onImageViewClick()">
-
-    @if(isLoading()){
-    <div class="loading-overlay">
-      <mat-spinner [diameter]="25" [strokeWidth]="2" />
-    </div>
-    }
-
-    <div class="swiper-buttons-box" [class.visible]="controlsVisible()">
-      <button (click)="onImageSwipe('right')" [disabled]="!controlsVisible()">
-        &#8592;
-      </button>
-      <button (click)="onImageSwipe('left')" [disabled]="!controlsVisible()">
-        &#8594;
-      </button>
-    </div>
-  </div>
-
-  <div class="painting-data-box">
-    <div>
-      <h2>
-        {{pt.title}}
-        @if(pt.is_soled){
-        <i>(soled)</i>
+          @if (img.loading_large) {
+            <div class="skeleton fill" [class.visible]="currentImgId() === img.id"></div>
+          }
         }
-      </h2>
-      <p>
-        {{pt.material}}
-        {{(pt.material && pt.year) ? '•' : ''}}
-        {{pt.year || ''}}
-      </p>
-      <p> {{pt.width}} x {{pt.height}} cm </p>
 
-      @if(!pt.is_soled){
-      <p>
-        {{(pt.price_zar || '') | currency : 'R' : 'symbol' : '1.0-0'}}
-        {{(pt.price_zar && pt.price_eur) ? '|' : ''}}
-        {{(pt.price_eur || '') | currency : 'EUR' : 'symbol' : '1.0-0'}}
-      </p>
+        <shari-swipe-buttons
+          [controlsVisible]="controlsVisible()"
+          (onClick)="setNextImage($event)"
+        />
+      </div>
+
+      <div class="thumbnails-strip">
+        @for (img of allImages(); track img.id) {
+          <div class="thumbnail-box">
+            <button (click)="onThumbnailClick(img.id)" [class.invisible]="img.loading_thumb">
+              <img
+                [src]="img.thumbnail"
+                [class.active]="currentImgId() === img.id"
+                (load)="img.loading_thumb = false"
+                alt="Painting Image thumbnail"
+              />
+            </button>
+
+            @if (img.loading_thumb) {
+              <div class="skeleton"></div>
+            }
+          </div>
+        }
+      </div>
+    </section>
+
+    <section class="info-panel">
+      <div class="info-section">
+        <h1>{{ pt.title }}</h1>
+        @if (pt.is_soled) {
+          <span class="sold-badge">Sold</span>
+        }
+
+        @if (user) {
+          <a class="edit-link" [routerLink]="'/dashboard-1975/painting/' + pt.id">
+            <i class="material-icons">mode_edit_outline</i>
+          </a>
+        }
+      </div>
+
+      <div class="info-section">
+        @if (pt.material) {
+          <p class="meta">{{ pt.material }}</p>
+        }
+        @if (pt.year) {
+          <p class="meta">{{ pt.year }}</p>
+        }
+        @if (pt.width && pt.height) {
+          <p class="meta">{{ pt.width }} x {{ pt.height }} cm</p>
+        }
+      </div>
+
+      @if (!pt.is_soled && (pt.price_zar || pt.price_eur)) {
+        <div class="info-section">
+          <p class="price">
+            {{ pt.price_zar || '' | currency: 'R' : 'symbol' : '1.0-0' }}
+            {{ pt.price_zar && pt.price_eur ? ' | ' : '' }}
+            {{ pt.price_eur || '' | currency: 'EUR' : 'symbol' : '1.0-0' }}
+          </p>
+        </div>
       }
+
+      @if (pt.description) {
+        <div class="info-section">
+          <p class="description">{{ pt.description }}</p>
+        </div>
+      }
+    </section>
+  </div>
+
+  <div
+    id="focus_overlay"
+    class="focus-container overlay"
+    [class.visible]="isFocusMode()"
+    (click)="onFocusContainerClick($event)"
+    (mousemove)="showControls()"
+  >
+    <div class="control-bar" [class.visible]="controlsVisible()">
+      <p>{{ currentImgNum() }} / {{ allImages().length }}</p>
+      <button (click)="closeFocusMode()">
+        <span class="material-icons">close</span>
+      </button>
     </div>
 
-    @if(pt.description){
-    <div class="description-box">
-      <p>{{pt.description}}</p>
-    </div>
+    @for (img of allImages(); track img.id) {
+      <img
+        class="fill"
+        [src]="img.large"
+        [class.visible]="currentImgId() === img.id"
+        (swipe)="setNextImage($event)"
+        (touchstart)="showControls()"
+        shariSwipe
+        alt="Painting Image View"
+      />
     }
+
+    <shari-swipe-buttons [controlsVisible]="controlsVisible()" (onClick)="setNextImage($event)" />
   </div>
-
-</div>
-
-<div id="focus_overlay" class="focus-container overlay" [class.visible]="isFocusMode()"
-  (click)="onFocusContainerClick($event)" (mousemove)="showControls()">
-  <div class="control-bar" [class.visible]="controlsVisible()">
-    <p>{{currentIndex + 1}} / {{pt.close_ups.length + 1}}</p>
-    <button (click)="closeFocusMode()">&#10005;</button>
-  </div>
-
-  <img [src]="currentImageUrl()" alt="Painting Image View" (load)="isLoading.set(false)" shariSwipe
-    (swipe)="onImageSwipe($event)" (touchstart)="showControls()">
-
-  <div class="swiper-buttons-box" [class.visible]="controlsVisible()">
-    <button (click)="onImageSwipe('right')" [disabled]="!controlsVisible()">
-      &#8592;
-    </button>
-    <button (click)="onImageSwipe('left')" [disabled]="!controlsVisible()">
-      &#8594;
-    </button>
-  </div>
-
-</div>
-
 } @else {
-<mat-spinner [diameter]="20" [strokeWidth]="2" />
+  <div class="loader-box">
+    <mat-spinner [diameter]="20" [strokeWidth]="2" />
+  </div>
 }
