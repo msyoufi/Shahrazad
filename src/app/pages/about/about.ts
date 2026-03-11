@@ -36,7 +36,7 @@ export class About implements AfterViewInit, OnDestroy {
           }
         });
       },
-      { threshold: 0.6 },
+      { threshold: 0.15 },
     );
 
     this.observeElements();
