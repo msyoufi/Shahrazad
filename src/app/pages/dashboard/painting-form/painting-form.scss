@@ -104,4 +104,9 @@ form {
   position: sticky;
   bottom: 0;
   background: linear-gradient(transparent, var(--background-color) 20%);
+
+  img {
+    max-height: 2rem;
+    margin-right: auto;
+  }
 }
