@@ -1,24 +1,43 @@
 <div class="overlay">
   <div class="overlay-content-box">
+    <p class="title">New Order</p>
 
-    <p class="title">New Order for {{painting().title}}</p>
+    <p class="content">Set a new order for "{{ painting().title }}"</p>
 
     <div class="control-field">
-      <input type="number" id="new_order" name="new_order" class="shari-input" min="1"
-        [max]="paintingsService.paintings.length" [(ngModel)]="inputValue" required #orderInput>
-      <label for="new_order" [class.top]="inputValue">New Order*</label>
+      <input
+        type="number"
+        id="new_order"
+        name="new_order"
+        class="shari-input"
+        min="1"
+        [max]="paintingsService.paintings.length"
+        [(ngModel)]="inputValue"
+        required
+        #orderInput
+      />
+      <label for="new_order" [class.top]="inputValue">New Order {{ orderRange() }}</label>
     </div>
 
     <div class="buttons-box">
-      <shari-button type="button" variant="outlined" (onClick)="closeModal()" [disabled]="isLoading()">
+      <shari-button
+        type="button"
+        variant="outlined"
+        (onClick)="closeModal()"
+        [disabled]="isLoading()"
+      >
         Cancel
       </shari-button>
 
-      <shari-button type="button" (onClick)="onSaveClick()" [disabled]="!inputValue || isLoading()">
+      <shari-button
+        type="button"
+        (onClick)="onSaveClick()"
+        [disabled]="!orderInput.checkValidity() || isLoading()"
+      >
         @if (isLoading()) {
-        <mat-spinner [diameter]="15" [strokeWidth]="2" />
+          <mat-spinner [diameter]="15" [strokeWidth]="2" />
         } @else {
-        Save
+          Save
         }
       </shari-button>
     </div>
