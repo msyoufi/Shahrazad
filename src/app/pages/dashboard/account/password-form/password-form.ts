@@ -1,21 +1,21 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ShariButton } from '../../../shared/components/button/shari-button';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { PasswordToggle } from '../../../../shared/components/password-toggle';
+import { AuthService } from '../../../../shared/services/auth';
 import { Router } from '@angular/router';
-import { Snackbar } from '../../../shared/components/snackbar';
-import { PasswordToggle } from '../../../shared/components/password-toggle';
-import { AuthService } from '../../../shared/services/auth';
-import ShariValidators from '../../../shared/validators/custom.validators';
+import { Snackbar } from '../../../../shared/components/snackbar';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import ShariValidators from '../../../../shared/validators/custom.validators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ShariButton } from '../../../../shared/components/button/shari-button';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'shari-security-form',
-  imports: [ReactiveFormsModule, ShariButton, MatProgressSpinner, PasswordToggle],
-  templateUrl: './security-form.html',
-  styleUrl: './security-form.scss'
+  selector: 'shari-password-form',
+  imports: [ReactiveFormsModule, PasswordToggle, ShariButton, MatProgressSpinner],
+  templateUrl: './password-form.html',
+  styleUrl: './password-form.scss',
 })
-export class SecurityForm {
+export class PasswordForm {
   authService = inject(AuthService);
   router = inject(Router);
   snackbar = inject(Snackbar);
@@ -23,7 +23,10 @@ export class SecurityForm {
 
   passwordForm = new FormGroup({
     currentPassword: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    newPassword: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(8), ShariValidators.password] }),
+    newPassword: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(8), ShariValidators.password],
+    }),
   });
 
   isUpdatingPassword = signal(false);
@@ -36,7 +39,7 @@ export class SecurityForm {
   onNewPasswordChange(): void {
     this.passwordForm.controls.newPassword.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(_ => {
+      .subscribe((_) => {
         const errors = this.passwordForm.controls.newPassword.errors;
 
         if (!errors) {
@@ -97,25 +100,10 @@ export class SecurityForm {
 
       this.passwordForm.reset();
       this.snackbar.show('Password Changed');
-
     } catch (err: unknown) {
       this.snackbar.show('Unable to reset the password', 'red');
-
     } finally {
       this.isUpdatingPassword.set(false);
-    }
-  }
-
-  async onVerifyEmailClick(): Promise<void> {
-    const user = this.authService.user;
-    if (!user) return;
-
-    try {
-      await this.authService.sendVerificationLink(user);
-      this.snackbar.show(`Verification Link Sent To:\n ${user.email}`);
-
-    } catch (err: unknown) {
-      this.snackbar.show('Unable to send a verification link', 'red');
     }
   }
 }

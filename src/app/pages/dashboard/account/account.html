@@ -1,0 +1,40 @@
+@let user = authService.user;
+
+<div class="account-section">
+  @if (user?.emailVerified) {
+    <h3 class="form-title">
+      Email Address:
+      <small class="green"> {{ user?.email }} &#10004;</small>
+    </h3>
+  } @else {
+    <h3 class="form-title">Please Verfiy Your Email Address: {{ user ? user.email : '' }}</h3>
+
+    <shari-button type="button" color="red" (onClick)="onVerifyEmailClick()">
+      Send Verification Link
+    </shari-button>
+  }
+</div>
+
+<shari-password-form />
+
+<div class="account-section">
+  <h3 class="form-title">
+    Last Login:
+    <small> {{ user?.metadata?.lastSignInTime }} </small>
+  </h3>
+
+  <shari-button
+    class="logout-button"
+    type="button"
+    variant="outlined"
+    color="red"
+    (onClick)="onLogoutClick()"
+    [disabled]="isLoggingOut()"
+  >
+    @if (isLoggingOut()) {
+      <mat-spinner [diameter]="15" [strokeWidth]="2" />
+    } @else {
+      Logout
+    }
+  </shari-button>
+</div>

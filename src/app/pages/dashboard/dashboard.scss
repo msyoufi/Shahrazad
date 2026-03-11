@@ -30,3 +30,13 @@
   background-color: var(--primary-color);
   color: var(--background-color);
 }
+
+@media (max-width: 550px) {
+  .nav-link {
+    font-size: 0.8rem;
+  }
+
+  .material-icons {
+    font-size: 1rem;
+  }
+}

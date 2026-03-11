@@ -1,0 +1,20 @@
+.account-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 900px;
+  margin: 2rem auto;
+  gap: 1rem;
+}
+
+.green {
+  color: var(--green);
+}
+
+small {
+  color: var(--gray);
+}
+
+shari-button {
+  min-width: 10rem;
+}
