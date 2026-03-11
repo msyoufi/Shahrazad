@@ -1,27 +1,16 @@
-<div class="header-component-container">
+<header>
   <a class="logo" routerLink="">
     <h1>Shari's Art</h1>
   </a>
 
-  <nav class="header-nav-bar">
-    <a routerLink="" class="header-link">Home</a>
-    <a routerLink="/about" class="header-link">About Me</a>
+  <div class="separator"></div>
+
+  <nav>
+    <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+    <a routerLink="/about" routerLinkActive="active">About Me</a>
 
     @if (authService.user) {
-    <a routerLink="/dashboard-1975" class="header-link">Dashboard</a>
+      <a routerLink="/dashboard-1975" routerLinkActive="active">Dashboard</a>
     }
   </nav>
-
-
-  @if (authService.user) {
-  <shari-button class="logout-button" type="button" variant="outlined" color="red" (onClick)="onLogoutClick()"
-    [disabled]="isLoggingOut()">
-    @if(isLoggingOut()){
-    <mat-spinner [diameter]="15" [strokeWidth]="2" />
-    } @else {
-    Logout
-    }
-  </shari-button>
-  }
-
-</div>
+</header>
