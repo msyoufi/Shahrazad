@@ -54,22 +54,11 @@
   <!-- Story Section: Bio + Studio Images Alternating -->
   <section class="story-section">
     @for (txt_img of profileService.bioText_ImageList; track $index) {
-      <div class="story-block" [class.reverse]="$odd">
-        <p
-          class="story-text slide-left"
-          [innerHtml]="txt_img.text"
-          [class.slide-left]="!$odd"
-          [class.slide-right]="$odd"
-          #animateOnScroll
-        ></p>
+      <div class="story-block slide" [class.reverse]="$odd" #animateOnScroll>
+        <p class="story-text" [innerHtml]="txt_img.text"></p>
 
         <div class="story-image">
-          <div
-            class="image-placeholder"
-            [class.slide-left]="$odd"
-            [class.slide-right]="!$odd"
-            #animateOnScroll
-          >
+          <div class="image-placeholder">
             <img [src]="txt_img.imageUrl" alt="In the studio" />
           </div>
         </div>
