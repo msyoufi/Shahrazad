@@ -52,9 +52,6 @@
     <section class="info-panel">
       <div class="info-section">
         <h1>{{ pt.title }}</h1>
-        @if (pt.is_soled) {
-          <span class="sold-badge">Sold</span>
-        }
 
         @if (user) {
           <a class="edit-link" [routerLink]="'/dashboard-1975/painting/' + pt.id">
@@ -83,6 +80,8 @@
             {{ pt.price_eur || '' | currency: 'EUR' : 'symbol' : '1.0-0' }}
           </p>
         </div>
+      } @else if (pt.is_soled) {
+        <span class="sold-badge">SOLD</span>
       }
 
       @if (pt.description) {
