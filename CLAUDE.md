@@ -47,5 +47,5 @@ Shahrazad is an Angular portfolio/gallery application for an artist. It has a pu
 
 ## Types
 
-- `src/types/painting.d.ts` — Painting interface (includes `is_soled` for sold status, `ImageUrls` for large/thumbnail pairs)
+- `src/types/painting.d.ts` — Painting interface (includes `is_sold` for sold status, `ImageUrls` for large/thumbnail pairs)
 - `src/types/app.d.ts` — Profile, StudioShotUrl interfaces

@@ -2,7 +2,7 @@
 
 <a
   class="painting-item"
-  [class.soled]="pt.is_soled"
+  [class.sold]="pt.is_sold"
   [routerLink]="'/dashboard-1975/painting/' + pt.id"
 >
   <div class="image-box" role="button" (click)="onImageClick($event)">
@@ -23,8 +23,8 @@
   <div class="data-box">
     <p class="title">
       {{ pt.title }}
-      @if (pt.is_soled) {
-        <i>(soled)</i>
+      @if (pt.is_sold) {
+        <i>(sold)</i>
       }
     </p>
     <p>

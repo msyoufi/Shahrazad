@@ -9,9 +9,9 @@
       {{ pt ? 'Edit: ' + `"${pt!.title}"` : 'New Painting' }}
     </h2>
 
-    <div class="soled-toggle-box">
-      <mat-slide-toggle [checked]="form.get('is_soled')" formControlName="is_soled">
-        <b>SOLED</b>
+    <div class="sold-toggle-box">
+      <mat-slide-toggle [checked]="form.get('is_sold')" formControlName="is_sold">
+        <b>SOLD</b>
       </mat-slide-toggle>
     </div>
 

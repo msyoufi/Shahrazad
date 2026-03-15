@@ -8,7 +8,7 @@ interface Painting {
   price_zar: number,
   price_eur: number,
   order: number,
-  is_soled: boolean,
+  is_sold: boolean,
   description: string,
   main_image: ImageUrls,
   close_ups: ImageUrls[]

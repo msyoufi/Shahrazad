@@ -76,7 +76,7 @@ export class PaintingForm implements OnInit {
     price_zar: new FormControl('', { nonNullable: true, validators: [Validators.min(1)] }),
     price_eur: new FormControl('', { nonNullable: true, validators: [Validators.min(1)] }),
     description: new FormControl('', { nonNullable: true }),
-    is_soled: new FormControl(false, { nonNullable: true }),
+    is_sold: new FormControl(false, { nonNullable: true }),
   });
 
   constructor() {
@@ -101,14 +101,14 @@ export class PaintingForm implements OnInit {
       price_zar,
       close_ups,
       description,
-      is_soled,
+      is_sold,
     } = painting;
 
     this.form.patchValue({
       title,
       material,
       description,
-      is_soled,
+      is_sold,
       width: width.toString(),
       height: height.toString(),
       year: (year || '').toString(),
@@ -158,13 +158,13 @@ export class PaintingForm implements OnInit {
   }
 
   preparePayload(): PaintingFormData {
-    const { title, material, width, height, year, price_eur, price_zar, description, is_soled } =
+    const { title, material, width, height, year, price_eur, price_zar, description, is_sold } =
       this.form.getRawValue();
 
     return {
       title,
       material,
-      is_soled,
+      is_sold,
       description,
       width: Number(width),
       height: Number(height),

@@ -72,7 +72,7 @@
         }
       </div>
 
-      @if (!pt.is_soled && (pt.price_zar || pt.price_eur)) {
+      @if (!pt.is_sold && (pt.price_zar || pt.price_eur)) {
         <div class="info-section">
           <p class="price">
             {{ pt.price_zar || '' | currency: 'R' : 'symbol' : '1.0-0' }}
@@ -80,7 +80,7 @@
             {{ pt.price_eur || '' | currency: 'EUR' : 'symbol' : '1.0-0' }}
           </p>
         </div>
-      } @else if (pt.is_soled) {
+      } @else if (pt.is_sold) {
         <span class="sold-badge">SOLD</span>
       }
 
