@@ -1,15 +1,7 @@
 @let pt = painting();
 @let user = authService.user;
 
-<div class="painting-preview" [routerLink]="'/painting/' + pt.id">
-  @if (user) {
-    <div class="order">{{ pt.order }}</div>
-  }
-
-  @if (isLoading()) {
-    <div class="skeleton" [style]="{ height: elementHeight() + 'px' }"></div>
-  }
-
+<a class="painting-preview" [routerLink]="'/painting/' + pt.id">
   <img
     [src]="pt.main_image.large"
     [class.invisible]="isLoading()"
@@ -18,14 +10,21 @@
     #imgRef
   />
 
-  <div class="painting-info-overlay">
-    <h3 class="title">
-      {{ pt.title }}
-      @if (pt.is_soled) {
-        <i>(soled)</i>
-      }
-    </h3>
-    <p>{{ pt.material }}</p>
-    <p>{{ pt.width }} x {{ pt.height }} cm</p>
-  </div>
-</div>
+  @if (isLoading()) {
+    <div class="skeleton" [style]="{ height: elementHeight() + 'px' }"></div>
+  } @else {
+    @if (user) {
+      <div class="order">{{ pt.order }}</div>
+    }
+
+    @if (pt.is_soled) {
+      <div class="soled-tag">SOLED</div>
+    }
+
+    <div class="painting-info-overlay">
+      <h3 class="title">{{ pt.title }}</h3>
+      <p>{{ pt.material }}</p>
+      <p>{{ pt.width }} x {{ pt.height }} cm</p>
+    </div>
+  }
+</a>
