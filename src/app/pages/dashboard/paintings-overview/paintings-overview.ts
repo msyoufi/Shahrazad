@@ -26,7 +26,7 @@ export class PaintingsOverview {
 
   paintings = signal<Painting[]>([]);
   pageIndex = signal(0);
-  pageSize = signal(10);
+  pageSize = signal(25);
 
   loadersCount = Array.from({ length: this.pageSize() });
 
@@ -38,7 +38,7 @@ export class PaintingsOverview {
   }
 
   setInitialPageSize(): void {
-    const savedPageSize = JSON.parse(localStorage.getItem('pageSize') ?? '10');
+    const savedPageSize = JSON.parse(localStorage.getItem('pageSize') ?? '25');
     this.pageSize.set(savedPageSize);
   }
 
