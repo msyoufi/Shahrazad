@@ -72,7 +72,7 @@
         }
       </div>
 
-      @if (!pt.is_sold && (pt.price_zar || pt.price_eur)) {
+      @if (user && !pt.is_sold && (pt.price_zar || pt.price_eur)) {
         <div class="info-section">
           <p class="price">
             {{ pt.price_zar || '' | currency: 'R' : 'symbol' : '1.0-0' }}
