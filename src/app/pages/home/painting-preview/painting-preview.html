@@ -1,8 +1,8 @@
 @let pt = painting();
 @let user = authService.user;
 
-<a class="painting-preview" [routerLink]="'/painting/' + pt.id" target="_blank">
-  <div class="image-box">
+<a class="painting-preview" [routerLink]="'/painting/' + pt.id">
+  <div>
     <img
       [src]="pt.main_image.large"
       [class.invisible]="isLoading()"
@@ -14,31 +14,33 @@
     @if (isLoading()) {
       <div class="skeleton" [style]="{ height: elementHeight() + 'px' }"></div>
     }
+
+    @if (pt.is_sold && !isLoading()) {
+      <div class="sold-tag">SOLD</div>
+    }
   </div>
 
-  @if (user) {
-    <div class="user-tools">
-      <button class="order-button" (click)="onOrderButtonClick($event, pt)">
-        {{ pt.order }}
-      </button>
+  <div class="painting-baner">
+    <div class="painting-infos">
+      <h3 class="title">
+        {{ pt.title }}
+        <i class="material-icons">open_in_new</i>
+      </h3>
 
-      <a class="edit-link" [routerLink]="'/dashboard-1975/painting/' + pt.id">
-        <i class="material-icons">mode_edit_outline</i>
-      </a>
+      <p>{{ pt.material }}</p>
+      <p>{{ pt.width }} x {{ pt.height }} cm</p>
     </div>
-  }
 
-  @if (pt.is_sold) {
-    <div class="sold-tag">SOLD</div>
-  }
+    @if (user) {
+      <div class="user-tools">
+        <button class="order-button" (click)="onOrderButtonClick($event, pt)">
+          {{ pt.order }}
+        </button>
 
-  <div class="painting-data">
-    <h3 class="title">
-      {{ pt.title }}
-      <i class="material-icons">open_in_new</i>
-    </h3>
-
-    <p>{{ pt.material }}</p>
-    <p>{{ pt.width }} x {{ pt.height }} cm</p>
+        <a class="edit-link" [routerLink]="'/dashboard-1975/painting/' + pt.id">
+          <i class="material-icons">mode_edit_outline</i>
+        </a>
+      </div>
+    }
   </div>
 </a>

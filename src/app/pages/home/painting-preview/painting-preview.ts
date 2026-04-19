@@ -27,7 +27,7 @@ export class PaintingPreview {
     const elementWidth = this.imgRef().nativeElement.clientWidth;
     const { width, height } = this.painting();
 
-    this.elementHeight.set(elementWidth * (width / height));
+    this.elementHeight.set(elementWidth * (height / width));
   }
 
   onOrderButtonClick(e: MouseEvent, painting: Painting) {
