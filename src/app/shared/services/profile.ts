@@ -145,10 +145,9 @@ export class ProfileService implements OnDestroy {
 
   private compressImage(img: File): Promise<File> {
     return imageCompression(img, {
-      maxSizeMB: 1,
+      maxSizeMB: 0.5,
       maxWidthOrHeight: 3000,
       fileType: 'image/webp',
-      alwaysKeepResolution: true,
     });
   }
 
