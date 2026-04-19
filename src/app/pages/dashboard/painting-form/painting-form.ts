@@ -17,7 +17,7 @@ import { type CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angula
 import { ConfirmDialogService } from '../../../shared/components/confirmation-dialog/confirm-dialog.service';
 import { Router } from '@angular/router';
 import { PaintingFormService } from './painting-form.service';
-import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'shari-painting-form',

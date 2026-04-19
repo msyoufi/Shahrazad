@@ -1,9 +1,16 @@
 import { inject, Injectable } from '@angular/core';
-import { Storage, uploadBytes, getDownloadURL, type StorageReference, ref, deleteObject } from '@angular/fire/storage';
+import {
+  Storage,
+  uploadBytes,
+  getDownloadURL,
+  type StorageReference,
+  ref,
+  deleteObject,
+} from '@angular/fire/storage';
 import imageCompression, { Options } from 'browser-image-compression';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ImageStorageService {
   private storage = inject(Storage);
@@ -12,7 +19,7 @@ export class ImageStorageService {
     img: File,
     paintingId: string,
     id: string = 'main',
-    order: number = 0
+    order: number = 0,
   ): Promise<ImageUrls> {
     const { large, thumbnail } = await this.compressImage(img);
     const { largRef, thumbnailRef } = this.getImageRef(paintingId, id);
@@ -21,7 +28,7 @@ export class ImageStorageService {
       id,
       large: await this.uploadFile(large, largRef),
       thumbnail: await this.uploadFile(thumbnail, thumbnailRef),
-      order: id === 'main' ? 0 : order
+      order: id === 'main' ? 0 : order,
     };
   }
 
@@ -31,9 +38,7 @@ export class ImageStorageService {
   }
 
   bulkDeleteImages(images: ImageUrls[], paintingId: string): Promise<void[][]> {
-    const deletePromises = images.map(({ id }) =>
-      this.deleteImage(paintingId, id)
-    );
+    const deletePromises = images.map(({ id }) => this.deleteImage(paintingId, id));
 
     return Promise.all(deletePromises);
   }
@@ -48,7 +53,7 @@ export class ImageStorageService {
 
     return {
       largRef: ref(this.storage, `paintings/${path}`),
-      thumbnailRef: ref(this.storage, `paintings/${path}_thumbnail`)
+      thumbnailRef: ref(this.storage, `paintings/${path}_thumbnail`),
     };
   }
 
@@ -56,7 +61,6 @@ export class ImageStorageService {
     maxSizeMB: 1,
     maxWidthOrHeight: 3000,
     fileType: 'image/webp',
-    alwaysKeepResolution: true
   };
 
   private thumbnailCompressionOpt: Options = {
