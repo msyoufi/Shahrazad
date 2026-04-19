@@ -1,30 +1,44 @@
 @let pt = painting();
 @let user = authService.user;
 
-<a class="painting-preview" [routerLink]="'/painting/' + pt.id">
-  <img
-    [src]="pt.main_image.large"
-    [class.invisible]="isLoading()"
-    (load)="isLoading.set(false)"
-    [alt]="'Painting:' + pt.title"
-    #imgRef
-  />
+<a class="painting-preview" [routerLink]="'/painting/' + pt.id" target="_blank">
+  <div class="image-box">
+    <img
+      [src]="pt.main_image.large"
+      [class.invisible]="isLoading()"
+      (load)="isLoading.set(false)"
+      [alt]="'Painting:' + pt.title"
+      #imgRef
+    />
 
-  @if (isLoading()) {
-    <div class="skeleton" [style]="{ height: elementHeight() + 'px' }"></div>
-  } @else {
-    @if (user) {
-      <div class="order">{{ pt.order }}</div>
+    @if (isLoading()) {
+      <div class="skeleton" [style]="{ height: elementHeight() + 'px' }"></div>
     }
+  </div>
 
-    @if (pt.is_sold) {
-      <div class="sold-tag">SOLD</div>
-    }
+  @if (user) {
+    <div class="user-tools">
+      <button class="order-button" (click)="onOrderButtonClick($event, pt)">
+        {{ pt.order }}
+      </button>
 
-    <div class="painting-info-overlay">
-      <h3 class="title">{{ pt.title }}</h3>
-      <p>{{ pt.material }}</p>
-      <p>{{ pt.width }} x {{ pt.height }} cm</p>
+      <a class="edit-link" [routerLink]="'/dashboard-1975/painting/' + pt.id">
+        <i class="material-icons">mode_edit_outline</i>
+      </a>
     </div>
   }
+
+  @if (pt.is_sold) {
+    <div class="sold-tag">SOLD</div>
+  }
+
+  <div class="painting-data">
+    <h3 class="title">
+      {{ pt.title }}
+      <i class="material-icons">open_in_new</i>
+    </h3>
+
+    <p>{{ pt.material }}</p>
+    <p>{{ pt.width }} x {{ pt.height }} cm</p>
+  </div>
 </a>

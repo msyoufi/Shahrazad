@@ -1,6 +1,7 @@
 import { Component, effect, ElementRef, inject, input, signal, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth';
+import { OrderModalService } from '../../../shared/components/order-modal/order-modal-service';
 
 @Component({
   selector: 'shari-painting-preview',
@@ -10,6 +11,7 @@ import { AuthService } from '../../../shared/services/auth';
 })
 export class PaintingPreview {
   authService = inject(AuthService);
+  orderModalService = inject(OrderModalService);
 
   painting = input.required<Painting>();
   imgRef = viewChild.required<ElementRef<HTMLImageElement>>('imgRef');
@@ -26,5 +28,12 @@ export class PaintingPreview {
     const { width, height } = this.painting();
 
     this.elementHeight.set(elementWidth * (width / height));
+  }
+
+  onOrderButtonClick(e: MouseEvent, painting: Painting) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    this.orderModalService.openModal(painting);
   }
 }
