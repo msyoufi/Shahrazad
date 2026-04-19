@@ -1,21 +1,14 @@
-// ─── Hero Banner ───
-
 .hero-section {
   position: relative;
   width: 100%;
-  height: 60vh;
+  height: 50vh;
   overflow: hidden;
-}
 
-.hero-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.hero-skeleton {
-  position: absolute;
-  inset: 0;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 .hero-overlay {
@@ -42,8 +35,6 @@
   white-space: nowrap;
 }
 
-// ─── Artist Intro ───
-
 .artist-intro {
   display: flex;
   flex-direction: column;
@@ -60,13 +51,7 @@
   overflow: hidden;
   border: 4px solid var(--background-color);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  flex-shrink: 0;
-  position: relative;
   z-index: 1;
-
-  .profile-skeleton {
-    border-radius: 50%;
-  }
 
   img {
     width: 100%;
@@ -75,47 +60,45 @@
   }
 }
 
-// ─── Contact Links ───
-
 .contact-links {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2rem;
+  gap: 1.5rem;
   margin-top: 1.5rem;
-}
 
-.contact-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--gray);
-  text-decoration: none;
-  transition: color var(--transition);
-
-  img {
-    width: 1.25rem;
-    height: 1.25rem;
-    opacity: 0.6;
-    transition: opacity var(--transition);
-  }
-
-  &:hover {
-    color: var(--primary-color);
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray);
     text-decoration: none;
+    transition: color var(--transition);
 
     img {
-      opacity: 1;
+      width: 1.25rem;
+      height: 1.25rem;
+      opacity: 0.6;
+      transition: opacity var(--transition);
+    }
+
+    &:hover {
+      color: var(--primary-color);
+
+      img {
+        opacity: 1;
+      }
     }
   }
 }
 
-// ─── Story Section ───
-
 .story-section {
+  display: flex;
+  flex-direction: column;
   max-width: 70rem;
-  margin: 2rem auto 6rem;
+  margin: 0 auto 6rem;
   padding: 0 2rem;
+  gap: 2rem;
 }
 
 .story-block {
@@ -140,10 +123,12 @@
   color: var(--text-color);
 }
 
-.story-image {
+.story-image-box {
   position: relative;
   min-height: 15rem;
   border-radius: var(--radius);
+  height: 100%;
+  max-height: 80vh;
 
   .skeleton {
     position: absolute;
@@ -159,23 +144,12 @@
   }
 }
 
-.slide {
-  transform: translateY(80px);
-  transition: 0.8s ease;
-}
-
-.slide.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 @media (max-width: 768px) {
   .hero-section {
     height: 45vh;
   }
 
   .hero-name {
-    top: 50%;
     font-size: 1.8rem;
   }
 

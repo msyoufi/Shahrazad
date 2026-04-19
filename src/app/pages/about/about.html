@@ -1,14 +1,12 @@
 @let pf = profileService.profile;
 
 @if (pf) {
-  <!-- Hero Banner -->
   <section class="hero-section">
     @if (isLoadingCoverImg()) {
-      <div class="skeleton hero-skeleton"></div>
+      <div class="skeleton"></div>
     }
 
     <img
-      class="hero-image"
       [src]="pf.coverImageUrl"
       (load)="isLoadingCoverImg.set(false)"
       [class.invisible]="isLoadingCoverImg()"
@@ -19,11 +17,10 @@
     <h1 class="hero-name">{{ pf.name }}</h1>
   </section>
 
-  <!-- Artist Intro: Profile + Contact -->
   <section class="artist-intro">
     <div class="profile-image-box">
       @if (isLoadingProfileImg()) {
-        <div class="skeleton profile-skeleton"></div>
+        <div class="skeleton"></div>
       }
 
       <img
@@ -35,7 +32,7 @@
     </div>
 
     <div class="contact-links">
-      <a class="contact-link" href="http://www.instagram.com/shari_art_cape_town" target="_blank">
+      <a href="http://www.instagram.com/shari_art_cape_town" target="_blank">
         <img src="./instagram_icon.png" alt="Instagram Icon" />
         <span>@shari_art_cape_town</span>
       </a>
@@ -43,7 +40,7 @@
       @let email = pf.email;
 
       @if (email) {
-        <a class="contact-link" [href]="'mailto:' + email" target="_blank">
+        <a [href]="'mailto:' + email" target="_blank">
           <img src="./email_icon.png" alt="Email Icon" />
           <span>{{ email }}</span>
         </a>
@@ -51,13 +48,12 @@
     </div>
   </section>
 
-  <!-- Story Section: Bio + Studio Images Alternating -->
   <section class="story-section">
     @for (story of profileService.storyBlocks; track $index) {
-      <div class="story-block slide" [class.reverse]="$odd" #animateOnScroll>
+      <div class="story-block" [class.reverse]="$odd">
         <p class="story-text" [innerHtml]="story.text"></p>
 
-        <div class="story-image">
+        <div class="story-image-box">
           <img
             class="fill"
             [src]="story.imageUrl"
