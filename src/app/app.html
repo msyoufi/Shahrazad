@@ -5,3 +5,7 @@
 </main>
 
 <shari-footer />
+
+@if (authService.user && orderModalService.selectedPainting) {
+  <shari-order-modal />
+}

@@ -1,6 +1,7 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, inject, input, output, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { OrderModalService } from '../../../../shared/components/order-modal/order-modal-service';
 
 @Component({
   selector: 'shari-painting-item',
@@ -9,17 +10,17 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './painting-item.scss',
 })
 export class PaintingItem {
-  painting = input.required<Painting>();
+  orderModalService = inject(OrderModalService);
   router = inject(Router);
 
+  painting = input.required<Painting>();
   isLoading = signal(true);
-  orderButtonClick = output<Painting>();
 
   onOrderButtonClick(e: MouseEvent, painting: Painting) {
     e.preventDefault();
     e.stopPropagation();
 
-    this.orderButtonClick.emit(painting);
+    this.orderModalService.openModal(painting);
   }
 
   onImageClick(e: MouseEvent): void {

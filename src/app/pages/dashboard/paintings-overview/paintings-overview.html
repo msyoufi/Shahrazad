@@ -19,7 +19,7 @@
     }
   } @else {
     @for (pt of paintings(); track pt.id) {
-      <shari-painting-item [painting]="pt" (orderButtonClick)="openOrderModal($event)" />
+      <shari-painting-item [painting]="pt" />
     }
 
     <a class="add-box" routerLink="/dashboard-1975/painting/new">+</a>
@@ -36,7 +36,3 @@
   [disabled]="!total"
 >
 </mat-paginator>
-
-@if (selectedPainting()) {
-  <shari-order-modal [painting]="selectedPainting()!" (close)="closeOrderModal()" />
-}

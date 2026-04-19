@@ -1,8 +1,9 @@
-import { ShariButton } from '../../../../shared/components/button/shari-button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { PaintingsService } from '../../../../shared/services/paintings';
-import { Snackbar } from '../../../../shared/components/snackbar';
 import { FormsModule } from '@angular/forms';
+import { ShariButton } from '../button/shari-button';
+import { PaintingsService } from '../../services/paintings';
+import { Snackbar } from '../snackbar';
+import { OrderModalService } from './order-modal-service';
 import {
   Component,
   computed,
@@ -23,11 +24,11 @@ import {
 })
 export class OrderModal implements OnInit {
   paintingsService = inject(PaintingsService);
+  modalService = inject(OrderModalService);
   snackbar = inject(Snackbar);
 
   orderInput = viewChild.required<ElementRef<HTMLInputElement>>('orderInput');
-  painting = input.required<Painting>();
-  close = output<void>();
+  painting = computed(() => this.modalService.selectedPainting!);
 
   inputValue = 0;
   isLoading = signal(false);
@@ -65,6 +66,6 @@ export class OrderModal implements OnInit {
   }
 
   closeModal(): void {
-    this.close.emit();
+    this.modalService.closeModal();
   }
 }
